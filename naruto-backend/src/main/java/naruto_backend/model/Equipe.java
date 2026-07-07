@@ -21,8 +21,8 @@ public class Equipe {
     private Integer id;
 
     @OneToOne
-    @JoinColumn(name = "leader_id")
-    @Column(name = "leader", length = 70, nullable = false)
+    @JoinColumn(name = "leader")
+    @Column(name = "leader", nullable = false)
     private Leader leader;
 
     @OneToMany(mappedBy = "equipe")

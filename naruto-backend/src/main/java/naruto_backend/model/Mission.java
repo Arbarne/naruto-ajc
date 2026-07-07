@@ -20,7 +20,7 @@ public class Mission {
     private Integer id;
 
     @Column(name = "nom", length = 35, nullable = false)    
-    private String titre;
+    private String nom;
 
     @Column(name = "description", length = 255, nullable = false)
     private String description;
@@ -29,7 +29,7 @@ public class Mission {
     private RangMission rang;
 
     @Column(name = "gain_exp", length = 50, nullable = false)
-    private int gain_exp;
+    private int gainExp;
 
     @Column(name = "recompense", length = 50, nullable = false)
     private int recompense;
@@ -45,24 +45,24 @@ public class Mission {
     private LocalDate dateFin;
     
     @Column(name = "statut", length = 20, nullable = false)
-    private EtatMission etat;
+    private StatutMission statut;
     
     
     public Mission() {
     }
 
-    public Mission(Integer id, String titre, String description, RangMission rang, int gain_exp, int recompense,
-            Equipe equipe, LocalDate dateDebut, LocalDate dateFin, EtatMission etat) {
+    public Mission(Integer id, String nom, String description, RangMission rang, int gainExp, int recompense,
+            Equipe equipe, LocalDate dateDebut, LocalDate dateFin, StatutMission statut) {
         this.id = id;
-        this.titre = titre;
+        this.nom = nom;
         this.description = description;
         this.rang = rang;
-        this.gain_exp = gain_exp;
+        this.gainExp = gainExp;
         this.recompense = recompense;
         this.equipe = equipe;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
-        this.etat = etat;
+        this.statut = statut;
     }
 
 
@@ -70,8 +70,8 @@ public class Mission {
         return id;
     }
 
-    public String getTitre() {
-        return titre;
+    public String getNom() {
+        return nom;
     }
 
     public String getDescription() {
@@ -82,8 +82,8 @@ public class Mission {
         return rang;
     }
 
-    public int getGain_exp() {
-        return gain_exp;
+    public int getGainExp() {
+        return gainExp;
     }
 
     public int getRecompense() {
@@ -102,8 +102,8 @@ public class Mission {
         return dateFin;
     }
 
-    public EtatMission getEtat() {
-        return etat;
+    public StatutMission getStatut() {
+        return statut;
     }
 
 
@@ -111,8 +111,8 @@ public class Mission {
         this.id = id;
     }
 
-    public void setTitre(String titre) {
-        this.titre = titre;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public void setDescription(String description) {
@@ -123,8 +123,8 @@ public class Mission {
         this.rang = rang;
     }
 
-    public void setGain_exp(int gain_exp) {
-        this.gain_exp = gain_exp;
+    public void setGainExp(int gainExp) {
+        this.gainExp = gainExp;
     }
 
     public void setRecompense(int recompense) {
@@ -143,16 +143,16 @@ public class Mission {
         this.dateFin = dateFin;
     }
 
-    public void setEtat(EtatMission etat) {
-        this.etat = etat;
+    public void setStatut(StatutMission statut) {
+        this.statut = statut;
     }
 
 
     @Override
     public String toString() {
-        return "Mission [id=" + id + ", titre=" + titre + ", description=" + description + ", rang=" + rang
-                + ", gain_exp=" + gain_exp + ", recompense=" + recompense + ", equipe=" + equipe + ", dateDebut="
-                + dateDebut + ", dateFin=" + dateFin + ", etat=" + etat + "]";
+        return "Mission [id=" + id + ", nom=" + nom + ", description=" + description + ", rang=" + rang
+                + ", gainExp=" + gainExp + ", recompense=" + recompense + ", equipe=" + equipe + ", dateDebut="
+                + dateDebut + ", dateFin=" + dateFin + ", statut=" + statut + "]";
     }
     
 }

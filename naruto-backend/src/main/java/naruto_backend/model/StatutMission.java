@@ -1,6 +1,6 @@
 package naruto_backend.model;
 
-public enum EtatMission {
+public enum StatutMission {
 
     Disponible, EnCours, Terminee, Annulee, Echouee;
     

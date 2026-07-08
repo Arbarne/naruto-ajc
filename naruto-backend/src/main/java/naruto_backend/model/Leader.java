@@ -24,4 +24,12 @@ public class Leader extends Utilisateur {
 	public Leader() {
 		
 	}
+
+	public Equipe getEquipe() {
+		return equipe;
+	}
+
+	public void setEquipe(Equipe equipe) {
+		this.equipe = equipe;
+	}
 }

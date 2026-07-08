@@ -6,8 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import naruto_backend.api.request.CreateEquipeRequest;
+import naruto_backend.api.request.UpdateEquipeRequest;
 import naruto_backend.dao.IDAOEquipe;
 import naruto_backend.model.Equipe;
+import naruto_backend.model.Leader;
 
 @Service
 public class EquipeService {
@@ -27,14 +30,28 @@ public class EquipeService {
 		else return null;
 	}
 	
-	public void insert(Equipe equipe) 
+	public Equipe insert(CreateEquipeRequest request) 
 	{
-		daoEquipe.save(equipe);
+        Equipe equipe = new Equipe();
+
+        Leader leader = daoLeader.findById(request.getLeaderId()).orElse(null);
+
+        equipe.setNom(request.getNom());
+        equipe.setLeader(leader);
+
+        return daoEquipe.save(equipe);
 	}
 	
-	public void update(Equipe equipe) 
+	public Equipe update(Integer id, UpdateEquipeRequest request) 
 	{
-		daoEquipe.save(equipe);
+        Equipe equipe = getById(id);
+
+        Leader leader = daoLeader.findById(request.getLeaderId()).orElse(null);
+
+        equipe.setNom(request.getNom());
+        equipe.setLeader(leader);
+
+        return daoEquipe.save(equipe);
 	}
 
 	public void delete(Integer id) 

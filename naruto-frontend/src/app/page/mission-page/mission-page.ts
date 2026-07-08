@@ -30,6 +30,7 @@ export class MissionPage implements OnInit {
   private refresh$: Subject<void> = new Subject<void>();
   protected equipe$!: Observable<Equipe[]>;
 
+  protected crudMenuOpen: boolean = true;
   protected showForm: boolean = false;
   protected MissionForm!: FormGroup;
   protected nomCtrl!: FormControl;
@@ -70,7 +71,7 @@ export class MissionPage implements OnInit {
       rang: this.rangCtrl,
       gainExp: this.gainExpCtrl,
       recompense: this.recompenseCtrl,
-      id_equipe: this.equipeCtrl,
+      equipe: this.equipeCtrl,
       dateDebut: this.dateDebutCtrl,
       dateFin: this.dateFinCtrl,
       statut: this.statutCtrl
@@ -103,7 +104,7 @@ export class MissionPage implements OnInit {
     this.nomCtrl.setValue(mission.nom);
     this.descriptionCtrl.setValue(mission.description);
     this.rangCtrl.setValue(mission.rang);
-    this.gain_expCtrl.setValue(mission.gain_exp);
+    this.gainExpCtrl.setValue(mission.gainExp);
     this.recompenseCtrl.setValue(mission.recompense);
     this.equipeCtrl.setValue(mission.id_equipe);
     this.dateDebutCtrl.setValue(mission.dateDebut);

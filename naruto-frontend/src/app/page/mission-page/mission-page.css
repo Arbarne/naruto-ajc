@@ -1,0 +1,78 @@
+.mission-page {
+  background-image: url('/assets/images/image 4.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  padding: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.crud-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 10;
+}
+
+.crud-dialog {
+  background-image: url('/assets/images/Rectangle 18.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding: 2.5rem 3rem;
+  min-width: 420px;
+  max-width: 90vw;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  font-family: inherit;
+}
+
+.crud-dialog input,
+.crud-dialog select,
+.crud-dialog textarea,
+.crud-dialog button {
+  font-family: inherit;
+}
+
+.crud-menu {
+  position: relative;
+  min-width: 340px;
+  padding: 3rem 2.5rem 2.5rem 4.5rem;
+  overflow: visible;
+}
+
+.crud-menu-avatar {
+  position: absolute;
+  left: -70px;
+  bottom: -30px;
+  width: 180px;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
+}
+
+.crud-menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.crud-menu-actions button {
+  border: none;
+  border-radius: 14px;
+  padding: 0.9rem 1.5rem;
+  background: linear-gradient(180deg, #b23b3b, #8b2e2e);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+}
+
+.crud-menu-actions button:hover {
+  background: linear-gradient(180deg, #c24747, #9a3535);
+}

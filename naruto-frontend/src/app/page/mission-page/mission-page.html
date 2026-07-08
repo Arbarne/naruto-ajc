@@ -1,74 +1,94 @@
-<section class="mission-page">
-  <h2>Missions</h2>
 
-  @if (!showForm) {
-    <button type="button" (click)="showForm = true">Nouvelle mission</button>
+<body class="mission-page">
+<section>
+    <h2>Missions</h2>
+
+  @if (!crudMenuOpen && !showForm) {
+    <button type="button" (click)="crudMenuOpen = true">Menu CRUD</button>
+  }
+
+  @if (crudMenuOpen) {
+    <div class="crud-dialog-overlay">
+      <div class="crud-dialog crud-menu">
+        <img class="crud-menu-avatar" src="/assets/images/image 18.png" alt="">
+        <nav class="crud-menu-actions">
+          <button type="button" (click)="crudMenuOpen = false; showForm = true">Créer</button>
+          <button type="button" (click)="crudMenuOpen = false">Lire</button>
+          <button type="button" (click)="crudMenuOpen = false">Modifier</button>
+          <button type="button" (click)="crudMenuOpen = false">Supprimer</button>
+        </nav>
+      </div>
+    </div>
   }
 
   @if (showForm) {
-    <form [formGroup]="MissionForm" (ngSubmit)="creerOuModifier()">
-      <div class="field">
-        <label for="nom">Nom</label>
-        <input id="nom" type="text" [formControl]="nomCtrl">
-      </div>
+    <div class="crud-dialog-overlay">
+      <div class="crud-dialog">
+        <form [formGroup]="MissionForm" (ngSubmit)="creerOuModifier()">
+          <div class="field">
+            <label for="nom">Nom</label>
+            <input id="nom" type="text" [formControl]="nomCtrl">
+          </div>
 
-      <div class="field">
-        <label for="description">Description</label>
-        <textarea id="description" [formControl]="descriptionCtrl"></textarea>
-      </div>
+          <div class="field">
+            <label for="description">Description</label>
+            <textarea id="description" [formControl]="descriptionCtrl"></textarea>
+          </div>
 
-      <div class="field">
-        <label for="rang">Rang</label>
-        <select id="rang" [formControl]="rangCtrl">
-          @for (r of rangs; track r) {
-            <option [value]="r">{{ r }}</option>
-          }
-        </select>
-      </div>
+          <div class="field">
+            <label for="rang">Rang</label>
+            <select id="rang" [formControl]="rangCtrl">
+              @for (r of rangs; track r) {
+                <option [value]="r">{{ r }}</option>
+              }
+            </select>
+          </div>
 
-      <div class="field">
-        <label for="gainExp">Gain d'expérience</label>
-        <input id="gainExp" type="number" [formControl]="gain_expCtrl">
-      </div>
+          <div class="field">
+            <label for="gainExp">Gain d'expérience</label>
+            <input id="gainExp" type="number" [formControl]="gainExpCtrl">
+          </div>
 
-      <div class="field">
-        <label for="recompense">Récompense</label>
-        <input id="recompense" type="number" [formControl]="recompenseCtrl">
-      </div>
+          <div class="field">
+            <label for="recompense">Récompense</label>
+            <input id="recompense" type="number" [formControl]="recompenseCtrl">
+          </div>
 
-      <div class="field">
-        <label for="equipe">Équipe</label>
-        <select id="equipe" [formControl]="equipeCtrl">
-          @for (e of (equipe$ | async); track e.id) {
-            <option [value]="e.id">{{ e.id }}</option>
-          }
-        </select>
-      </div>
+          <div class="field">
+            <label for="equipe">Équipe</label>
+            <select id="equipe" [formControl]="equipeCtrl">
+              @for (e of (equipe$ | async); track e.id) {
+                <option [value]="e.id">{{ e.id }}</option>
+              }
+            </select>
+          </div>
 
-      <div class="field">
-        <label for="dateDebut">Date de début</label>
-        <input id="dateDebut" type="date" [formControl]="dateDebutCtrl">
-      </div>
+          <div class="field">
+            <label for="dateDebut">Date de début</label>
+            <input id="dateDebut" type="date" [formControl]="dateDebutCtrl">
+          </div>
 
-      <div class="field">
-        <label for="dateFin">Date de fin</label>
-        <input id="dateFin" type="date" [formControl]="dateFinCtrl">
-      </div>
+          <div class="field">
+            <label for="dateFin">Date de fin</label>
+            <input id="dateFin" type="date" [formControl]="dateFinCtrl">
+          </div>
 
-      <div class="field">
-        <label for="statut">Statut</label>
-        <select id="statut" [formControl]="statutCtrl">
-          @for (e of etats; track e) {
-            <option [value]="e">{{ e }}</option>
-          }
-        </select>
-      </div>
+          <div class="field">
+            <label for="statut">Statut</label>
+            <select id="statut" [formControl]="statutCtrl">
+              @for (e of etats; track e) {
+                <option [value]="e">{{ e }}</option>
+              }
+            </select>
+          </div>
 
-      <div class="actions">
-        <button type="submit" [disabled]="MissionForm.invalid">{{ editingMission ? 'Modifier' : 'Créer' }}</button>
-        <button type="button" (click)="annulerEditer()">Annuler</button>
+          <div class="actions">
+            <button type="submit" [disabled]="MissionForm.invalid">{{ editingMission ? 'Modifier' : 'Créer' }}</button>
+            <button type="button" (click)="annulerEditer()">Annuler</button>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   }
 
   @if (mission$ | async; as missions) {
@@ -103,3 +123,4 @@
     </table>
   }
 </section>
+</body>

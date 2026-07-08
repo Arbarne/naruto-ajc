@@ -3,10 +3,9 @@ package naruto_backend.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+
 
 @Entity
-@Table(name="Leader")
 public class Leader extends Utilisateur {
 	@OneToOne(mappedBy = "leader")
 	@JoinColumn(name = "equipe", nullable = false)

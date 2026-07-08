@@ -1,10 +1,8 @@
 package naruto_backend.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name="Hokage")
 public class Hokage extends Utilisateur {
 
 	public Hokage() {

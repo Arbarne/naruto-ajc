@@ -32,4 +32,11 @@ public class Leader extends Utilisateur {
 	public void setEquipe(Equipe equipe) {
 		this.equipe = equipe;
 	}
+
+	@Override
+	public String toString() {
+		return "Leader [equipe=" + equipe + "]";
+	}
+
+
 }

@@ -2,7 +2,6 @@ package naruto_backend.model;
 
 import java.util.List;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,8 +20,7 @@ public class Equipe {
     private Integer id;
 
     @OneToOne
-    @JoinColumn(name = "leader")
-    @Column(name = "leader", nullable = false)
+    @JoinColumn(name = "leader", nullable = false)
     private Leader leader;
 
     @OneToMany(mappedBy = "equipe")

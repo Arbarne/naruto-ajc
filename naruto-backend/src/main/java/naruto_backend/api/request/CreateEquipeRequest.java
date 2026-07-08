@@ -13,6 +13,7 @@ public class CreateEquipeRequest {
     @NotNull
     private Integer leaderId;
 
+    @NotNull
     private List<Integer> ninjasId;
 
     public String getNom() {

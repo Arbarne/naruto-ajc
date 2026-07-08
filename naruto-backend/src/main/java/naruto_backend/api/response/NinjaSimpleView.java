@@ -4,6 +4,6 @@ import java.util.List;
 
 import naruto_backend.model.Ninja;
 
-public record MiniNinja(Integer id, String nom) {
+public record NinjaSimpleView(Integer id, String nom) {
 
 }

@@ -1,6 +1,7 @@
 package naruto_backend.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +13,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name="user")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "user-type")
+@DiscriminatorColumn(name = "user_type")
 public class Utilisateur {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,6 +69,10 @@ public class Utilisateur {
 
 	@Column(nullable = false)
 	private int argent;
+
+	
+	public Utilisateur() {
+	}
 
 	public Utilisateur(Integer id, String login, String password, String prenom, String nom, Genre genre,
 			Specialite specialite, RangNinja rang, EtatNinja etatNinja, int niveau, int expActuel, int pvMax,

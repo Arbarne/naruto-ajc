@@ -2,6 +2,7 @@ package naruto_backend.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,8 @@ public class Equipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "nom", length = 50, nullable = false, unique = true)
+    private String nom;
 
     @OneToOne
     @JoinColumn(name = "leader", nullable = false)
@@ -33,8 +36,9 @@ public class Equipe {
     public Equipe() {
     }
 
-    public Equipe(Integer id, Leader leader, List<Ninja> ninjas, List<Mission> missions) {
+    public Equipe(Integer id, String nom, Leader leader, List<Ninja> ninjas, List<Mission> missions) {
         this.id = id;
+        this.nom = nom;
         this.leader = leader;
         this.ninjas = ninjas;
         this.missions = missions;
@@ -43,6 +47,10 @@ public class Equipe {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getNom() {
+        return nom;
     }
 
     public Leader getLeader() {
@@ -62,6 +70,10 @@ public class Equipe {
         this.id = id;
     }
 
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
     public void setLeader(Leader leader) {
         this.leader = leader;
     }
@@ -77,7 +89,7 @@ public class Equipe {
 
     @Override
     public String toString() {
-        return "Equipe [id=" + id + ", leader=" + leader + ", ninjas=" + ninjas + ", missions=" + missions + "]";
+        return "Equipe [id=" + id + ", nom=" + nom + ", leader=" + leader + ", ninjas=" + ninjas + ", missions=" + missions + "]";
     }
     
 }

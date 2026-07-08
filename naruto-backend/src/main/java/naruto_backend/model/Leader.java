@@ -1,6 +1,5 @@
 package naruto_backend.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
@@ -10,7 +9,7 @@ import jakarta.persistence.Table;
 @Table(name="Leader")
 public class Leader extends Utilisateur {
 	@OneToOne(mappedBy = "leader")
-	@Column(name = "equipe", nullable = false)
+	@JoinColumn(name = "equipe", nullable = false)
 	private Equipe equipe;
 
 	public Leader(Integer id, String login, String password, String prenom, String nom, Genre genre,

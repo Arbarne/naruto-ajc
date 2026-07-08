@@ -1,6 +1,6 @@
 package naruto_backend.model;
 
-import jakarta.persistence.Column;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -9,8 +9,7 @@ import jakarta.persistence.ManyToOne;
 public class Ninja extends Utilisateur {
 
 	@ManyToOne
-    @JoinColumn(name="equipe")
-	@Column(name = "equipe", nullable = false)
+    @JoinColumn(name="equipe", nullable = false)
 	private Equipe equipe;
 
 	public Ninja() {

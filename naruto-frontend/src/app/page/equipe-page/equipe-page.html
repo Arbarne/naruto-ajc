@@ -1,1 +1,45 @@
-<p>equipe-page works!</p>
+<section class="equipe-page">
+  <h2>Équipes</h2>
+
+  @if (!showForm) {
+    <button type="button" (click)="showForm = true">Nouvelle équipe</button>
+  }
+
+  @if (showForm) {
+    <form [formGroup]="EquipeForm" (ngSubmit)="creerOuModifier()">
+      <div class="field">
+        <label for="leader">Id du leader</label>
+        <input id="leader" type="number" [formControl]="leaderCtrl">
+      </div>
+
+      <div class="actions">
+        <button type="submit" [disabled]="EquipeForm.invalid">{{ editingEquipe ? 'Modifier' : 'Créer' }}</button>
+        <button type="button" (click)="annulerEditer()">Annuler</button>
+      </div>
+    </form>
+  }
+
+  @if (equipe$ | async; as equipes) {
+    <table>
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Leader</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (equipe of equipes; track equipe.id) {
+          <tr>
+            <td>{{ equipe.id }}</td>
+            <td>{{ equipe.id_leader }}</td>
+            <td class="actions">
+              <button type="button" (click)="editer(equipe)">Éditer</button>
+              <button type="button" (click)="supprimer(equipe)">Supprimer</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

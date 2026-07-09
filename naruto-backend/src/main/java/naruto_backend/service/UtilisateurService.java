@@ -110,7 +110,7 @@ public class UtilisateurService {
 		daoUtilisateur.deleteById(id);
 	}
 	
-    private Utilisateur save(Utilisateur utilisateur, CreateUtilisateurRequest request) {
+    public Utilisateur save(Utilisateur utilisateur, CreateUtilisateurRequest request) {
     	Integer argent = 0;
     	Integer nbReussite = 0;
     	Integer nbEchec = 0;
@@ -142,7 +142,7 @@ public class UtilisateurService {
         return this.daoUtilisateur.save(utilisateur);
     }
     
-    private Utilisateur save(Utilisateur utilisateur, UpdateUtilisateurRequest request) {
+    public Utilisateur save(Utilisateur utilisateur, UpdateUtilisateurRequest request) {
         utilisateur.setLogin(request.getLogin());
         utilisateur.setPassword(request.getPassword());
         utilisateur.setNom(request.getNom());

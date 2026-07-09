@@ -1,24 +1,23 @@
 package naruto_backend.api.request;
 
 import naruto_backend.model.Genre;
-//import jakarta.validation.constraints.NotNull;
-//import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
-//décommenter lorsque les pom auront fusionnés
 public class CreateUtilisateurRequest {
-//    @NotBlank
+    @NotBlank
     private String login;
 
-//    @NotBlank
+    @NotBlank
     private String password;
 
-//    @NotBlank
+    @NotBlank
   private String nom;
 
-//    @NotBlank
+    @NotBlank
   private String prenom;
 
-//    @NotNull
+    @NotNull
   private Genre genre;
 
   public String getLogin() {

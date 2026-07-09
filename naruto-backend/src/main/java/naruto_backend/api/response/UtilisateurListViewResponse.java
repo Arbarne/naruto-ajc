@@ -94,7 +94,7 @@ public class UtilisateurListViewResponse {
         response.setPrenom(utilisateur.getPrenom());
         response.setGenre(utilisateur.getGenre());
         response.setRang(utilisateur.getRang());
-        response.setEtatNinja(utilisateur.getEtatNinja());
+        response.setEtatNinja(utilisateur.getEtat());
         response.setSpecialite(utilisateur.getSpecialite());
         return response;
     }

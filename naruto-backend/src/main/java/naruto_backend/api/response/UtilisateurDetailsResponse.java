@@ -195,7 +195,7 @@ public class UtilisateurDetailsResponse {
 //        response.setEquipeId(utilisateur.getEquipe().getId());
 //        response.setEquipeNom(utilisateur.getEquipe().getNom();
         response.setRang(utilisateur.getRang());
-        response.setEtatNinja(utilisateur.getEtatNinja());
+        response.setEtatNinja(utilisateur.getEtat());
         response.setSpecialite(utilisateur.getSpecialite());
         response.setPvMax(utilisateur.getPvMax());
         response.setPvActuel(utilisateur.getPvActuel());

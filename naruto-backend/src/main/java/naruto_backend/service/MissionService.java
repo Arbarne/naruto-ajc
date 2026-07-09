@@ -6,8 +6,17 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import naruto_backend.api.request.AssignMissionRequest;
+import naruto_backend.api.request.CreateMissionRequest;
+import naruto_backend.api.request.StartMissionRequest;
+import naruto_backend.api.request.UpdateMissionRequest;
+import naruto_backend.dao.IDAOEquipe;
 import naruto_backend.dao.IDAOMission;
+import naruto_backend.dao.IDAOUtilisateur;
+import naruto_backend.model.Equipe;
+import naruto_backend.model.EtatNinja;
 import naruto_backend.model.Mission;
+import naruto_backend.model.Ninja;
 import naruto_backend.model.RangMission;
 import naruto_backend.model.StatutMission;
 
@@ -16,6 +25,12 @@ public class MissionService {
 
     @Autowired
     IDAOMission daoMission;
+
+	@Autowired
+	IDAOEquipe daoEquipe;
+
+    @Autowired
+    IDAOUtilisateur daoUtilisateur;
 
     public List<Mission> getAll()
 	{
@@ -29,15 +44,62 @@ public class MissionService {
 		else return null;
 	}
 	
-	public void insert(Mission mission) 
+	public Mission insert(CreateMissionRequest request) 
 	{
-		daoMission.save(mission);
+		Mission mission = new Mission();
+
+		mission.setNom(request.getNom());
+        mission.setDescription(request.getDescription());
+        mission.setRang(request.getRang());
+        mission.setGainExp(request.getGainExp());
+        mission.setRecompense(request.getRecompense());
+
+        return daoMission.save(mission);
 	}
 	
-	public void update(Mission mission) 
+	public Mission update(Integer id, UpdateMissionRequest request) 
 	{
-		daoMission.save(mission);
+		Mission mission = getById(id);
+
+		mission.setNom(request.getNom());
+        mission.setDescription(request.getDescription());
+        mission.setRang(request.getRang());
+        mission.setGainExp(request.getGainExp());
+        mission.setRecompense(request.getRecompense());
+        mission.setDateDebut(request.getDateDebut());
+        mission.setDateFin(request.getDateFin());
+        mission.setStatut(request.getStatut());		
+
+		return daoMission.save(mission);
 	}
+
+    public Mission assignMission(AssignMissionRequest request) {
+        Mission mission = getById(request.getId());
+
+        Equipe equipe = daoEquipe.findById(request.getEquipeId()).orElse(null);
+
+        mission.setEquipe(equipe);
+        mission.setStatut(StatutMission.Disponible);
+
+        return daoMission.save(mission);
+    }
+
+    public Mission startMission(Integer id, StartMissionRequest request) {
+        Mission mission = getById(id);
+
+        mission.setDateDebut(request.getDateDebut());
+        mission.setStatut(StatutMission.EnCours);
+
+        mission.getEquipe().getLeader().setEtat(EtatNinja.EnMission);
+        daoUtilisateur.save(mission.getEquipe().getLeader());
+
+        for (Ninja ninja : mission.getEquipe().getNinjas()) {
+            ninja.setEtat(EtatNinja.EnMission);
+            daoUtilisateur.save(ninja);
+        }
+
+        return daoMission.save(mission);
+    }
 
 	public void delete(Integer id) 
 	{

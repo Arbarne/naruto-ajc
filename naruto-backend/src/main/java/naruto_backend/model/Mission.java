@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,6 +27,7 @@ public class Mission {
     @Column(name = "description", length = 255, nullable = false)
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "rang", length = 5,nullable = false, unique = true)
     private RangMission rang;
 
@@ -44,6 +47,7 @@ public class Mission {
     @Column(name = "date_fin", nullable = false)
     private LocalDate dateFin;
     
+    @Enumerated(EnumType.STRING)
     @Column(name = "statut", length = 20, nullable = false)
     private StatutMission statut;
     

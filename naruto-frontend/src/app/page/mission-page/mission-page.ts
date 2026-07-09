@@ -60,7 +60,7 @@ export class MissionPage implements OnInit {
   protected readonly rangs = Object.values(RangMission);
   protected readonly etats = Object.values(EtatMission);
 
-  protected mission$!: Observable<Mission[]>;
+  protected mission$!: Observable<MissionListView[]>;
   private refresh$: Subject<void> = new Subject<void>();
   protected equipe$!: Observable<Equipe[]>;
 

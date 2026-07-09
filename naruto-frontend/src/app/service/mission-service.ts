@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth-service';
 import { EntityCreatedOrUpdated } from '../model/entity-created-or-updated'
+import { MissionListView } from '../model/mission-list-view';
 
 
 @Injectable({
@@ -16,8 +17,8 @@ export class MissionService {
   private apiUrl: string = '/mission';
   private refresh$: Subject<void> = new Subject<void>();
 
-  public findAll(): Observable<Mission[]> {
-    return this.http.get<Mission[]>(this.apiUrl);
+  public findAll(): Observable<MissionListView[]> {
+    return this.http.get<MissionListView[]>(this.apiUrl);
   }
 
   public findById(id: number): Observable<Mission> {

@@ -82,13 +82,13 @@ public class UtilisateurService {
 	}
 
 
-	public List<Utilisateur> getByRangNinja(RangNinja rang) {
-		return daoUtilisateur.findByRangNinja(rang);
+	public List<Utilisateur> getByRang(RangNinja rang) {
+		return daoUtilisateur.findByRang(rang);
 	}
 
 	
-	public List<Utilisateur> getByEtatNinja(EtatNinja etat) {
-		return daoUtilisateur.findByEtatNinja(etat);
+	public List<Utilisateur> getByEtat(EtatNinja etat) {
+		return daoUtilisateur.findByEtat(etat);
 	}
 
 	public Utilisateur insert(CreateUtilisateurRequest request) 

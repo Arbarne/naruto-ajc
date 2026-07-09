@@ -1,7 +1,11 @@
 package naruto_backend.api.response;
 
+import naruto_backend.model.Equipe;
+import naruto_backend.model.EquipeBasicInfo;
 import naruto_backend.model.EtatNinja;
 import naruto_backend.model.Genre;
+import naruto_backend.model.Leader;
+import naruto_backend.model.Ninja;
 import naruto_backend.model.RangNinja;
 import naruto_backend.model.Specialite;
 import naruto_backend.model.Utilisateur;
@@ -24,6 +28,7 @@ public class UtilisateurDetailsResponse {
 	private int nbEchecs;
 	private int nbReussites;
 	private int argent;
+	private EquipeBasicInfo equipe;
 
 	public String getLogin() {
 		return login;
@@ -183,17 +188,36 @@ public class UtilisateurDetailsResponse {
 		this.argent = argent;
 	}
 
+	public EquipeBasicInfo getEquipeBasicInfo() {
+		return equipe;
+	}
+
+
+	public void setEquipeBasicInfo(EquipeBasicInfo equipeBasicInfo) {
+		this.equipe = equipeBasicInfo;
+	}
 
 	public static UtilisateurDetailsResponse convert(Utilisateur utilisateur) {
         UtilisateurDetailsResponse response = new UtilisateurDetailsResponse();
+
+        response.equipe = new EquipeBasicInfo();
 
         response.setLogin(utilisateur.getLogin());
         response.setNom(utilisateur.getNom());
         response.setPrenom(utilisateur.getPrenom());
         response.setGenre(utilisateur.getGenre());
         response.setNiveau(utilisateur.getNiveau());
-//        response.setEquipeId(utilisateur.getEquipe().getId());
-//        response.setEquipeNom(utilisateur.getEquipe().getNom();
+        if (utilisateur instanceof Ninja ninja) {
+            response.getEquipeBasicInfo().setId(ninja.getEquipe().getId());
+            response.getEquipeBasicInfo().setNom(ninja.getEquipe().getNom());
+        } else if (utilisateur instanceof Leader leader)  {
+            response.getEquipeBasicInfo().setId(leader.getEquipe().getId());
+            response.getEquipeBasicInfo().setNom(leader.getEquipe().getNom());
+        }
+        else {
+            response.getEquipeBasicInfo().setId(-1);
+            response.getEquipeBasicInfo().setNom(null);
+        }
         response.setRang(utilisateur.getRang());
         response.setEtatNinja(utilisateur.getEtat());
         response.setSpecialite(utilisateur.getSpecialite());

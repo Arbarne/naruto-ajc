@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import naruto_backend.api.request.CreateEquipeRequest;
 import naruto_backend.api.request.UpdateEquipeRequest;
 import naruto_backend.dao.IDAOEquipe;
+import naruto_backend.dao.IDAOUtilisateur;
 import naruto_backend.model.Equipe;
 import naruto_backend.model.Leader;
 
@@ -17,6 +18,9 @@ public class EquipeService {
 
 	@Autowired
 	IDAOEquipe daoEquipe;
+
+	@Autowired
+	IDAOUtilisateur daoUtilisateur;
 	
 	public List<Equipe> getAll()
 	{
@@ -34,7 +38,7 @@ public class EquipeService {
 	{
         Equipe equipe = new Equipe();
 
-        Leader leader = daoLeader.findById(request.getLeaderId()).orElse(null);
+        Leader leader = (Leader) daoUtilisateur.findById(request.getLeaderId()).orElse(null);
 
         equipe.setNom(request.getNom());
         equipe.setLeader(leader);
@@ -46,7 +50,7 @@ public class EquipeService {
 	{
         Equipe equipe = getById(id);
 
-        Leader leader = daoLeader.findById(request.getLeaderId()).orElse(null);
+        Leader leader = (Leader) daoUtilisateur.findById(request.getLeaderId()).orElse(null);
 
         equipe.setNom(request.getNom());
         equipe.setLeader(leader);

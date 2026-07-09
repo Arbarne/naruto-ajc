@@ -33,7 +33,7 @@ public class UpdateUtilisateurRequest {
 	private RangNinja rang; 
 
 //    @NotNull
-	private EtatNinja etatNinja; 
+	private EtatNinja etat; 
   
 //    @NotNull
 //    @Positive
@@ -127,12 +127,12 @@ public class UpdateUtilisateurRequest {
 		this.rang = rang;
 	}
 
-	public EtatNinja getEtatNinja() {
-		return etatNinja;
+	public EtatNinja getEtat() {
+		return etat;
 	}
 
-	public void setEtatNinja(EtatNinja etatNinja) {
-		this.etatNinja = etatNinja;
+	public void setEtat(EtatNinja etat) {
+		this.etat = etat;
 	}
 
 	public int getNiveau() {

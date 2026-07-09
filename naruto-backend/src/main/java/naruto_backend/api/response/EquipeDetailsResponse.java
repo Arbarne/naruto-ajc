@@ -5,13 +5,13 @@ import java.util.List;
 import naruto_backend.model.Equipe;
 
 
-public class EquipeDetails {
+public class EquipeDetailsResponse {
 
     private Integer id;
     private String nom;
     private Integer leaderId;
     private String leaderNom;
-    private List<MiniNinja> ninjas;
+    private List<NinjaSimpleView> ninjas;
     
     public Integer getId() {
         return id;
@@ -37,15 +37,15 @@ public class EquipeDetails {
     public void setLeaderNom(String leaderNom) {
         this.leaderNom = leaderNom;
     }
-    public List<MiniNinja> getNinjas() {
+    public List<NinjaSimpleView> getNinjas() {
         return ninjas;
     }
-    public void setNinjas(List<MiniNinja> ninjas) {
+    public void setNinjas(List<NinjaSimpleView> ninjas) {
         this.ninjas = ninjas;
     }
 
-    public static EquipeDetails convert(Equipe equipe) {
-        EquipeDetails response = new EquipeDetails();
+    public static EquipeDetailsResponse convert(Equipe equipe) {
+        EquipeDetailsResponse response = new EquipeDetailsResponse();
         response.setId(equipe.getId());
         response.setNom(equipe.getNom());
         response.setLeaderId(equipe.getLeader().getId());
@@ -53,7 +53,7 @@ public class EquipeDetails {
         response.setNinjas(
             equipe.getNinjas()
             .stream()
-            .map(ninja -> new MiniNinja(
+            .map(ninja -> new NinjaSimpleView(
                       ninja.getId(),
                       ninja.getNom()
                   ))

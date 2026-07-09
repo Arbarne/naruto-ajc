@@ -90,7 +90,7 @@ public class UtilisateurAPIController {
     	Utilisateur user = this.utilisateurService.getById(Integer.valueOf(id));
 
         if (user instanceof Ninja ninja) {
-            ninja.setEquipe(null));
+            ninja.setEquipe(null);
         }
         else if (user instanceof Leader leader) {
             leader.setEquipe(null);

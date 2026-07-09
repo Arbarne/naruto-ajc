@@ -12,9 +12,9 @@ public class Leader extends Utilisateur {
 	private Equipe equipe;
 
 	public Leader(Integer id, String login, String password, String prenom, String nom, Genre genre,
-			Specialite specialite, RangNinja rang, EtatNinja etatNinja, int niveau, int expActuel, int pvMax,
+			Specialite specialite, RangNinja rang, EtatNinja etat, int niveau, int expActuel, int pvMax,
 			int pvActuel, int chakraMax, int chakraActuel, int nbEchecs, int nbReussites, int argent, Equipe equipe) {
-		super(id, login, password, prenom, nom, genre, specialite, rang, etatNinja, niveau, expActuel, pvMax, pvActuel,
+		super(id, login, password, prenom, nom, genre, specialite, rang, etat, niveau, expActuel, pvMax, pvActuel,
 				chakraMax, chakraActuel, nbEchecs, nbReussites, argent);
 		this.equipe = equipe;
 	}

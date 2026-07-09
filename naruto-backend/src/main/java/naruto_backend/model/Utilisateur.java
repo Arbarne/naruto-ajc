@@ -3,6 +3,8 @@ package naruto_backend.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -11,7 +13,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="user")
+@Table(name="utilisateur")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type")
 public class Utilisateur {
@@ -23,26 +25,30 @@ public class Utilisateur {
 	private String login;  
 
 	@Column(length = 255,nullable = false)
-
 	private String password;
+	
 	@Column(length = 35,nullable = false)
-
 	private String prenom; 
+	
 	@Column(length = 35,nullable = true)
-
 	private String nom;
+	
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-
 	private Genre genre;
+
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-
 	private Specialite specialite; 
+	
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = true)
-
 	private RangNinja rang; 
+	
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = true)
-
-	private EtatNinja etatNinja; 
+	private EtatNinja etat; 
+	
 	@Column(nullable = false)
 	private int niveau;
 	
@@ -75,7 +81,7 @@ public class Utilisateur {
 	}
 
 	public Utilisateur(Integer id, String login, String password, String prenom, String nom, Genre genre,
-			Specialite specialite, RangNinja rang, EtatNinja etatNinja, int niveau, int expActuel, int pvMax,
+			Specialite specialite, RangNinja rang, EtatNinja etat, int niveau, int expActuel, int pvMax,
 			int pvActuel, int chakraMax, int chakraActuel, int nbEchecs, int nbReussites, int argent) {
 		super();
 		this.id = id;
@@ -86,7 +92,7 @@ public class Utilisateur {
 		this.genre = genre;
 		this.specialite = specialite;
 		this.rang = rang;
-		this.etatNinja = etatNinja;
+		this.etat = etat;
 		this.niveau = niveau;
 		this.expActuel = expActuel;
 		this.pvMax = pvMax;
@@ -162,12 +168,12 @@ public class Utilisateur {
 		this.rang = rang;
 	}
 
-	public EtatNinja getEtatNinja() {
-		return etatNinja;
+	public EtatNinja getEtat() {
+		return etat;
 	}
 
-	public void setEtatNinja(EtatNinja etatNinja) {
-		this.etatNinja = etatNinja;
+	public void setEtat(EtatNinja etat) {
+		this.etat = etat;
 	}
 
 	public int getNiveau() {
@@ -245,11 +251,10 @@ public class Utilisateur {
 	@Override
 	public String toString() {
 		return "Utilisateur [id=" + id + ", login=" + login + ", password=" + password + ", prenom=" + prenom + ", nom="
-				+ nom + ", genre=" + genre + ", specialite=" + specialite + ", rang=" + rang + ", niveau=" + niveau
-				+ ", expActuel=" + expActuel + ", pvMax=" + pvMax + ", pvActuel=" + pvActuel + ", chakraMax="
-				+ chakraMax + ", chakraActuel=" + chakraActuel + ", nbEchecs=" + nbEchecs + ", nbReussites="
-				+ nbReussites + ", argent=" + argent + "]";
+				+ nom + ", genre=" + genre + ", specialite=" + specialite + ", rang=" + rang + ", etat=" + etat
+				+ ", niveau=" + niveau + ", expActuel=" + expActuel + ", pvMax=" + pvMax + ", pvActuel=" + pvActuel
+				+ ", chakraMax=" + chakraMax + ", chakraActuel=" + chakraActuel + ", nbEchecs=" + nbEchecs
+				+ ", nbReussites=" + nbReussites + ", argent=" + argent + "]";
 	}
-	
-	
+
 }

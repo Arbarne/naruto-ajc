@@ -1,5 +1,7 @@
 package naruto_backend.api.response;
 
+import java.time.LocalDate;
+
 import naruto_backend.model.Mission;
 
 public class MissionListResponse {
@@ -9,6 +11,8 @@ public class MissionListResponse {
     private String description;
     private String rang;
     private String equipeNom;
+    private String statut;
+    private LocalDate dateFin;
     
     
     public Integer getId() {
@@ -41,7 +45,19 @@ public class MissionListResponse {
     public void setEquipeNom(String equipeNom) {
         this.equipeNom = equipeNom;
     }
-
+    public String getStatut() {
+        return statut;
+    }
+    public void setStatut(String statut) {
+        this.statut = statut;
+    }
+    public LocalDate getDateFin() {
+        return dateFin;
+    }
+    public void setDateFin(LocalDate dateFin) {
+        this.dateFin = dateFin;
+    }
+    
     public static MissionListResponse convert (Mission mission) {
         MissionListResponse response = new MissionListResponse();
 
@@ -50,6 +66,7 @@ public class MissionListResponse {
         response.setDescription(mission.getDescription());
         response.setRang(mission.getRang().toString());
         response.setEquipeNom(mission.getEquipe().getNom());
+        response.setStatut(mission.getStatut().toString());
 
         return response;
     }

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import naruto_backend.api.request.AssignMissionRequest;
 import naruto_backend.api.request.CreateMissionRequest;
+import naruto_backend.api.request.StartMissionRequest;
 import naruto_backend.api.request.UpdateMissionRequest;
 import naruto_backend.api.response.EntityCreatedResponse;
 import naruto_backend.api.response.EntityUpdatedResponse;
@@ -48,15 +50,14 @@ public class MissionApiController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EntityCreatedResponse create(@Valid @RequestBody CreateMissionRequest request) {
-    return new EntityCreatedResponse(service.insert(request).getId());
-}
+        return new EntityCreatedResponse(service.insert(request).getId());
+    }
 
     @PutMapping("/{id}")
     public EntityUpdatedResponse update(@PathVariable Integer id, @Valid @RequestBody UpdateMissionRequest request) {
-    service.update(id, request);
-
-    return new EntityUpdatedResponse(id, true);
-}
+        service.update(id, request);
+        return new EntityUpdatedResponse(id, true);
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -64,6 +65,22 @@ public class MissionApiController {
         service.delete(id);
     }
 
+    @PutMapping("/assign")
+    public EntityUpdatedResponse assignMission(@Valid @RequestBody AssignMissionRequest request) {
+
+        service.assignMission(request);
+
+        return new EntityUpdatedResponse(request.getId(), true);
+    }
     
+    @PutMapping("/{id}/start")
+    public EntityUpdatedResponse startMission(
+            @PathVariable Integer id,
+            @Valid @RequestBody StartMissionRequest request) {
+
+        service.startMission(id, request);
+
+        return new EntityUpdatedResponse(id, true);
+    }
 
 }

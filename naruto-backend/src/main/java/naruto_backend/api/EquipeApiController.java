@@ -48,15 +48,15 @@ public class EquipeApiController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EntityCreatedResponse create(@Valid @RequestBody CreateEquipeRequest request) {
-    return new EntityCreatedResponse(service.insert(request).getId());
-}
+        return new EntityCreatedResponse(service.insert(request).getId());
+    }
 
     @PutMapping("/{id}")
     public EntityUpdatedResponse update(@PathVariable Integer id, @Valid @RequestBody UpdateEquipeRequest request) {
-    service.update(id, request);
+        service.update(id, request);
 
-    return new EntityUpdatedResponse(id, true);
-}
+        return new EntityUpdatedResponse(id, true);
+    }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

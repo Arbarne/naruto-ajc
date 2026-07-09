@@ -82,13 +82,13 @@ public class UtilisateurService {
 	}
 
 
-	public List<Utilisateur> getByRangNinja(RangNinja rangNinja) {
-		return daoUtilisateur.findByRangNinja(rangNinja);
+	public List<Utilisateur> getByRangNinja(RangNinja rang) {
+		return daoUtilisateur.findByRangNinja(rang);
 	}
 
 	
-	public List<Utilisateur> getByEtatNinja(EtatNinja etatNinja) {
-		return daoUtilisateur.findByEtatNinja(etatNinja);
+	public List<Utilisateur> getByEtatNinja(EtatNinja etat) {
+		return daoUtilisateur.findByEtatNinja(etat);
 	}
 
 	public Utilisateur insert(CreateUtilisateurRequest request) 
@@ -129,7 +129,7 @@ public class UtilisateurService {
 
 		utilisateur.setSpecialite(Specialite.Aucune);
 		utilisateur.setRang(RangNinja.Genin);
-		utilisateur.setEtatNinja(EtatNinja.Disponible);
+		utilisateur.setEtat(EtatNinja.Disponible);
 		utilisateur.setNiveau(niveau);
 		utilisateur.setExpActuel(expActuel);
 		utilisateur.setPvMax(pvMax);
@@ -150,7 +150,7 @@ public class UtilisateurService {
 		utilisateur.setGenre(request.getGenre());
 		utilisateur.setSpecialite(request.getSpecialite());
 		utilisateur.setRang(request.getRang());
-		utilisateur.setEtatNinja(request.getEtatNinja());
+		utilisateur.setEtat(request.getEtat());
 		utilisateur.setNiveau(request.getNiveau());
 		utilisateur.setExpActuel(request.getExpActuel());
 		utilisateur.setPvMax(request.getPvMax());

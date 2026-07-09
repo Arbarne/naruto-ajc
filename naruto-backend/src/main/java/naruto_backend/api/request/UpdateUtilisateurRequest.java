@@ -1,74 +1,74 @@
 package naruto_backend.api.request;
 
-//import jakarta.validation.constraints.NotNull;
-//import jakarta.validation.constraints.Positive;
-//import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import naruto_backend.model.EtatNinja;
 import naruto_backend.model.Genre;
 import naruto_backend.model.RangNinja;
 import naruto_backend.model.Specialite;
 
-//décommenter lorsque les pom auront fusionnés
 public class UpdateUtilisateurRequest {
-//    @NotBlank
+    @NotBlank
 	private String login;
 
-//    @NotBlank
+    @NotBlank
 	private String password;
 
-//    @NotBlank
+    @NotBlank
 	private String nom;
 
-//    @NotBlank
+    @NotBlank
 	private String prenom;
 
-//    @NotNull
+    @NotNull
 	private Genre genre;
 
   
-//    @NotNull
+    @NotNull
 	private Specialite specialite; 
 
-//    @NotNull
+    @NotNull
 	private RangNinja rang; 
 
-//    @NotNull
+    @NotNull
 	private EtatNinja etat; 
   
-//    @NotNull
-//    @Positive
+    @NotNull
+    @Positive
 	private int niveau;
 	
-//    @NotNull
-//    @PositiveOrZero
+    @NotNull
+    @PositiveOrZero
 	private int expActuel;
 
-//    @NotNull
-//    @Positive
+    @NotNull
+    @Positive
 	private int pvMax;
 
-//    @NotNull
-//    @PositiveOrZero
+    @NotNull
+    @PositiveOrZero
 	private int pvActuel;
 
-//    @NotNull
-//    @Positive
+    @NotNull
+    @Positive
 	private int chakraMax;
 
-//    @NotNull
-//    @PositiveOrZero
+    @NotNull
+    @PositiveOrZero
 	private int chakraActuel;
 
-//    @NotNull
-//    @PositiveOrZero
+    @NotNull
+    @PositiveOrZero
 	private int nbEchecs;
 
-//    @NotNull
-//    @PositiveOrZero
+    @NotNull
+    @PositiveOrZero
 	private int nbReussites;
 
-//    @NotNull
-//    @PositiveOrZero
+    @NotNull
+    @PositiveOrZero
 	private int argent;
 
 	public String getLogin() {

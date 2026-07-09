@@ -30,7 +30,7 @@ public interface IDAOUtilisateur extends JpaRepository<Utilisateur, Integer> {
 
     public List<Utilisateur> findBySpecialite(Specialite specialite);
 
-    public List<Utilisateur> findByRangNinja(RangNinja rangNinja);
+    public List<Utilisateur> findByRang(RangNinja rang);
 
-    public List<Utilisateur> findByEtatNinja(EtatNinja etatNinja);
+    public List<Utilisateur> findByEtat(EtatNinja etat);
 }

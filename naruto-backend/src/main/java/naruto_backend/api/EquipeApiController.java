@@ -18,8 +18,8 @@ import naruto_backend.api.request.CreateEquipeRequest;
 import naruto_backend.api.request.UpdateEquipeRequest;
 import naruto_backend.api.response.EntityCreatedResponse;
 import naruto_backend.api.response.EntityUpdatedResponse;
-import naruto_backend.api.response.EquipeDetails;
-import naruto_backend.api.response.EquipeList;
+import naruto_backend.api.response.EquipeDetailsResponse;
+import naruto_backend.api.response.EquipeListResponse;
 import naruto_backend.service.EquipeService;
 
 @RestController
@@ -33,16 +33,16 @@ public class EquipeApiController {
     }
 
     @GetMapping
-    public List<EquipeList> findAll() {
+    public List<EquipeListResponse> findAll() {
         return service.getAll()
                 .stream()
-                .map(EquipeList::convert)
+                .map(EquipeListResponse::convert)
                 .toList();
     }
 
     @GetMapping("/{id}")
-    public EquipeDetails findById(@PathVariable Integer id) {
-        return EquipeDetails.convert(service.getById(id));
+    public EquipeDetailsResponse findById(@PathVariable Integer id) {
+        return EquipeDetailsResponse.convert(service.getById(id));
     }
 
     @PostMapping

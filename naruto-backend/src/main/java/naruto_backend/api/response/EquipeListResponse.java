@@ -2,7 +2,7 @@ package naruto_backend.api.response;
 
 import naruto_backend.model.Equipe;
 
-public class EquipeList {
+public class EquipeListResponse {
 
     private Integer id;
     private String nom;
@@ -33,8 +33,8 @@ public class EquipeList {
         this.leaderNom = leaderNom;
     }
 
-    public static EquipeList convert (Equipe equipe) {
-        EquipeList response = new EquipeList();
+    public static EquipeListResponse convert (Equipe equipe) {
+        EquipeListResponse response = new EquipeListResponse();
 
         response.setId(equipe.getId());
         response.setNom(equipe.getNom());

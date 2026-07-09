@@ -1,7 +1,7 @@
 .mission-page {
   background-image: url('/assets/images/image 4.png');
   background-size: cover;
-  background-position: center;
+  background-position: bottom;
   background-attachment: fixed;
   margin: 0;
   font-family: 'Inter', sans-serif;
@@ -12,25 +12,33 @@
 
 .crud-dialog-overlay {
   position: fixed;
+  background: rgba(0, 0, 0, 0.55);
+  height: 100dvh;
+  width: 100dvw;
+  animation: fade-in-up 0.3s 0.3s ease-in both;
+}
+
+.crud-container {
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.55);
-  z-index: 10;
+  height: 100dvh;
 }
 
 .crud-dialog {
-  background-image: url('/assets/images/Rectangle 18.png');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
+  background-color: rgba(255, 251, 229, 0.8);
+  /* border-radius: 20px; */
   padding: 2.5rem 3rem;
-  min-width: 420px;
-  max-width: 90vw;
-  max-height: 85vh;
+  min-width: 1000px;
+  max-width: 90dvw;
+  min-height: 100dvh;
+  box-sizing: border-box;
   overflow-y: auto;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   font-family: inherit;
+
+  animation: fade-in-up 0.3s 0.9s ease-in both;
 }
 
 .crud-dialog input,
@@ -40,19 +48,35 @@
   font-family: inherit;
 }
 
-.crud-menu {
-  position: relative;
-  min-width: 340px;
-  padding: 3rem 2.5rem 2.5rem 4.5rem;
-  overflow: visible;
+.crud-menu-avatar {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 30%;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
+  animation: fade-in-up 0.3s 0.5s ease-in both;
 }
 
-.crud-menu-avatar {
-  position: absolute;
-  left: -70px;
-  bottom: -30px;
-  width: 180px;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .crud-menu-actions {

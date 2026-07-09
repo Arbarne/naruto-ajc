@@ -1,27 +1,55 @@
 
-<body class="mission-page">
-<section>
-    <h2>Missions</h2>
+<section class="mission-page">
 
-  @if (!crudMenuOpen && !showForm) {
-    <button type="button" (click)="crudMenuOpen = true">Menu CRUD</button>
-  }
-
-  @if (crudMenuOpen) {
-    <div class="crud-dialog-overlay">
-      <div class="crud-dialog crud-menu">
-        <img class="crud-menu-avatar" src="/assets/images/image 18.png" alt="">
-        <nav class="crud-menu-actions">
-          <button type="button" (click)="crudMenuOpen = false; showForm = true">Créer</button>
-          <button type="button" (click)="crudMenuOpen = false">Lire</button>
-          <button type="button" (click)="crudMenuOpen = false">Modifier</button>
-          <button type="button" (click)="crudMenuOpen = false">Supprimer</button>
-        </nav>
-      </div>
+  <div class="crud-dialog-overlay">
+  </div>
+  <div class="crud-container">
+    <div class="crud-dialog">
+      <h2>Archives des missions</h2>
+      si le ninja/leader est en mission :
+      <h3>Mission actuelle</h3>
+      sinon :
+      <h3>Missions disponibles</h3>
+      pour tout le monde :
+      <h3>Missions archivées</h3>
+      ici : missions terminées, échouées, annulées
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Rang</th>
+            <th>Statut</th>
+            <th>Équipe</th>
+            <th>Date de Fin</th>
+            <th>Actions</th>
+            <th></th>
+          </tr>
+        </thead>
+        <!-- @if (mission$ | async; as missions) { -->
+        @if (missions) {
+          <tbody>
+            @for (mission of missions; track mission.id) {
+              <tr>
+                <td>{{ mission.nom }}</td>
+                <td>{{ mission.rang }}</td>
+                <td>{{ mission.statut }}</td>
+                <td>{{ mission.equipeNom }}</td>
+                <td>{{ mission.dateFin | date }}</td>
+                <td class="actions">
+                  <button type="button" (click)="editer(mission.id)">Éditer</button>
+                  <button type="button" (click)="supprimer(mission.id)">Supprimer</button>
+                  <button type="button" (click)="assigner(mission.id)">Assigner</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        }
+        </table>
     </div>
-  }
+    <img class="crud-menu-avatar" src="/assets/images/image 18.png" alt="">
+  </div>
 
-  @if (showForm) {
+  <!-- @if (showForm) {
     <div class="crud-dialog-overlay">
       <div class="crud-dialog">
         <form [formGroup]="MissionForm" (ngSubmit)="creerOuModifier()">
@@ -89,38 +117,6 @@
         </form>
       </div>
     </div>
-  }
+  } -->
 
-  @if (mission$ | async; as missions) {
-    <table>
-      <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Rang</th>
-          <th>Statut</th>
-          <th>Équipe</th>
-          <th>Début</th>
-          <th>Fin</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (mission of missions; track mission.id) {
-          <tr>
-            <td>{{ mission.nom }}</td>
-            <td>{{ mission.rang }}</td>
-            <td>{{ mission.statut }}</td>
-            <td>{{ mission.id_equipe }}</td>
-            <td>{{ mission.dateDebut | date }}</td>
-            <td>{{ mission.dateFin | date }}</td>
-            <td class="actions">
-              <button type="button" (click)="editer(mission)">Éditer</button>
-              <button type="button" (click)="supprimer(mission)">Supprimer</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  }
 </section>
-</body>

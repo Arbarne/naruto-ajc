@@ -33,4 +33,5 @@ public interface IDAOUtilisateur extends JpaRepository<Utilisateur, Integer> {
     public List<Utilisateur> findByRang(RangNinja rang);
 
     public List<Utilisateur> findByEtat(EtatNinja etat);
+
 }

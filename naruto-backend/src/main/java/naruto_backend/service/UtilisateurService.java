@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import naruto_backend.api.request.CreateUtilisateurRequest;
+import naruto_backend.api.request.SubscriptionRequest;
 import naruto_backend.api.request.UpdateUtilisateurRequest;
 import naruto_backend.dao.IDAOUtilisateur;
 import naruto_backend.model.EtatNinja;
@@ -22,6 +23,15 @@ public class UtilisateurService {
 
     @Autowired
     IDAOUtilisateur daoUtilisateur;
+
+	private final PasswordEncoder passwordEncoder;
+
+	public UtilisateurService(
+        IDAOUtilisateur daoUtilisateur,
+        PasswordEncoder passwordEncoder) {
+    this.daoUtilisateur = daoUtilisateur;
+    this.passwordEncoder = passwordEncoder;
+}
 
     public List<Utilisateur> getAll()
 	{
@@ -91,7 +101,7 @@ public class UtilisateurService {
 		return daoUtilisateur.findByEtat(etat);
 	}
 
-	public Utilisateur insert(CreateUtilisateurRequest request) 
+	public Utilisateur insert(SubscriptionRequest request) 
 	{
 		Utilisateur utilisateur = this.save(new Utilisateur(), request);
 
@@ -110,7 +120,7 @@ public class UtilisateurService {
 		daoUtilisateur.deleteById(id);
 	}
 	
-	private Utilisateur save(Utilisateur utilisateur, CreateUtilisateurRequest request) {
+	public Utilisateur save(Utilisateur utilisateur, SubscriptionRequest request) {
     	Integer argent = 0;
     	Integer nbReussite = 0;
     	Integer nbEchec = 0;
@@ -119,10 +129,12 @@ public class UtilisateurService {
 
     	// A changer selon l'equilibrage
     	Integer pvMax = 100;
+		Integer pvActuel = 0;
     	Integer chakraMax = 100;
+		Integer chakraActuel = 0;
 
     	utilisateur.setLogin(request.getLogin());
-        utilisateur.setPassword(request.getPassword());
+        utilisateur.setPassword(this.passwordEncoder.encode(request.getPassword()));
         utilisateur.setNom(request.getNom());
         utilisateur.setPrenom(request.getPrenom());
 		utilisateur.setGenre(request.getGenre());
@@ -133,9 +145,9 @@ public class UtilisateurService {
 		utilisateur.setNiveau(niveau);
 		utilisateur.setExpActuel(expActuel);
 		utilisateur.setPvMax(pvMax);
-		utilisateur.setPvActuel(utilisateur.getPvMax());
+		utilisateur.setPvActuel(pvActuel);
 		utilisateur.setChakraMax(chakraMax);
-		utilisateur.setChakraActuel(utilisateur.getChakraMax());
+		utilisateur.setChakraActuel(chakraActuel);
 		utilisateur.setNbEchecs(nbEchec);
 		utilisateur.setNbReussites(nbReussite);
 		utilisateur.setArgent(argent);
@@ -163,5 +175,10 @@ public class UtilisateurService {
 
         return this.daoUtilisateur.save(utilisateur);
     }
+
+	//Méthode simple pour save un utilisateur
+	public Utilisateur save(Utilisateur utilisateur) {
+    	return this.daoUtilisateur.save(utilisateur);
+	}
     
 }

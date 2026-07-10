@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import naruto_backend.api.request.CreateUtilisateurRequest;
+import naruto_backend.api.request.SubscriptionRequest;
 import naruto_backend.api.request.UpdateUtilisateurRequest;
 import naruto_backend.api.response.UtilisateurDetailsResponse;
 import naruto_backend.api.response.UtilisateurListViewResponse;
@@ -30,7 +30,8 @@ public class UtilisateurAPIController {
 
 	private final UtilisateurService utilisateurService;
 	private final EquipeService equipeService;
-
+    
+    
     public UtilisateurAPIController(UtilisateurService utilisateurService, EquipeService equipeService) {
         this.utilisateurService = utilisateurService;
         this.equipeService = equipeService;
@@ -46,10 +47,12 @@ public class UtilisateurAPIController {
         return UtilisateurDetailsResponse.convert(this.utilisateurService.getById(Integer.valueOf(id)));
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public EntityCreatedResponse create(@Valid @RequestBody CreateUtilisateurRequest request) {
-        return new EntityCreatedResponse(this.utilisateurService.insert(request).getId().toString());
+    @PostMapping("/inscription")
+    public EntityCreatedResponse subscribe(@Valid @RequestBody SubscriptionRequest request) {
+        
+        Utilisateur utilisateur = this.utilisateurService.save(new Utilisateur(), request);
+
+        return new EntityCreatedResponse(utilisateur.getId());
     }
 
     @PutMapping("/{id}")
@@ -74,6 +77,9 @@ public class UtilisateurAPIController {
         else {
             return new EntityUpdatedResponse(id, false);
         }
+
+        //il faut aussi sauvegarder l'utilisateur
+        this.utilisateurService.save(user);
         return new EntityUpdatedResponse(id, true);
     }
 
@@ -82,6 +88,7 @@ public class UtilisateurAPIController {
     public void deleteById(@PathVariable String id) {
         this.utilisateurService.delete(Integer.valueOf(id));
     }
+
 
     @DeleteMapping("/{id}/equipe")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -96,6 +103,9 @@ public class UtilisateurAPIController {
             leader.setEquipe(null);
         }
         
-        this.utilisateurService.delete(Integer.valueOf(id));
+        //Askip ça, ça supprime complètement l'utilisateur, à remplacer par le save qui suit
+        //this.utilisateurService.delete(Integer.valueOf(id));
+        this.utilisateurService.save(user);
     }
+
 }

@@ -39,7 +39,7 @@ jobs:
       #        ls backend
       #        find . -name "pom.xml"
       - name: Build with Maven
-        run: docker compose up
+        run: docker compose up --build -d
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
 #    - name: Update dependency graph

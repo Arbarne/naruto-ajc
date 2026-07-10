@@ -65,7 +65,7 @@ public class UtilisateurService {
 		return (Hokage) daoUtilisateur.findById(id).orElse(null);
 	}
 
-	public Utilisateur getByLogin(String login)
+	public Optional<Utilisateur> getByLogin(String login)
 	{
 		return daoUtilisateur.findByLogin(login);
 	}

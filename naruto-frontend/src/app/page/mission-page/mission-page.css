@@ -1,0 +1,102 @@
+.mission-page {
+  background-image: url('/assets/images/image 4.png');
+  background-size: cover;
+  background-position: bottom;
+  background-attachment: fixed;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  padding: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.crud-dialog-overlay {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.55);
+  height: 100dvh;
+  width: 100dvw;
+  animation: fade-in-up 0.3s 0.3s ease-in both;
+}
+
+.crud-container {
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+}
+
+.crud-dialog {
+  background-color: rgba(255, 251, 229, 0.8);
+  /* border-radius: 20px; */
+  padding: 2.5rem 3rem;
+  min-width: 1000px;
+  max-width: 90dvw;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  font-family: inherit;
+
+  animation: fade-in-up 0.3s 0.9s ease-in both;
+}
+
+.crud-dialog input,
+.crud-dialog select,
+.crud-dialog textarea,
+.crud-dialog button {
+  font-family: inherit;
+}
+
+.crud-menu-avatar {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 30%;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
+  animation: fade-in-up 0.3s 0.5s ease-in both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.crud-menu-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.crud-menu-actions button {
+  border: none;
+  border-radius: 14px;
+  padding: 0.9rem 1.5rem;
+  background: linear-gradient(180deg, #b23b3b, #8b2e2e);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+}
+
+.crud-menu-actions button:hover {
+  background: linear-gradient(180deg, #c24747, #9a3535);
+}

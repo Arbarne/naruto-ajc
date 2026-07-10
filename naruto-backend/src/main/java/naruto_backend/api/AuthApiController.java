@@ -48,7 +48,7 @@ public class AuthApiController {
         }
         else if (utilisateur instanceof Leader) {
             role = "LEADER";
-            Optional<Equipe> optEquipe = equipeSrv.findByLeaderId(utilisateur.getId());
+            Optional<Equipe> optEquipe = equipeSrv.getByLeaderId(utilisateur.getId());
             if (optEquipe.isPresent()) {
                 equipeId = optEquipe.get().getId();
             }

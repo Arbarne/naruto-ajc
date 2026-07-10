@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 public class Ninja extends Utilisateur {
 
 	@ManyToOne
-    @JoinColumn(name="equipe", nullable = false)
+    @JoinColumn(name="equipe")
 	private Equipe equipe;
 
 	public Ninja() {

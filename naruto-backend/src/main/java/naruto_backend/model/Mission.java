@@ -38,7 +38,7 @@ public class Mission {
     private int recompense;
 
     @ManyToOne
-    @JoinColumn(name = "equipe_id")
+    @JoinColumn(name = "equipe")
     private Equipe equipe;
 
     @Column(name = "date_debut", nullable = false)

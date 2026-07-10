@@ -8,7 +8,7 @@ export interface Mission {
   rang: RangMission;
   gainExp: number;
   recompense: number;
-  id_equipe: number;
+  equipeId: number;
   dateDebut: Date;
   dateFin: Date;
   statut: EtatMission;

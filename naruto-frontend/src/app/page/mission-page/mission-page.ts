@@ -1,3 +1,4 @@
+import { AuthService } from './../../service/auth-service';
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,6 +9,7 @@ import { Mission } from '../../model/mission';
 import { Equipe } from '../../model/equipe';
 import { RangMission } from '../../model/rang-mission.enum';
 import { EtatMission } from '../../model/etat-mission.enum';
+import { MissionListView } from '../../model/mission-list-view';
 
 @Component({
   selector: 'app-mission-page',
@@ -19,19 +21,20 @@ import { EtatMission } from '../../model/etat-mission.enum';
   styleUrl: './mission-page.css',
 })
 export class MissionPage implements OnInit {
+
   private missionService: MissionService = inject(MissionService);
   private equipeService: EquipeService = inject(EquipeService);
+  private authService: AuthService = inject(AuthService);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   protected readonly rangs = Object.values(RangMission);
   protected readonly etats = Object.values(EtatMission);
 
-  protected mission$!: Observable<Mission[]>;
+  protected mission$!: Observable<MissionListView[]>;
   private refresh$: Subject<void> = new Subject<void>();
   protected equipe$!: Observable<Equipe[]>;
 
-  protected crudMenuOpen: boolean = true;
-  protected showForm: boolean = false;
+  protected show: "" | "detail" | "modify" = ""
   protected MissionForm!: FormGroup;
   protected nomCtrl!: FormControl;
   protected descriptionCtrl!: FormControl;
@@ -55,6 +58,8 @@ export class MissionPage implements OnInit {
 
     this.equipe$ = this.equipeService.findAll();
 
+
+
     this.nomCtrl = this.formBuilder.control('', Validators.required);
     this.descriptionCtrl = this.formBuilder.control('', Validators.required);
     this.rangCtrl = this.formBuilder.control('', Validators.required);
@@ -71,7 +76,7 @@ export class MissionPage implements OnInit {
       rang: this.rangCtrl,
       gainExp: this.gainExpCtrl,
       recompense: this.recompenseCtrl,
-      equipe: this.equipeCtrl,
+      equipeId: this.equipeCtrl,
       dateDebut: this.dateDebutCtrl,
       dateFin: this.dateFinCtrl,
       statut: this.statutCtrl
@@ -89,7 +94,7 @@ export class MissionPage implements OnInit {
     };
 
     this.missionService.save(mission).subscribe(() => {
-      this.showForm = false;
+      this.show = "";
       this.editingMission = null;
       this.MissionForm.reset();
 
@@ -97,28 +102,38 @@ export class MissionPage implements OnInit {
     });
   }
 
-  public editer(mission: Mission) {
-    this.editingMission = mission;
-    this.showForm = true;
+  public editer(id: number) {
+    this.show = "modify";
 
-    this.nomCtrl.setValue(mission.nom);
-    this.descriptionCtrl.setValue(mission.description);
-    this.rangCtrl.setValue(mission.rang);
-    this.gainExpCtrl.setValue(mission.gainExp);
-    this.recompenseCtrl.setValue(mission.recompense);
-    this.equipeCtrl.setValue(mission.id_equipe);
-    this.dateDebutCtrl.setValue(mission.dateDebut);
-    this.dateFinCtrl.setValue(mission.dateFin);
-    this.statutCtrl.setValue(mission.statut);
+    this.missionService.findById(id).subscribe((mission) => {
+      this.editingMission = mission;
+
+      this.nomCtrl.setValue(mission.nom);
+      this.descriptionCtrl.setValue(mission.description);
+      this.rangCtrl.setValue(mission.rang);
+      this.gainExpCtrl.setValue(mission.gainExp);
+      this.recompenseCtrl.setValue(mission.recompense);
+      this.equipeCtrl.setValue(mission.equipeId);
+      this.dateDebutCtrl.setValue(mission.dateDebut);
+      this.dateFinCtrl.setValue(mission.dateFin);
+      this.statutCtrl.setValue(mission.statut);
+    })
   }
 
   public annulerEditer() {
-    this.showForm = false;
+    this.show = "";
     this.editingMission = null;
     this.MissionForm.reset();
   }
 
-  public supprimer(mission: Mission) {
-    this.missionService.deleteById(mission.id).subscribe(() => this.reload());
+  public supprimer(id: number) {
+    this.missionService.deleteById(id).subscribe(() => this.reload());
+  }
+
+  public assigner(id: number) {
+    const observable = this.missionService.assigner(id)
+    if (observable) {
+      observable.subscribe(() => this.reload())
+    }
   }
 }

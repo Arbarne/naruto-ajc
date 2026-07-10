@@ -1,0 +1,41 @@
+name: naruto
+
+services:
+  mysql:
+    image: mysql:8.0.45
+    container_name: naruto-mysql
+
+    networks:
+      - naruto
+
+    environment:
+      MYSQL_DATABASE: naruto
+      MYSQL_ROOT_PASSWORD: root
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 3s
+      retries: 10
+      interval: 5s
+
+  java:
+    build: .
+
+    networks:
+      - naruto
+
+    ports:
+      - 8081:8080
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/naruto?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+networks:
+  naruto:
+    name: naruto

@@ -1,0 +1,121 @@
+
+<section class="mission-page">
+
+  <div class="crud-dialog-overlay">
+  </div>
+  <div class="crud-container">
+    <div class="crud-dialog">
+      <h2>Archives des missions</h2>
+      si le ninja/leader est en mission :
+      <h3>Mission actuelle</h3>
+      sinon :
+      <h3>Missions disponibles</h3>
+      pour tout le monde :
+      <h3>Missions archivées</h3>
+      ici : missions terminées, échouées, annulées
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Rang</th>
+            <th>Statut</th>
+            <th>Équipe</th>
+            <th>Date de Fin</th>
+            <th>Actions</th>
+            <th></th>
+          </tr>
+        </thead>
+        @if (mission$ | async; as missions) {
+          <tbody>
+            @for (mission of missions; track mission.id) {
+              <tr>
+                <td>{{ mission.nom }}</td>
+                <td>{{ mission.rang }}</td>
+                <td>{{ mission.statut }}</td>
+                <td>{{ mission.equipeNom }}</td>
+                <td>{{ mission.dateFin | date }}</td>
+                <td class="actions">
+                  <button type="button" (click)="editer(mission.id)">Éditer</button>
+                  <button type="button" (click)="supprimer(mission.id)">Supprimer</button>
+                  <button type="button" (click)="assigner(mission.id)">Assigner</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        }
+        </table>
+    </div>
+    <img class="crud-menu-avatar" src="/assets/images/image 18.png" alt="">
+  </div>
+
+  <!-- @if (showForm) {
+    <div class="crud-dialog-overlay">
+      <div class="crud-dialog">
+        <form [formGroup]="MissionForm" (ngSubmit)="creerOuModifier()">
+          <div class="field">
+            <label for="nom">Nom</label>
+            <input id="nom" type="text" [formControl]="nomCtrl">
+          </div>
+
+          <div class="field">
+            <label for="description">Description</label>
+            <textarea id="description" [formControl]="descriptionCtrl"></textarea>
+          </div>
+
+          <div class="field">
+            <label for="rang">Rang</label>
+            <select id="rang" [formControl]="rangCtrl">
+              @for (r of rangs; track r) {
+                <option [value]="r">{{ r }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="gainExp">Gain d'expérience</label>
+            <input id="gainExp" type="number" [formControl]="gainExpCtrl">
+          </div>
+
+          <div class="field">
+            <label for="recompense">Récompense</label>
+            <input id="recompense" type="number" [formControl]="recompenseCtrl">
+          </div>
+
+          <div class="field">
+            <label for="equipe">Équipe</label>
+            <select id="equipe" [formControl]="equipeCtrl">
+              @for (e of (equipe$ | async); track e.id) {
+                <option [value]="e.id">{{ e.id }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="dateDebut">Date de début</label>
+            <input id="dateDebut" type="date" [formControl]="dateDebutCtrl">
+          </div>
+
+          <div class="field">
+            <label for="dateFin">Date de fin</label>
+            <input id="dateFin" type="date" [formControl]="dateFinCtrl">
+          </div>
+
+          <div class="field">
+            <label for="statut">Statut</label>
+            <select id="statut" [formControl]="statutCtrl">
+              @for (e of etats; track e) {
+                <option [value]="e">{{ e }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="actions">
+            <button type="submit" [disabled]="MissionForm.invalid">{{ editingMission ? 'Modifier' : 'Créer' }}</button>
+            <button type="button" (click)="annulerEditer()">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  } -->
+
+</section>

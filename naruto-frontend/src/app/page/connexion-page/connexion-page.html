@@ -6,7 +6,7 @@
       <span class="divider-badge">🌀</span>
     </div>
 
-    <form [formGroup]="connexionForm">
+    <form (submit)="connecter()" [formGroup]="connexionForm">
       <div class="field-wrapper">
         <div class="field field--username">
           <span class="field-icon">👤</span>

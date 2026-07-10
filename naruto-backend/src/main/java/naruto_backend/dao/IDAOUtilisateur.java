@@ -1,6 +1,7 @@
 package naruto_backend.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,7 +24,7 @@ public interface IDAOUtilisateur extends JpaRepository<Utilisateur, Integer> {
 	@Query("FROM Hokage")
 	public List<Hokage> findAllHokage();
 	
-	public Utilisateur findByLogin(String login);
+	public Optional<Utilisateur> findByLogin(String login);
 
 	//maybe a supprimer si inutilisé
 	public Utilisateur findByLoginAndPassword(String login,String password);

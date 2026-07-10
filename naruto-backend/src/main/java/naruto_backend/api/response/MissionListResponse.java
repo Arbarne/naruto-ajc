@@ -2,6 +2,7 @@ package naruto_backend.api.response;
 
 import java.time.LocalDate;
 
+import naruto_backend.model.Equipe;
 import naruto_backend.model.Mission;
 
 public class MissionListResponse {
@@ -65,7 +66,7 @@ public class MissionListResponse {
         response.setNom(mission.getNom());
         response.setDescription(mission.getDescription());
         response.setRang(mission.getRang().toString());
-        response.setEquipeNom(mission.getEquipe().getNom());
+        response.setEquipeNom(mission.getEquipe() instanceof Equipe ? mission.getEquipe().getNom() : "");
         response.setStatut(mission.getStatut().toString());
 
         return response;

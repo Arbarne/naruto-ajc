@@ -63,7 +63,7 @@ public class EquipeService {
 		daoEquipe.deleteById(id);
 	}
 
-    public Equipe findByLeaderId(Integer leaderId) {
+    public Optional<Equipe> getByLeaderId(Integer leaderId) {
         return daoEquipe.findByLeaderId(leaderId);
     }
 

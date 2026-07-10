@@ -1,6 +1,5 @@
 package naruto_backend.api.response;
 
-import naruto_backend.model.Equipe;
 import naruto_backend.model.EquipeBasicInfo;
 import naruto_backend.model.EtatNinja;
 import naruto_backend.model.Genre;

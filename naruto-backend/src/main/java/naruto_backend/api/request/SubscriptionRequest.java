@@ -4,7 +4,7 @@ import naruto_backend.model.Genre;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
 
-public class CreateUtilisateurRequest {
+public class SubscriptionRequest {
     @NotBlank
     private String login;
 

@@ -2,6 +2,7 @@ package naruto_backend.api;
 
 import java.util.List;
 
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +19,7 @@ import naruto_backend.api.request.SubscriptionRequest;
 import naruto_backend.api.request.UpdateUtilisateurRequest;
 import naruto_backend.api.response.UtilisateurDetailsResponse;
 import naruto_backend.api.response.UtilisateurListViewResponse;
-import naruto_backend.model.Leader;
-import naruto_backend.model.Ninja;
 import naruto_backend.model.Utilisateur;
-import naruto_backend.service.EquipeService;
 import naruto_backend.service.UtilisateurService;
 
 @RestController
@@ -29,12 +27,10 @@ import naruto_backend.service.UtilisateurService;
 public class UtilisateurAPIController {
 
 	private final UtilisateurService utilisateurService;
-	private final EquipeService equipeService;
     
     
-    public UtilisateurAPIController(UtilisateurService utilisateurService, EquipeService equipeService) {
+    public UtilisateurAPIController(UtilisateurService utilisateurService) {
         this.utilisateurService = utilisateurService;
-        this.equipeService = equipeService;
     }
     
     @GetMapping
@@ -55,31 +51,24 @@ public class UtilisateurAPIController {
     }
 
     @PutMapping("/{id}")
-    public EntityUpdatedResponse update(@PathVariable String id, @Valid @RequestBody UpdateUtilisateurRequest request) {
+    public EntityUpdatedResponse update(@PathVariable Integer id, @Valid @RequestBody UpdateUtilisateurRequest request) {
         this.utilisateurService.update(Integer.valueOf(id), request);
 
         return new EntityUpdatedResponse(id, true);
     }
     
     @PutMapping("/{id}/equipe/{equipeId}")
-    public EntityUpdatedResponse update(@PathVariable String id, @PathVariable String equipeId, @Valid @RequestBody UpdateUtilisateurRequest request) {
-    	Utilisateur user = this.utilisateurService.getById(Integer.valueOf(id));
-
-        this.utilisateurService.update(Integer.valueOf(id), request);
-
-        if (user instanceof Ninja ninja) {
-            ninja.setEquipe(equipeService.getById(Integer.valueOf(equipeId)));
-        }
-        else if (user instanceof Leader leader) {
-            leader.setEquipe(equipeService.getById(Integer.valueOf(equipeId)));
-        }
-        else {
-            return new EntityUpdatedResponse(id, false);
+    public EntityUpdatedResponse update(@PathVariable Integer id, @PathVariable Integer equipeId, @Valid @RequestBody UpdateUtilisateurRequest request) {
+    	
+        Utilisateur user;
+        try {
+            user = this.utilisateurService.updateEquipe(id, equipeId);
+        } catch (NotFoundException e) {
+            return new EntityUpdatedResponse(-1, false);
         }
 
-        //il faut aussi sauvegarder l'utilisateur
-        this.utilisateurService.insert(user);
-        return new EntityUpdatedResponse(id, true);
+        return new EntityUpdatedResponse(user.getId(), true);
+        
     }
 
     @DeleteMapping("/{id}")
@@ -91,20 +80,15 @@ public class UtilisateurAPIController {
 
     @DeleteMapping("/{id}/equipe")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserFromEquipe(@PathVariable String id) {
+    public EntityUpdatedResponse deleteUserFromEquipe(@PathVariable Integer id) {
     	
-    	Utilisateur user = this.utilisateurService.getById(Integer.valueOf(id));
-
-        if (user instanceof Ninja ninja) {
-            ninja.setEquipe(null);
+        Utilisateur user;
+        try {
+            user = this.utilisateurService.deleteUserFromEquipe(id);
+        } catch (NotFoundException e) {
+            return new EntityUpdatedResponse(-1, false);
         }
-        else if (user instanceof Leader leader) {
-            leader.setEquipe(null);
-        }
-        
-        //Askip ça, ça supprime complètement l'utilisateur, à remplacer par le save qui suit
-        //this.utilisateurService.delete(Integer.valueOf(id));
-        this.utilisateurService.insert(user);
+        return new EntityUpdatedResponse(user.getId(), true);
     }
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,11 +27,14 @@ public class UtilisateurService {
 
 	private final PasswordEncoder passwordEncoder;
 
+	private final EquipeService equipeService;
+
 	public UtilisateurService(
         IDAOUtilisateur daoUtilisateur,
-        PasswordEncoder passwordEncoder) {
+        PasswordEncoder passwordEncoder, EquipeService equipeService) {
     this.daoUtilisateur = daoUtilisateur;
     this.passwordEncoder = passwordEncoder;
+	this.equipeService = equipeService;
 }
 
     public List<Utilisateur> getAll()
@@ -179,6 +183,35 @@ public class UtilisateurService {
 	//Méthode simple pour save un utilisateur
 	public Utilisateur insert(Utilisateur utilisateur) {
     	return this.daoUtilisateur.save(utilisateur);
+	}
+
+	public Utilisateur updateEquipe(Integer id, Integer equipeId) throws NotFoundException{
+		Utilisateur user = daoUtilisateur.findById(id).orElseThrow(NotFoundException::new);
+
+		if (user instanceof Ninja ninja) {
+            ninja.setEquipe(equipeService.getById(Integer.valueOf(equipeId)));
+        }
+        else if (user instanceof Leader leader) {
+            leader.setEquipe(equipeService.getById(Integer.valueOf(equipeId)));
+        }
+		
+		user = daoUtilisateur.save(user);
+		return user;
+	}
+
+	public Utilisateur deleteUserFromEquipe(Integer id) throws NotFoundException{
+
+		Utilisateur user = this.daoUtilisateur.findById(id).orElseThrow(NotFoundException::new);
+
+        if (user instanceof Ninja ninja) {
+            ninja.setEquipe(null);
+        }
+        else if (user instanceof Leader leader) {
+            leader.setEquipe(null);
+        }
+
+		user = daoUtilisateur.save(user);
+		return user;
 	}
     
 }

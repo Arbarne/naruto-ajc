@@ -22,36 +22,6 @@ import { MissionListView } from '../../model/mission-list-view';
 })
 export class MissionPage implements OnInit {
 
-  protected missions: MissionListView[] = [
-    {
-      id: 1,
-      nom: "Sauvetage du Kazekage",
-      description: "Sauvetage du Kazekage",
-      rang: RangMission.S,
-      equipeNom: "Violet",
-      statut: EtatMission.DISPONIBLE,
-      dateFin: new Date(2026, 7, 9),
-    },
-    {
-      id: 1,
-      nom: "Sauvetage du Kazekage",
-      description: "Sauvetage du Kazekage",
-      rang: RangMission.S,
-      equipeNom: "Violet",
-      statut: EtatMission.DISPONIBLE,
-      dateFin: new Date(2026, 7, 9),
-    },
-    {
-      id: 1,
-      nom: "Sauvetage du Kazekage",
-      description: "Sauvetage du Kazekage",
-      rang: RangMission.S,
-      equipeNom: "Violet",
-      statut: EtatMission.DISPONIBLE,
-      dateFin: new Date(2026, 7, 9),
-    },
-  ]
-
   private missionService: MissionService = inject(MissionService);
   private equipeService: EquipeService = inject(EquipeService);
   private authService: AuthService = inject(AuthService);

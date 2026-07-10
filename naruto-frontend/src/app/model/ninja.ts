@@ -1,7 +1,7 @@
 import { Genre } from "./genre";
-import { User } from "./user";
+import { Utilisateur } from "./utilisateur";
 
-export class Combattant extends User {
+export class Ninja extends Utilisateur {
   constructor (
       id: number,
       login: string,

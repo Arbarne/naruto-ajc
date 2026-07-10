@@ -6,7 +6,6 @@ import { MissionPage } from './page/mission-page/mission-page';
 import { EquipePage } from './page/equipe-page/equipe-page';
 
 export const routes: Routes = [
-  //
   {
     path: 'accueil',
     component: AccueilPage,

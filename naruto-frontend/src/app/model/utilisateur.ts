@@ -1,6 +1,6 @@
 import { Genre } from "./genre";
 
-export class User {
+export class Utilisateur {
   constructor (
     public id: number,
     public login: string,

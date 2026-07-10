@@ -54,5 +54,5 @@ export class MissionService {
     })
   }
 
-  public démarrer(id: number) {}
+  public demarrer(id: number) {}
 }

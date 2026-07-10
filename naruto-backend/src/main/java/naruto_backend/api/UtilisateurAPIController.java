@@ -49,8 +49,7 @@ public class UtilisateurAPIController {
 
     @PostMapping("/inscription")
     public EntityCreatedResponse subscribe(@Valid @RequestBody SubscriptionRequest request) {
-        
-        Utilisateur utilisateur = this.utilisateurService.save(new Utilisateur(), request);
+        Utilisateur utilisateur = this.utilisateurService.create(new Utilisateur(), request);
 
         return new EntityCreatedResponse(utilisateur.getId());
     }
@@ -79,7 +78,7 @@ public class UtilisateurAPIController {
         }
 
         //il faut aussi sauvegarder l'utilisateur
-        this.utilisateurService.save(user);
+        this.utilisateurService.insert(user);
         return new EntityUpdatedResponse(id, true);
     }
 
@@ -105,7 +104,7 @@ public class UtilisateurAPIController {
         
         //Askip ça, ça supprime complètement l'utilisateur, à remplacer par le save qui suit
         //this.utilisateurService.delete(Integer.valueOf(id));
-        this.utilisateurService.save(user);
+        this.utilisateurService.insert(user);
     }
 
 }

@@ -103,7 +103,7 @@ public class UtilisateurService {
 
 	public Utilisateur insert(SubscriptionRequest request) 
 	{
-		Utilisateur utilisateur = this.save(new Utilisateur(), request);
+		Utilisateur utilisateur = this.create(new Utilisateur(), request);
 
 		return utilisateur;
 	}
@@ -120,7 +120,7 @@ public class UtilisateurService {
 		daoUtilisateur.deleteById(id);
 	}
 	
-	public Utilisateur save(Utilisateur utilisateur, SubscriptionRequest request) {
+	public Utilisateur create(Utilisateur utilisateur, SubscriptionRequest request) {
     	Integer argent = 0;
     	Integer nbReussite = 0;
     	Integer nbEchec = 0;
@@ -177,7 +177,7 @@ public class UtilisateurService {
     }
 
 	//Méthode simple pour save un utilisateur
-	public Utilisateur save(Utilisateur utilisateur) {
+	public Utilisateur insert(Utilisateur utilisateur) {
     	return this.daoUtilisateur.save(utilisateur);
 	}
     

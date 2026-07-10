@@ -58,7 +58,7 @@ public class UtilisateurAPIController {
     }
     
     @PutMapping("/{id}/equipe/{equipeId}")
-    public EntityUpdatedResponse update(@PathVariable Integer id, @PathVariable Integer equipeId, @Valid @RequestBody UpdateUtilisateurRequest request) {
+    public EntityUpdatedResponse update(@PathVariable Integer id, @PathVariable Integer equipeId) {
     	
         Utilisateur user;
         try {

@@ -1,1 +1,55 @@
-<p>connexion-page works!</p>
+<section class="connexion-page">
+  <div class="connexion-card">
+    <h2>Connexion</h2>
+
+    <div class="divider">
+      <span class="divider-badge">🌀</span>
+    </div>
+
+    <form [formGroup]="connexionForm">
+      <div class="field-wrapper">
+        <div class="field field--username">
+          <span class="field-icon">👤</span>
+          <input
+            type="text"
+            placeholder="Nom d'utilisateur"
+            [formControl]="usernameCtrl"
+            (focus)="usernameWalking = true"
+            (blur)="usernameWalking = false">
+        </div>
+        @if (usernameWalking) {
+          <img class="walker" src="/assets/images/image 8.png" alt="">
+        }
+      </div>
+
+      <div class="field-wrapper">
+        <div class="field field--password">
+          <span class="field-icon">🔒</span>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Mot de passe"
+            [formControl]="passwordCtrl"
+            (focus)="passwordWalking = true"
+            (blur)="passwordWalking = false">
+          <button type="button" class="toggle-visibility" (click)="showPassword = !showPassword">
+            {{ showPassword ? '👁' : '' }}
+          </button>
+        </div>
+        @if (passwordWalking) {
+          <img class="walker" src="/assets/images/image 8.png" alt="">
+        }
+      </div>
+
+      <div class="field-row">
+        <label class="remember">
+          <input type="checkbox"> Se souvenir de moi
+        </label>
+        <a class="forgot" href="javascript:void(0)">Mot de passe oublié ?</a>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="connexionForm.invalid">
+        🍃 Entrer dans le village
+      </button>
+    </form>
+  </div>
+</section>

@@ -4,9 +4,15 @@ import { InscriptionPage } from './page/inscription-page/inscription-page';
 import { ConnexionPage } from './page/connexion-page/connexion-page';
 import { MissionPage } from './page/mission-page/mission-page';
 import { EquipePage } from './page/equipe-page/equipe-page';
+import { HomePage } from './page/home-page/home-page';
 
 export const routes: Routes = [
   //
+  {
+    path: 'home',
+    component: HomePage,
+  },
+
   {
     path: 'accueil',
     component: AccueilPage,

@@ -8,5 +8,6 @@ export interface MissionListView {
   rang: RangMission,
   equipeNom: string,
   statut: EtatMission,
+  dateDebut: Date,
   dateFin: Date
 }

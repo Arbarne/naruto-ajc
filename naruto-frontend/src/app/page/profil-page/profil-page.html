@@ -1,0 +1,238 @@
+<section class="profil-page">
+
+  <div class="crud-dialog-overlay">
+  </div>
+  <div class="crud-container">
+    <div class="crud-dialog">
+      <app-navigation></app-navigation>
+      <h2>Bureau du Hokage</h2>
+
+      @if (authService.role === 'ADMIN') {
+
+        @if (mode === 'creer' || mode === 'modifier') {
+          <!-- Formulaire creer/modifier -->
+          <form [formGroup]="ProfilForm" (ngSubmit)="creerOuModifier()">
+            <div class="form-grid">
+              <div class="field">
+                <label for="login">Identifiant</label>
+                <input id="login" type="text" [formControl]="loginCtrl">
+              </div>
+
+              <div class="field">
+                <label for="password">Mot de passe {{ mode === 'modifier' ? '(laisser vide pour ne pas changer)' : '' }}</label>
+                <input id="password" type="password" [formControl]="passwordCtrl">
+              </div>
+
+              <div class="field">
+                <label for="nom">Nom</label>
+                <input id="nom" type="text" [formControl]="nomCtrl">
+              </div>
+
+              <div class="field">
+                <label for="prenom">Prénom</label>
+                <input id="prenom" type="text" [formControl]="prenomCtrl">
+              </div>
+
+              <div class="field">
+                <label for="genre">Genre</label>
+                <select id="genre" [formControl]="genreCtrl">
+                  <option value="Homme">Homme</option>
+                  <option value="Femme">Femme</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="specialite">Spécialité</label>
+                <select id="specialite" [formControl]="specialiteCtrl">
+                  @for (s of specialites; track s) {
+                    <option [value]="s">{{ s }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="rang">Rang</label>
+                <select id="rang" [formControl]="rangCtrl">
+                  @for (r of rangs; track r) {
+                    <option [value]="r">{{ r }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="etat">État</label>
+                <select id="etat" [formControl]="etatCtrl">
+                  @for (e of etats; track e) {
+                    <option [value]="e">{{ e }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="niveau">Niveau</label>
+                <input id="niveau" type="number" [formControl]="niveauCtrl">
+              </div>
+
+              <div class="field">
+                <label for="expActuel">Expérience</label>
+                <input id="expActuel" type="number" [formControl]="expActuelCtrl">
+              </div>
+
+              <div class="field">
+                <label for="pvActuel">PV actuels</label>
+                <input id="pvActuel" type="number" [formControl]="pvActuelCtrl">
+              </div>
+
+              <div class="field">
+                <label for="pvMax">PV max</label>
+                <input id="pvMax" type="number" [formControl]="pvMaxCtrl">
+              </div>
+
+              <div class="field">
+                <label for="chakraActuel">Chakra actuel</label>
+                <input id="chakraActuel" type="number" [formControl]="chakraActuelCtrl">
+              </div>
+
+              <div class="field">
+                <label for="chakraMax">Chakra max</label>
+                <input id="chakraMax" type="number" [formControl]="chakraMaxCtrl">
+              </div>
+
+              <div class="field">
+                <label for="nbReussites">Réussites</label>
+                <input id="nbReussites" type="number" [formControl]="nbReussitesCtrl">
+              </div>
+
+              <div class="field">
+                <label for="nbEchecs">Échecs</label>
+                <input id="nbEchecs" type="number" [formControl]="nbEchecsCtrl">
+              </div>
+
+              <div class="field">
+                <label for="argent">Argent</label>
+                <input id="argent" type="number" [formControl]="argentCtrl">
+              </div>
+            </div>
+
+            <div class="actions">
+              <button type="submit" [disabled]="ProfilForm.invalid">{{ mode === 'modifier' ? 'Enregistrer' : 'Créer' }}</button>
+              <button type="button" (click)="annuler()">Annuler</button>
+            </div>
+          </form>
+
+        } @else if (selectedProfil; as profil) {
+          <!-- Carte de stats -->
+          <div class="stat-card">
+            <div class="stat-card-header">
+              <div class="avatar">{{ profil.prenom.charAt(0) }}{{ profil.nom.charAt(0) }}</div>
+              <div class="identity">
+                <h3>{{ profil.prenom }} {{ profil.nom }}</h3>
+                <span class="badge">{{ profil.rang }}</span>
+              </div>
+            </div>
+
+            <dl class="info-rows">
+              <div class="info-row">
+                <dt>Spécialité</dt>
+                <dd>{{ profil.specialite }}</dd>
+              </div>
+              <div class="info-row">
+                <dt>Village</dt>
+                <dd>Konoha</dd>
+              </div>
+              <div class="info-row">
+                <dt>Statut</dt>
+                <dd class="statut" [class.statut--dispo]="profil.etatNinja === 'Disponible'" [class.statut--mission]="profil.etatNinja === 'EnMission'" [class.statut--decede]="profil.etatNinja === 'Decede'">{{ profil.etatNinja }}</dd>
+              </div>
+              <div class="info-row">
+                <dt>Équipe</dt>
+                <dd>{{ profil.equipeBasicInfo.nom ?? '—' }}</dd>
+              </div>
+            </dl>
+
+            <h4>Statistiques</h4>
+
+            <div class="stat-tiles">
+              <div class="stat-tile">
+                <span class="stat-tile-value">{{ profil.niveau }}</span>
+                <span class="stat-tile-label">Niveau</span>
+              </div>
+              <div class="stat-tile">
+                <span class="stat-tile-value">{{ profil.argent }}</span>
+                <span class="stat-tile-label">Argent</span>
+              </div>
+              <div class="stat-tile">
+                <span class="stat-tile-value stat-tile-value--good">{{ tauxReussite(profil) }}%</span>
+                <span class="stat-tile-label">Taux réussite</span>
+              </div>
+            </div>
+
+            <div class="bar-row">
+              <div class="bar-label">
+                <span>PV</span>
+                <span>{{ profil.pvActuel }} / {{ profil.pvMax }}</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bar-fill--pv" [style.width.%]="pourcentage(profil.pvActuel, profil.pvMax)"></div>
+              </div>
+            </div>
+
+            <div class="bar-row">
+              <div class="bar-label">
+                <span>Chakra</span>
+                <span>{{ profil.chakraActuel }} / {{ profil.chakraMax }}</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill bar-fill--chakra" [style.width.%]="pourcentage(profil.chakraActuel, profil.chakraMax)"></div>
+              </div>
+            </div>
+
+            <div class="actions">
+              <button type="button" (click)="modifierProfil(profil)">Modifier</button>
+              <button type="button" (click)="supprimer(profil)">Supprimer</button>
+              <button type="button" (click)="fermerCarte()">Retour à la liste</button>
+            </div>
+          </div>
+
+        } @else {
+          <!-- Tableau -->
+          <button type="button" (click)="nouveauProfil()">Nouveau profil</button>
+
+          @if (profils$ | async; as profils) {
+            <table>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Nom</th>
+                  <th>Prénom</th>
+                  <th>Rang</th>
+                  <th>Spécialité</th>
+                  <th>État</th>
+                  <th>Niveau</th>
+                  <th>Équipe</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (profil of profils; track profil.id) {
+                  <tr class="clickable-row" (click)="voirProfil(profil)">
+                    <td>{{ profil.id }}</td>
+                    <td>{{ profil.nom }}</td>
+                    <td>{{ profil.prenom }}</td>
+                    <td>{{ profil.rang }}</td>
+                    <td>{{ profil.specialite }}</td>
+                    <td>{{ profil.etatNinja }}</td>
+                    <td>{{ profil.niveau }}</td>
+                    <td>{{ profil.equipeBasicInfo.nom ?? '—' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        }
+
+      }
+    </div>
+    <img class="crud-menu-avatar" src="/assets/images/image 18.png" alt="">
+  </div>
+
+</section>

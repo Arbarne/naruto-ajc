@@ -1,5 +1,6 @@
 package naruto_backend.api.response;
 
+import naruto_backend.model.Equipe;
 import naruto_backend.model.EquipeBasicInfo;
 import naruto_backend.model.EtatNinja;
 import naruto_backend.model.Genre;
@@ -11,6 +12,7 @@ import naruto_backend.model.Utilisateur;
 
 public class UtilisateurDetailsResponse {
 
+	private Integer id;
 	private String login;
 	private String nom;
 	private String prenom;
@@ -28,6 +30,15 @@ public class UtilisateurDetailsResponse {
 	private int nbReussites;
 	private int argent;
 	private EquipeBasicInfo equipe;
+
+	public Integer getId() {
+		return id;
+	}
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getLogin() {
 		return login;
@@ -201,19 +212,25 @@ public class UtilisateurDetailsResponse {
 
         response.equipe = new EquipeBasicInfo();
 
+        response.setId(utilisateur.getId());
         response.setLogin(utilisateur.getLogin());
         response.setNom(utilisateur.getNom());
         response.setPrenom(utilisateur.getPrenom());
         response.setGenre(utilisateur.getGenre());
         response.setNiveau(utilisateur.getNiveau());
+        response.setExpActuel(utilisateur.getExpActuel());
+
+        Equipe equipe = null;
         if (utilisateur instanceof Ninja ninja) {
-            response.getEquipeBasicInfo().setId(ninja.getEquipe().getId());
-            response.getEquipeBasicInfo().setNom(ninja.getEquipe().getNom());
+            equipe = ninja.getEquipe();
         } else if (utilisateur instanceof Leader leader)  {
-            response.getEquipeBasicInfo().setId(leader.getEquipe().getId());
-            response.getEquipeBasicInfo().setNom(leader.getEquipe().getNom());
+            equipe = leader.getEquipe();
         }
-        else {
+
+        if (equipe != null) {
+            response.getEquipeBasicInfo().setId(equipe.getId());
+            response.getEquipeBasicInfo().setNom(equipe.getNom());
+        } else {
             response.getEquipeBasicInfo().setId(-1);
             response.getEquipeBasicInfo().setNom(null);
         }

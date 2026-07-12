@@ -1,1 +1,56 @@
-<p>inscription-page works!</p>
+<section class="inscription-page">
+  <div class="inscription-card">
+    <h2>Inscription</h2>
+
+    <div class="divider">
+      <span class="divider-badge">🌀</span>
+    </div>
+
+    <form (submit)="inscrire()" [formGroup]="inscriptionForm">
+      <div class="field">
+        <span class="field-icon">👤</span>
+        <input type="text" placeholder="Nom d'utilisateur" [formControl]="loginCtrl">
+      </div>
+
+      <div class="field">
+        <span class="field-icon">🔒</span>
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          placeholder="Mot de passe"
+          [formControl]="passwordCtrl">
+        <button type="button" class="toggle-visibility" (click)="showPassword = !showPassword">
+          {{ showPassword ? '👁' : '' }}
+        </button>
+      </div>
+
+      <div class="field">
+        <span class="field-icon">🀄</span>
+        <input type="text" placeholder="Nom" [formControl]="nomCtrl">
+      </div>
+
+      <div class="field">
+        <span class="field-icon">🀄</span>
+        <input type="text" placeholder="Prénom" [formControl]="prenomCtrl">
+      </div>
+
+      <div class="field field--select">
+        <span class="field-icon">⚧</span>
+        <select [formControl]="genreCtrl">
+          <option value="" disabled selected>Genre</option>
+          <option value="Homme">Homme</option>
+          <option value="Femme">Femme</option>
+        </select>
+      </div>
+
+      @if (inscriptionError()) {
+        <p class="error-message">Inscription impossible. Vérifie les champs (identifiant déjà pris ?).</p>
+      }
+
+      <button type="submit" class="submit-btn" [disabled]="inscriptionForm.invalid">
+        🍃 Rejoindre le village
+      </button>
+
+      <a class="connexion-link" routerLink="/connexion">Déjà un compte ? Se connecter</a>
+    </form>
+  </div>
+</section>

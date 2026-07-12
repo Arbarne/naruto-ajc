@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,13 +15,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.validation.Valid;
 import naruto_backend.api.request.SubscriptionRequest;
 import naruto_backend.api.request.UpdateUtilisateurRequest;
+import naruto_backend.api.response.LeaderOptionResponse;
+import naruto_backend.api.response.NinjaOptionResponse;
 import naruto_backend.api.response.UtilisateurDetailsResponse;
-import naruto_backend.api.response.UtilisateurListViewResponse;
+import naruto_backend.model.Ninja;
 import naruto_backend.model.Utilisateur;
+import naruto_backend.service.EquipeService;
 import naruto_backend.service.UtilisateurService;
 
 @RestController
@@ -27,30 +33,64 @@ import naruto_backend.service.UtilisateurService;
 public class UtilisateurAPIController {
 
 	private final UtilisateurService utilisateurService;
-    
-    
-    public UtilisateurAPIController(UtilisateurService utilisateurService) {
+	private final EquipeService equipeService;
+
+
+    public UtilisateurAPIController(UtilisateurService utilisateurService, EquipeService equipeService) {
         this.utilisateurService = utilisateurService;
+        this.equipeService = equipeService;
     }
-    
+
     @GetMapping
-    public List<UtilisateurListViewResponse> findAll() {
-        return this.utilisateurService.getAll().stream().map(UtilisateurListViewResponse::convert).toList();
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<UtilisateurDetailsResponse> findAll() {
+        return this.utilisateurService.getAll().stream().map(UtilisateurDetailsResponse::convert).toList();
+    }
+
+    @GetMapping("/ninja")
+    @PreAuthorize("hasRole('LEADER') or hasRole('ADMIN')")
+    public List<NinjaOptionResponse> findAllNinja() {
+        return this.utilisateurService.getAllNinja().stream()
+            .map(ninja -> new NinjaOptionResponse(ninja.getId(), ninja.getNom(), ninja.getPrenom()))
+            .toList();
+    }
+
+    @GetMapping("/leader")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<LeaderOptionResponse> findAllLeader() {
+        return this.utilisateurService.getAllLeader().stream()
+            .map(leader -> new LeaderOptionResponse(leader.getId(), leader.getNom(), leader.getPrenom()))
+            .toList();
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public UtilisateurDetailsResponse findById(@PathVariable String id) {
         return UtilisateurDetailsResponse.convert(this.utilisateurService.getById(Integer.valueOf(id)));
     }
 
     @PostMapping("/inscription")
     public EntityCreatedResponse subscribe(@Valid @RequestBody SubscriptionRequest request) {
-        Utilisateur utilisateur = this.utilisateurService.create(new Utilisateur(), request);
+        // Une inscription cree toujours un Ninja (jamais un Leader/Hokage, ni un Utilisateur
+        // generique qui n'apparaitrait dans aucune liste et ne pourrait jamais rejoindre une equipe).
+        Utilisateur utilisateur = this.utilisateurService.create(new Ninja(), request);
+
+        return new EntityCreatedResponse(utilisateur.getId());
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
+    public EntityCreatedResponse create(@Valid @RequestBody SubscriptionRequest request) {
+        // Le Hokage cree directement un profil Ninja (les valeurs de base sont ensuite
+        // ajustables via PUT /utilisateur/{id}).
+        Utilisateur utilisateur = this.utilisateurService.create(new Ninja(), request);
 
         return new EntityCreatedResponse(utilisateur.getId());
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public EntityUpdatedResponse update(@PathVariable Integer id, @Valid @RequestBody UpdateUtilisateurRequest request) {
         this.utilisateurService.update(Integer.valueOf(id), request);
 
@@ -58,8 +98,13 @@ public class UtilisateurAPIController {
     }
     
     @PutMapping("/{id}/equipe/{equipeId}")
-    public EntityUpdatedResponse update(@PathVariable Integer id, @PathVariable Integer equipeId) {
-    	
+    @PreAuthorize("hasRole('LEADER') or hasRole('ADMIN')")
+    public EntityUpdatedResponse update(@PathVariable Integer id, @PathVariable Integer equipeId, Authentication authentication) {
+
+        if (!equipeService.peutGererEquipe(equipeId, authentication)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         Utilisateur user;
         try {
             user = this.utilisateurService.updateEquipe(id, equipeId);
@@ -68,11 +113,12 @@ public class UtilisateurAPIController {
         }
 
         return new EntityUpdatedResponse(user.getId(), true);
-        
+
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteById(@PathVariable String id) {
         this.utilisateurService.delete(Integer.valueOf(id));
     }
@@ -80,8 +126,13 @@ public class UtilisateurAPIController {
 
     @DeleteMapping("/{id}/equipe")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public EntityUpdatedResponse deleteUserFromEquipe(@PathVariable Integer id) {
-    	
+    @PreAuthorize("hasRole('LEADER') or hasRole('ADMIN')")
+    public EntityUpdatedResponse deleteUserFromEquipe(@PathVariable Integer id, Authentication authentication) {
+
+        if (!equipeService.peutGererMembre(id, authentication)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         Utilisateur user;
         try {
             user = this.utilisateurService.deleteUserFromEquipe(id);

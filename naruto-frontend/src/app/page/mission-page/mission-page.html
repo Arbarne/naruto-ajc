@@ -5,7 +5,11 @@
   </div>
   <div class="crud-container">
     <div class="crud-dialog">
+      <app-navigation></app-navigation>
       <h2>Archives des missions</h2>
+      @if (show === "") {
+        <button type="button" (click)="nouvelleMission()">Nouvelle mission</button>
+      }
       si le ninja/leader est en mission :
       <h3>Mission actuelle</h3>
       sinon :
@@ -20,6 +24,7 @@
             <th>Rang</th>
             <th>Statut</th>
             <th>Équipe</th>
+            <th>Date de Début</th>
             <th>Date de Fin</th>
             <th>Actions</th>
             <th></th>
@@ -33,6 +38,7 @@
                 <td>{{ mission.rang }}</td>
                 <td>{{ mission.statut }}</td>
                 <td>{{ mission.equipeNom }}</td>
+                <td>{{ mission.dateDebut | date }}</td>
                 <td>{{ mission.dateFin | date }}</td>
                 <td class="actions">
                   <button type="button" (click)="editer(mission.id)">Éditer</button>
@@ -48,74 +54,78 @@
     <img class="crud-menu-avatar" src="/assets/images/image 18.png" alt="">
   </div>
 
-  <!-- @if (showForm) {
+  @if (show === "modify") {
     <div class="crud-dialog-overlay">
-      <div class="crud-dialog">
-        <form [formGroup]="MissionForm" (ngSubmit)="creerOuModifier()">
-          <div class="field">
-            <label for="nom">Nom</label>
-            <input id="nom" type="text" [formControl]="nomCtrl">
-          </div>
+      <div class="crud-container">
+        <div class="crud-dialog">
+          <form [formGroup]="MissionForm" (ngSubmit)="creerOuModifier()">
+            <div class="field">
+              <label for="nom">Nom</label>
+              <input id="nom" type="text" [formControl]="nomCtrl">
+            </div>
 
-          <div class="field">
-            <label for="description">Description</label>
-            <textarea id="description" [formControl]="descriptionCtrl"></textarea>
-          </div>
+            <div class="field">
+              <label for="description">Description</label>
+              <textarea id="description" [formControl]="descriptionCtrl"></textarea>
+            </div>
 
-          <div class="field">
-            <label for="rang">Rang</label>
-            <select id="rang" [formControl]="rangCtrl">
-              @for (r of rangs; track r) {
-                <option [value]="r">{{ r }}</option>
-              }
-            </select>
-          </div>
+            <div class="field">
+              <label for="rang">Rang</label>
+              <select id="rang" [formControl]="rangCtrl">
+                @for (r of rangs; track r) {
+                  <option [value]="r">{{ r }}</option>
+                }
+              </select>
+            </div>
 
-          <div class="field">
-            <label for="gainExp">Gain d'expérience</label>
-            <input id="gainExp" type="number" [formControl]="gainExpCtrl">
-          </div>
+            <div class="field">
+              <label for="gainExp">Gain d'expérience</label>
+              <input id="gainExp" type="number" [formControl]="gainExpCtrl">
+            </div>
 
-          <div class="field">
-            <label for="recompense">Récompense</label>
-            <input id="recompense" type="number" [formControl]="recompenseCtrl">
-          </div>
+            <div class="field">
+              <label for="recompense">Récompense</label>
+              <input id="recompense" type="number" [formControl]="recompenseCtrl">
+            </div>
 
-          <div class="field">
-            <label for="equipe">Équipe</label>
-            <select id="equipe" [formControl]="equipeCtrl">
-              @for (e of (equipe$ | async); track e.id) {
-                <option [value]="e.id">{{ e.id }}</option>
-              }
-            </select>
-          </div>
+            @if (editingMission) {
+              <div class="field">
+                <label for="equipe">Équipe</label>
+                <select id="equipe" [formControl]="equipeCtrl">
+                  @for (e of (equipe$ | async); track e.id) {
+                    <option [value]="e.id">{{ e.id }}</option>
+                  }
+                </select>
+              </div>
 
-          <div class="field">
-            <label for="dateDebut">Date de début</label>
-            <input id="dateDebut" type="date" [formControl]="dateDebutCtrl">
-          </div>
+              <div class="field">
+                <label for="dateDebut">Date de début</label>
+                <input id="dateDebut" type="date" [formControl]="dateDebutCtrl">
+              </div>
 
-          <div class="field">
-            <label for="dateFin">Date de fin</label>
-            <input id="dateFin" type="date" [formControl]="dateFinCtrl">
-          </div>
+              <div class="field">
+                <label for="dateFin">Date de fin</label>
+                <input id="dateFin" type="date" [formControl]="dateFinCtrl">
+              </div>
 
-          <div class="field">
-            <label for="statut">Statut</label>
-            <select id="statut" [formControl]="statutCtrl">
-              @for (e of etats; track e) {
-                <option [value]="e">{{ e }}</option>
-              }
-            </select>
-          </div>
+              <div class="field">
+                <label for="statut">Statut</label>
+                <select id="statut" [formControl]="statutCtrl">
+                  @for (e of etats; track e) {
+                    <option [value]="e">{{ e }}</option>
+                  }
+                </select>
+              </div>
+            }
 
-          <div class="actions">
-            <button type="submit" [disabled]="MissionForm.invalid">{{ editingMission ? 'Modifier' : 'Créer' }}</button>
-            <button type="button" (click)="annulerEditer()">Annuler</button>
-          </div>
-        </form>
+            <div class="actions">
+              <button type="submit" [disabled]="MissionForm.invalid">{{ editingMission ? 'Modifier' : 'Créer' }}</button>
+              <button type="button" (click)="annulerEditer()">Annuler</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-  } -->
+  }
 
 </section>

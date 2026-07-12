@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import naruto_backend.api.request.SubscriptionRequest;
 import naruto_backend.api.request.UpdateUtilisateurRequest;
@@ -105,22 +107,22 @@ public class UtilisateurService {
 		return daoUtilisateur.findByEtat(etat);
 	}
 
-	public Utilisateur insert(SubscriptionRequest request) 
-	{
-		Utilisateur utilisateur = this.create(new Utilisateur(), request);
-
-		return utilisateur;
-	}
-	
-	public Utilisateur update(int id, UpdateUtilisateurRequest request) 
+	public Utilisateur update(int id, UpdateUtilisateurRequest request)
 	{
 		Utilisateur utilisateur = this.getById(id);
 		utilisateur = this.save(utilisateur, request);
 		return utilisateur;
 	}
 
-	public void delete(Integer id) 
+	public void delete(Integer id)
 	{
+		Utilisateur utilisateur = this.getById(id);
+
+		if (utilisateur instanceof Leader leader && leader.getEquipe() != null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+				"Ce leader dirige une équipe : réassignez-la ou supprimez-la d'abord");
+		}
+
 		daoUtilisateur.deleteById(id);
 	}
 	
@@ -160,7 +162,9 @@ public class UtilisateurService {
     
 	private Utilisateur save(Utilisateur utilisateur, UpdateUtilisateurRequest request) {
         utilisateur.setLogin(request.getLogin());
-        utilisateur.setPassword(request.getPassword());
+        if (request.getPassword() != null && !request.getPassword().isBlank()) {
+            utilisateur.setPassword(this.passwordEncoder.encode(request.getPassword()));
+        }
         utilisateur.setNom(request.getNom());
         utilisateur.setPrenom(request.getPrenom());
 		utilisateur.setGenre(request.getGenre());

@@ -13,6 +13,7 @@ public class MissionListResponse {
     private String rang;
     private String equipeNom;
     private String statut;
+    private LocalDate dateDebut;
     private LocalDate dateFin;
     
     
@@ -52,6 +53,12 @@ public class MissionListResponse {
     public void setStatut(String statut) {
         this.statut = statut;
     }
+    public LocalDate getDateDebut() {
+        return dateDebut;
+    }
+    public void setDateDebut(LocalDate dateDebut) {
+        this.dateDebut = dateDebut;
+    }
     public LocalDate getDateFin() {
         return dateFin;
     }
@@ -68,6 +75,8 @@ public class MissionListResponse {
         response.setRang(mission.getRang().toString());
         response.setEquipeNom(mission.getEquipe() instanceof Equipe ? mission.getEquipe().getNom() : "");
         response.setStatut(mission.getStatut().toString());
+        response.setDateDebut(mission.getDateDebut());
+        response.setDateFin(mission.getDateFin());
 
         return response;
     }

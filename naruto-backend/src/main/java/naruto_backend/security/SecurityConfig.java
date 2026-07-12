@@ -27,6 +27,14 @@ public class SecurityConfig {
             // On commence toujours par le plus spécifique, pour terminer par le plus général
             auth.requestMatchers("/auth").permitAll();
 
+            // L'inscription doit etre accessible sans etre deja authentifie
+            auth.requestMatchers("/utilisateur/inscription").permitAll();
+
+            // Le forward interne vers /error (ex: apres un 403 d'un @PreAuthorize) doit rester
+            // accessible, sinon il est lui-meme bloque par l'authentification et masque l'erreur
+            // d'origine derriere un 401.
+            auth.requestMatchers("/error").permitAll();
+
             // Les utilisateurs doivent être authentifiés pour accéder à /quelquechose
             auth.requestMatchers("/**").authenticated();
         });

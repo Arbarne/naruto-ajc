@@ -1,0 +1,279 @@
+.profil-page {
+  background-image: url('/assets/images/image 3.png');
+  background-size: cover;
+  background-position: bottom;
+  background-attachment: fixed;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  padding: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.crud-dialog-overlay {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.55);
+  height: 100dvh;
+  width: 100dvw;
+  animation: fade-in-up 0.3s 0.3s ease-in both;
+}
+
+.crud-container {
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100dvh;
+}
+
+.crud-dialog {
+  background-color: rgba(255, 251, 229, 0.8);
+  padding: 2.5rem 3rem;
+  min-width: 1000px;
+  max-width: 90dvw;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  font-family: inherit;
+
+  animation: fade-in-up 0.3s 0.9s ease-in both;
+}
+
+.crud-dialog table {
+  font-family: inherit;
+}
+
+.crud-menu-avatar {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 30%;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
+  animation: fade-in-up 0.3s 0.5s ease-in both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+}
+
+.clickable-row {
+  cursor: pointer;
+}
+
+.clickable-row:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem 1.5rem;
+  margin: 1rem 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field label {
+  font-size: 0.85rem;
+  color: #4a453f;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Carte de stats */
+
+.stat-card {
+  max-width: 420px;
+  margin-top: 1rem;
+  background: #181512;
+  color: #f1ece3;
+  border-radius: 16px;
+  padding: 1.75rem;
+}
+
+.stat-card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 3px solid #4d8de0;
+  background: #2b241d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  flex: 0 0 auto;
+}
+
+.identity h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.2rem;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(224, 112, 58, 0.18);
+  color: #e0703a;
+  border: 1px solid rgba(224, 112, 58, 0.4);
+  border-radius: 6px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.info-rows {
+  margin: 0 0 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(241, 236, 227, 0.14);
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.3rem 0;
+  font-size: 0.92rem;
+}
+
+.info-row dt {
+  color: #a89d90;
+}
+
+.info-row dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.statut--dispo { color: #7bc496; }
+.statut--mission { color: #e0a13a; }
+.statut--decede { color: #d4574a; }
+
+.stat-card h4 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #a89d90;
+  margin: 0 0 0.75rem;
+}
+
+.stat-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.stat-tile {
+  background: #211c18;
+  border-radius: 10px;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.stat-tile-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.stat-tile-value--good {
+  color: #7bc496;
+}
+
+.stat-tile-label {
+  font-size: 0.75rem;
+  color: #a89d90;
+}
+
+.bar-row {
+  margin-bottom: 0.9rem;
+}
+
+.bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+
+.bar-track {
+  height: 8px;
+  background: #2b241d;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.bar-fill--pv {
+  background: #e0703a;
+}
+
+.bar-fill--chakra {
+  background: #4d8de0;
+}
+
+.stat-card .actions button {
+  background: #2b241d;
+  color: #f1ece3;
+  border: 1px solid rgba(241, 236, 227, 0.2);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.stat-card .actions button:hover {
+  background: #362d24;
+}

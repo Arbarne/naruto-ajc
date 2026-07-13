@@ -39,6 +39,7 @@ export class ConnexionPage {
         this.authService.token = resp.token;
         this.authService.role = resp.role;
         this.authService.equipeId = resp.equipeId;
+        this.authService.login = this.usernameCtrl.value;
         this.router.navigate([ '/home' ]);
       },
 

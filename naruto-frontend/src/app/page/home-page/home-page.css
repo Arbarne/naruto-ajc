@@ -1,8 +1,7 @@
 .home-page {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  overflow: hidden;
   background: #14110e;
 }
 
@@ -27,8 +26,11 @@
 }
 
 .home-map {
-  position: relative;
-  width: min(100vw, 150vh);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max(100vw, 150vh);
   aspect-ratio: 3 / 2;
   background-image: url('/assets/images/Konohamap 1.png');
   background-size: 100% 100%;
@@ -39,6 +41,10 @@
   position: absolute;
   display: block;
   border-radius: 12px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
 }
 
 .map-link--caserne {
@@ -62,6 +68,31 @@
   height: 37%;
 }
 
-.map-link:hover {
-  outline: 2px solid rgba(255, 200, 80, 0.85);
+.village-sprite {
+  position: absolute;
+  width: 3.3%;
+  transform: translate(-50%, -100%);
+  image-rendering: pixelated;
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.5));
+  z-index: 5;
+  pointer-events: none;
+}
+
+.village-poof {
+  position: absolute;
+  width: 5%;
+  transform: translate(-50%, -85%);
+  z-index: 6;
+  pointer-events: none;
+  animation: poof-pulse 0.7s ease-out both;
+}
+
+@keyframes poof-pulse {
+  0% { opacity: 0; transform: translate(-50%, -85%) scale(0.5); }
+  35% { opacity: 1; transform: translate(-50%, -85%) scale(1.1); }
+  100% { opacity: 0; transform: translate(-50%, -85%) scale(1.3); }
+}
+
+.map-link:disabled {
+  cursor: default;
 }

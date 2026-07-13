@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 export interface EquipeRequest {
   nom: string;
   leaderId: number;
+  ninjasId?: number[];
 }
 
 @Injectable({

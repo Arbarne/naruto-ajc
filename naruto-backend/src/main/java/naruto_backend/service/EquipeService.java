@@ -71,9 +71,20 @@ public class EquipeService {
         equipe.setNom(request.getNom());
         equipe.setLeader(leader);
 
-        return daoEquipe.save(equipe);
+        Equipe equipeSauvegardee = daoEquipe.save(equipe);
+
+        if (request.getNinjasId() != null) {
+            for (Integer ninjaId : request.getNinjasId()) {
+                if (daoUtilisateur.findById(ninjaId).orElse(null) instanceof Ninja ninja) {
+                    ninja.setEquipe(equipeSauvegardee);
+                    daoUtilisateur.save(ninja);
+                }
+            }
+        }
+
+        return equipeSauvegardee;
 	}
-	
+
 	public Equipe update(Integer id, UpdateEquipeRequest request)
 	{
         Equipe equipe = getById(id);

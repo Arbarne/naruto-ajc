@@ -65,7 +65,6 @@ public class Equipe {
         return missions;
     }
 
-    
     public void setId(Integer id) {
         this.id = id;
     }

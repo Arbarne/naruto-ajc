@@ -1,5 +1,6 @@
 package naruto_backend.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,7 @@ public class MissionService {
         mission.setRang(request.getRang());
         mission.setGainExp(request.getGainExp());
         mission.setRecompense(request.getRecompense());
+        mission.setStatut(StatutMission.Disponible);
 
         return daoMission.save(mission);
 	}
@@ -60,15 +62,23 @@ public class MissionService {
 	public Mission update(Integer id, UpdateMissionRequest request) 
 	{
 		Mission mission = getById(id);
+		StatutMission statut = request.getStatut();
 
 		mission.setNom(request.getNom());
         mission.setDescription(request.getDescription());
         mission.setRang(request.getRang());
         mission.setGainExp(request.getGainExp());
         mission.setRecompense(request.getRecompense());
+        mission.setEquipe(daoEquipe.findById(request.getEquipeId()).orElse(null));
         mission.setDateDebut(request.getDateDebut());
-        mission.setDateFin(request.getDateFin());
-        mission.setStatut(request.getStatut());		
+        mission.setStatut(statut);
+
+        // Une mission cloturee (succes, echec ou annulation) prend automatiquement la date du jour
+        boolean estCloturee = statut == StatutMission.Terminee
+            || statut == StatutMission.Echouee
+            || statut == StatutMission.Annulee;
+
+        mission.setDateFin(estCloturee ? LocalDate.now() : request.getDateFin());
 
 		return daoMission.save(mission);
 	}

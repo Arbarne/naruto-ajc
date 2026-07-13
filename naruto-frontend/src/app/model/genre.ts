@@ -1,1 +1,1 @@
-export type Genre = "homme" | "femme" | "nb"
+export type Genre = "Homme" | "Femme"

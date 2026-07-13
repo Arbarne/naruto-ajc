@@ -1,45 +1,154 @@
 <section class="equipe-page">
-  <h2>Équipes</h2>
 
-  @if (!showForm) {
-    <button type="button" (click)="showForm = true">Nouvelle équipe</button>
-  }
+  <div class="crud-dialog-overlay">
+  </div>
+  <div class="crud-container">
+    <div class="crud-dialog">
+      <app-navigation></app-navigation>
+      <h2>Équipes</h2>
 
-  @if (showForm) {
-    <form [formGroup]="EquipeForm" (ngSubmit)="creerOuModifier()">
-      <div class="field">
-        <label for="leader">Id du leader</label>
-        <input id="leader" type="number" [formControl]="leaderCtrl">
-      </div>
-
-      <div class="actions">
-        <button type="submit" [disabled]="EquipeForm.invalid">{{ editingEquipe ? 'Modifier' : 'Créer' }}</button>
-        <button type="button" (click)="annulerEditer()">Annuler</button>
-      </div>
-    </form>
-  }
-
-  @if (equipe$ | async; as equipes) {
-    <table>
-      <thead>
-        <tr>
-          <th>Id</th>
-          <th>Leader</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (equipe of equipes; track equipe.id) {
-          <tr>
-            <td>{{ equipe.id }}</td>
-            <td>{{ equipe.id_leader }}</td>
-            <td class="actions">
-              <button type="button" (click)="editer(equipe)">Éditer</button>
-              <button type="button" (click)="supprimer(equipe)">Supprimer</button>
-            </td>
-          </tr>
+      @if (authService.role === 'ADMIN') {
+        @if (!showForm) {
+          <button type="button" (click)="nouvelleEquipe()">Nouvelle équipe</button>
         }
-      </tbody>
-    </table>
-  }
+
+        @if (showForm) {
+          <form [formGroup]="EquipeForm" (ngSubmit)="creerOuModifier()">
+            <div class="field">
+              <label for="nom">Nom</label>
+              <input id="nom" type="text" [formControl]="nomCtrl">
+            </div>
+
+            <div class="field">
+              <label for="leaderId">Leader</label>
+              <select id="leaderId" [formControl]="leaderIdCtrl">
+                @for (leader of (leaderOptions$ | async); track leader.id) {
+                  <option [value]="leader.id">{{ leader.prenom }} {{ leader.nom }} (id {{ leader.id }})</option>
+                }
+              </select>
+            </div>
+
+            <div class="actions">
+              <button type="submit" [disabled]="EquipeForm.invalid">{{ editingEquipe ? 'Modifier' : 'Créer' }}</button>
+              <button type="button" (click)="annulerEditer()">Annuler</button>
+            </div>
+          </form>
+        }
+
+        @if (equipes$ | async; as equipes) {
+          <table>
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Id leader</th>
+                <th>Leader</th>
+                <th>Ninjas</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (equipe of equipes; track equipe.id) {
+                <tr>
+                  <td>{{ equipe.id }}</td>
+                  <td>{{ equipe.nom }}</td>
+                  <td>{{ equipe.leaderId }}</td>
+                  <td>{{ equipe.leaderNom }}</td>
+                  <td>
+                    @for (ninja of equipe.ninjas; track ninja.id) {
+                      <span class="tag">
+                        {{ ninja.nom }}
+                        <button type="button" (click)="retirerNinja(ninja.id)">x</button>
+                      </span>
+                    }
+
+                    @if (ninjaOptions$ | async; as ninjas) {
+                      @if (ninjasDisponibles(ninjas, equipe); as disponibles) {
+                        <div class="ajout-ninja">
+                          <select #ninjaSelect>
+                            @for (ninja of disponibles; track ninja.id) {
+                              <option [value]="ninja.id">{{ ninja.prenom }} {{ ninja.nom }}</option>
+                            }
+                          </select>
+                          <button type="button" [disabled]="disponibles.length === 0" (click)="ajouterNinja(equipe.id, +ninjaSelect.value)">Ajouter</button>
+                        </div>
+                      }
+                    }
+                  </td>
+                  <td class="actions">
+                    <button type="button" (click)="editer(equipe)">Modifier</button>
+                    <button type="button" (click)="supprimer(equipe)">Supprimer</button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      }
+
+      @if (authService.role === 'LEADER' || authService.role === 'USER') {
+        @if (maEquipe$ | async; as equipe) {
+          <h3>{{ equipe.nom }}</h3>
+          <p>Leader : {{ equipe.leaderNom }}</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                @if (authService.role === 'LEADER') {
+                  <th></th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              @for (ninja of equipe.ninjas; track ninja.id) {
+                <tr>
+                  <td>{{ ninja.id }}</td>
+                  <td>{{ ninja.nom }}</td>
+                  @if (authService.role === 'LEADER') {
+                    <td>
+                      <button type="button" (click)="retirerNinja(ninja.id)">Retirer</button>
+                    </td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
+
+          @if (authService.role === 'LEADER') {
+            @if (ninjaOptions$ | async; as ninjas) {
+              @if (ninjasDisponibles(ninjas, equipe); as disponibles) {
+                <div class="ajout-ninja">
+                  <select #ninjaSelect>
+                    @for (ninja of disponibles; track ninja.id) {
+                      <option [value]="ninja.id">{{ ninja.prenom }} {{ ninja.nom }} (id {{ ninja.id }})</option>
+                    }
+                  </select>
+                  <button type="button" [disabled]="disponibles.length === 0" (click)="ajouterNinja(equipe.id, +ninjaSelect.value)">Ajouter</button>
+                </div>
+              }
+            }
+          }
+        } @else {
+          @if (authService.role === 'LEADER') {
+            <p>Vous ne dirigez aucune équipe pour l'instant.</p>
+
+            <form [formGroup]="EquipeForm" (ngSubmit)="creerMonEquipe()">
+              <div class="field">
+                <label for="nomEquipe">Nom de l'équipe</label>
+                <input id="nomEquipe" type="text" [formControl]="nomCtrl">
+              </div>
+
+              <button type="submit" [disabled]="nomCtrl.invalid">Créer mon équipe</button>
+            </form>
+          } @else {
+            <p>Vous n'êtes affecté à aucune équipe.</p>
+          }
+        }
+      }
+    </div>
+    <img class="crud-menu-avatar" src="/assets/images/image 18.png" alt="">
+  </div>
+
 </section>

@@ -28,7 +28,7 @@ public class Mission {
     private String description;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "rang", length = 5,nullable = false, unique = true)
+    @Column(name = "rang", length = 5,nullable = false)
     private RangMission rang;
 
     @Column(name = "gain_exp", length = 50, nullable = false)
@@ -41,10 +41,10 @@ public class Mission {
     @JoinColumn(name = "equipe")
     private Equipe equipe;
 
-    @Column(name = "date_debut", nullable = false)
+    @Column(name = "date_debut")
     private LocalDate dateDebut;
 
-    @Column(name = "date_fin", nullable = false)
+    @Column(name = "date_fin")
     private LocalDate dateFin;
     
     @Enumerated(EnumType.STRING)

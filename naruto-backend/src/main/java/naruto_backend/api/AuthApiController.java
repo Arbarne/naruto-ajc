@@ -29,6 +29,7 @@ public class AuthApiController {
 
     @Autowired
     private UtilisateurService utilisateurSrv;
+    @Autowired
     private EquipeService equipeSrv;
 
     @PostMapping

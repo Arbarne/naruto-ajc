@@ -1,20 +1,15 @@
 package naruto_backend.api.request;
 
-import java.util.List;
-
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public class CreateEquipeRequest {
 
     @NotBlank
     private String nom;
 
-    @NotNull
+    // Optionnel : seul un Hokage peut le renseigner pour creer une equipe au nom d'un autre leader.
+    // Pour un Leader, l'id est toujours resolu depuis l'utilisateur authentifie (voir EquipeService.insert).
     private Integer leaderId;
-
-    @NotNull
-    private List<Integer> ninjasId;
 
     public String getNom() {
         return nom;
@@ -30,14 +25,6 @@ public class CreateEquipeRequest {
 
     public void setLeaderId(Integer leaderId) {
         this.leaderId = leaderId;
-    }
-
-    public List<Integer> getNinjasId() {
-        return ninjasId;
-    }
-
-    public void setNinjasId(List<Integer> ninjasId) {
-        this.ninjasId = ninjasId;
     }
 
 }

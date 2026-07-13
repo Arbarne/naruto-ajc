@@ -30,7 +30,6 @@ public class UpdateMissionRequest {
     @NotNull
     private LocalDate dateDebut;
 
-    @NotNull
     private LocalDate dateFin;
 
     @NotNull

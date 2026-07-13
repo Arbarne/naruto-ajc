@@ -1,0 +1,67 @@
+.home-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #14110e;
+}
+
+.deconnexion-btn {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6rem 1.1rem;
+  background: rgba(30, 24, 21, 0.85);
+  color: #f1ece3;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.deconnexion-btn:hover {
+  background: rgba(43, 36, 29, 0.95);
+}
+
+.home-map {
+  position: relative;
+  width: min(100vw, 150vh);
+  aspect-ratio: 3 / 2;
+  background-image: url('/assets/images/Konohamap 1.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.map-link {
+  position: absolute;
+  display: block;
+  border-radius: 12px;
+}
+
+.map-link--caserne {
+  left: 8%;
+  top: 26%;
+  width: 26%;
+  height: 37%;
+}
+
+.map-link--hokage {
+  left: 37%;
+  top: 26%;
+  width: 26%;
+  height: 37%;
+}
+
+.map-link--archives {
+  left: 66%;
+  top: 26%;
+  width: 26%;
+  height: 37%;
+}
+
+.map-link:hover {
+  outline: 2px solid rgba(255, 200, 80, 0.85);
+}

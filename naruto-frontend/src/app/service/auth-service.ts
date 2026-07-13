@@ -11,10 +11,8 @@ import { Role } from '../model/role';
 export class AuthService {
   private http: HttpClient = inject(HttpClient);
   private _token: string = sessionStorage.getItem("token") ?? "";
-  // private _role: Role | "" = sessionStorage.getItem("role") ?? "";
-  private _role: Role = "admin"
-  // private _equipeId: number | null = sessionStorage.getItem("equipeId") ? parseInt(sessionStorage.getItem("equipeId")!) : null
-  private _equipeId: number | null = 12345
+  private _role: Role = (sessionStorage.getItem("role") as Role) ?? "";
+  private _equipeId: number | null = sessionStorage.getItem("equipeId") ? parseInt(sessionStorage.getItem("equipeId")!) : null
 
   public get token(): string {
     return this._token;
@@ -38,9 +36,13 @@ export class AuthService {
     return this._equipeId;
   }
 
-  public set equipeId(value: number) {
+  public set equipeId(value: number | null) {
     this._equipeId = value;
-    sessionStorage.setItem("equipeId", "" + value);
+    if (value === null) {
+      sessionStorage.removeItem("equipeId");
+    } else {
+      sessionStorage.setItem("equipeId", "" + value);
+    }
   }
 
   public auth(authRequest: AuthRequest): Observable<AuthResponse> {
@@ -53,6 +55,10 @@ export class AuthService {
 
   public resetAuth() {
     this._token = "";
+    this._role = "";
+    this._equipeId = null;
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("role");
+    sessionStorage.removeItem("equipeId");
   }
 }

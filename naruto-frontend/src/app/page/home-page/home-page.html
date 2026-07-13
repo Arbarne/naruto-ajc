@@ -1,0 +1,11 @@
+<section class="home-page">
+  <button type="button" class="deconnexion-btn" (click)="deconnexion()">🚪 Déconnexion</button>
+
+  <div class="home-map">
+    <a class="map-link map-link--caserne" routerLink="/equipe" aria-label="Caserne des ninjas"></a>
+    @if (authService.role === 'ADMIN') {
+      <a class="map-link map-link--hokage" routerLink="/profil" aria-label="Bureau du Hokage"></a>
+    }
+    <a class="map-link map-link--archives" routerLink="/mission" aria-label="Archives des missions"></a>
+  </div>
+</section>

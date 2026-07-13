@@ -10,12 +10,14 @@ import { Equipe } from '../../model/equipe';
 import { RangMission } from '../../model/rang-mission.enum';
 import { EtatMission } from '../../model/etat-mission.enum';
 import { MissionListView } from '../../model/mission-list-view';
+import { Navigation } from '../../component/navigation/navigation';
 
 @Component({
   selector: 'app-mission-page',
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    Navigation,
   ],
   templateUrl: './mission-page.html',
   styleUrl: './mission-page.css',
@@ -65,10 +67,10 @@ export class MissionPage implements OnInit {
     this.rangCtrl = this.formBuilder.control('', Validators.required);
     this.gainExpCtrl = this.formBuilder.control('', Validators.required);
     this.recompenseCtrl = this.formBuilder.control('', Validators.required);
-    this.equipeCtrl = this.formBuilder.control('', Validators.required);
-    this.dateDebutCtrl = this.formBuilder.control('', Validators.required);
-    this.dateFinCtrl = this.formBuilder.control('', Validators.required);
-    this.statutCtrl = this.formBuilder.control('', Validators.required);
+    this.equipeCtrl = this.formBuilder.control('');
+    this.dateDebutCtrl = this.formBuilder.control('');
+    this.dateFinCtrl = this.formBuilder.control('');
+    this.statutCtrl = this.formBuilder.control('');
 
     this.MissionForm = this.formBuilder.group({
       nom: this.nomCtrl,
@@ -85,6 +87,12 @@ export class MissionPage implements OnInit {
 
   private reload() {
     this.refresh$.next();
+  }
+
+  public nouvelleMission() {
+    this.show = "modify";
+    this.editingMission = null;
+    this.MissionForm.reset();
   }
 
   public creerOuModifier() {

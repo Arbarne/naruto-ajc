@@ -13,7 +13,7 @@ public class UpdateUtilisateurRequest {
     @NotBlank
 	private String login;
 
-    @NotBlank
+	// Optionnel : laisser vide pour ne pas changer le mot de passe existant
 	private String password;
 
     @NotBlank

@@ -33,10 +33,12 @@ export class MissionPage implements OnInit {
   protected readonly etats = Object.values(EtatMission);
 
   protected mission$!: Observable<MissionListView[]>;
+  protected currentMission$!: Observable<MissionListView>;
   private refresh$: Subject<void> = new Subject<void>();
   protected equipe$!: Observable<Equipe[]>;
 
   protected show: "" | "detail" | "modify" = ""
+
   protected MissionForm!: FormGroup;
   protected nomCtrl!: FormControl;
   protected descriptionCtrl!: FormControl;
@@ -55,6 +57,13 @@ export class MissionPage implements OnInit {
 
       switchMap(() => {
         return this.missionService.findAll();
+      })
+    );
+    this.currentMission$ = this.refresh$.pipe(
+      startWith(null),
+
+      switchMap(() => {
+        return this.missionService.findMine();
       })
     );
 
@@ -143,5 +152,26 @@ export class MissionPage implements OnInit {
     if (observable) {
       observable.subscribe(() => this.reload())
     }
+  }
+
+  public demarrer(id: number) {
+    const observable = this.missionService.demarrer(id)
+    if (observable) {
+      observable.subscribe(() => this.reload())
+    }
+  }
+
+  public terminer(id: number) {
+    const observable = this.missionService.terminer(id)
+    if (observable) {
+      observable.subscribe(() => this.reload())
+    }
+  }
+
+  public voir(id: number) {
+    this.show = "detail";
+    this.missionService.findById(id).subscribe((mission) => {
+      this.editingMission = mission
+    })
   }
 }

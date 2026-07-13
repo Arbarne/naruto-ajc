@@ -25,16 +25,17 @@ export const jwtHeaderInterceptor: HttpInterceptorFn = (req, next) => {
     }
   });
 
-  return next(authReq).pipe(
-    catchError((error: HttpErrorResponse) => {
+  return next(authReq)
+  // .pipe(
+  //   catchError((error: HttpErrorResponse) => {
 
-    // Si erreur d'autorisations, retour à la page login
-    if (error.status === 403) {
-      authService.resetAuth();
-      router.navigate([ '/login' ]);
-    }
+  //   // Si erreur d'autorisations, retour à la page login
+  //     if (error.status === 403) {
+  //       authService.resetAuth();
+  //       router.navigate([ '/login' ]);
+  //     }
 
-    return throwError(() => error);
-  })
-);
+  //     return throwError(() => error);
+  //   })
+  // );
 };

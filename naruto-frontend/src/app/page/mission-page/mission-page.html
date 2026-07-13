@@ -1,131 +1,197 @@
 
 <section class="mission-page">
 
-  <div class="crud-dialog-overlay">
-  </div>
-  <div class="crud-container">
-    <div class="crud-dialog">
-      <app-navigation></app-navigation>
-      <h2>Archives des missions</h2>
-      @if (show === "") {
-        <button type="button" (click)="nouvelleMission()">Nouvelle mission</button>
-      }
-      si le ninja/leader est en mission :
-      <h3>Mission actuelle</h3>
-      sinon :
-      <h3>Missions disponibles</h3>
-      pour tout le monde :
-      <h3>Missions archivées</h3>
-      ici : missions terminées, échouées, annulées
-      <table>
-        <thead>
-          <tr>
-            <th>Nom</th>
-            <th>Rang</th>
-            <th>Statut</th>
-            <th>Équipe</th>
-            <th>Date de Début</th>
-            <th>Date de Fin</th>
-            <th>Actions</th>
-            <th></th>
-          </tr>
-        </thead>
-        @if (mission$ | async; as missions) {
-          <tbody>
-            @for (mission of missions; track mission.id) {
-              <tr>
-                <td>{{ mission.nom }}</td>
-                <td>{{ mission.rang }}</td>
-                <td>{{ mission.statut }}</td>
-                <td>{{ mission.equipeNom }}</td>
-                <td>{{ mission.dateDebut | date }}</td>
-                <td>{{ mission.dateFin | date }}</td>
-                <td class="actions">
-                  <button type="button" (click)="editer(mission.id)">Éditer</button>
-                  <button type="button" (click)="supprimer(mission.id)">Supprimer</button>
-                  <button type="button" (click)="assigner(mission.id)">Assigner</button>
-                </td>
-              </tr>
-            }
-          </tbody>
-        }
-        </table>
+  <div class="main-page">
+    <div class="crud-dialog-overlay main">
     </div>
-    <img class="crud-menu-avatar" src="/assets/images/image 18.png" alt="">
-  </div>
-
-  @if (show === "modify") {
-    <div class="crud-dialog-overlay">
-      <div class="crud-container">
-        <div class="crud-dialog">
-          <form [formGroup]="MissionForm" (ngSubmit)="creerOuModifier()">
-            <div class="field">
-              <label for="nom">Nom</label>
-              <input id="nom" type="text" [formControl]="nomCtrl">
-            </div>
-
-            <div class="field">
-              <label for="description">Description</label>
-              <textarea id="description" [formControl]="descriptionCtrl"></textarea>
-            </div>
-
-            <div class="field">
-              <label for="rang">Rang</label>
-              <select id="rang" [formControl]="rangCtrl">
-                @for (r of rangs; track r) {
-                  <option [value]="r">{{ r }}</option>
+    <div class="crud-container">
+      <img class="crud-menu-avatar" src="/assets/images/image 18.png" alt="">
+      <div class="crud-dialog parchment-border">
+        <app-navigation></app-navigation>
+        <h2>Archives des missions</h2>
+        @if (show === "") {
+          <button type="button" (click)="nouvelleMission()">Nouvelle mission</button>
+        }
+        si le ninja/leader est en mission :
+        @if (currentMission$ | async; as currentMission) {
+          <h3>Mission actuelle</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Rang</th>
+              <th>Statut</th>
+              <th>Équipe</th>
+              <th>Date de Début</th>
+              <th>Date de Fin</th>
+              <th>Actions</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ currentMission.nom }}</td>
+              <td>{{ currentMission.rang }}</td>
+              <td>{{ currentMission.statut }}</td>
+              <td>{{ currentMission.equipeNom }}</td>
+              <td>{{ currentMission.dateDebut | date }}</td>
+              <td>{{ currentMission.dateFin | date }}</td>
+              <td class="actions">
+                @if (currentMission.statut == "Disponible") {
+                  <button type="button" (click)="demarrer(currentMission.id)">Démarrer</button>
                 }
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="gainExp">Gain d'expérience</label>
-              <input id="gainExp" type="number" [formControl]="gainExpCtrl">
-            </div>
-
-            <div class="field">
-              <label for="recompense">Récompense</label>
-              <input id="recompense" type="number" [formControl]="recompenseCtrl">
-            </div>
-
-            @if (editingMission) {
-              <div class="field">
-                <label for="equipe">Équipe</label>
-                <select id="equipe" [formControl]="equipeCtrl">
-                  @for (e of (equipe$ | async); track e.id) {
-                    <option [value]="e.id">{{ e.id }}</option>
-                  }
-                </select>
-              </div>
-
-              <div class="field">
-                <label for="dateDebut">Date de début</label>
-                <input id="dateDebut" type="date" [formControl]="dateDebutCtrl">
-              </div>
-
-              <div class="field">
-                <label for="dateFin">Date de fin</label>
-                <input id="dateFin" type="date" [formControl]="dateFinCtrl">
-              </div>
-
-              <div class="field">
-                <label for="statut">Statut</label>
-                <select id="statut" [formControl]="statutCtrl">
-                  @for (e of etats; track e) {
-                    <option [value]="e">{{ e }}</option>
-                  }
-                </select>
-              </div>
-            }
-
-            <div class="actions">
-              <button type="submit" [disabled]="MissionForm.invalid">{{ editingMission ? 'Modifier' : 'Créer' }}</button>
-              <button type="button" (click)="annulerEditer()">Annuler</button>
-            </div>
-          </form>
-        </div>
+                @if (currentMission.statut == "EnCours") {
+                  <button type="button" (click)="terminer(currentMission.id)">Terminer</button>
+                }
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        }
+        sinon :
+        <h3>Missions disponibles</h3>
+        pour tout le monde :
+        <h3>Missions archivées</h3>
+        ici : missions terminées, échouées, annulées
+        <table>
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Rang</th>
+              <th>Statut</th>
+              <th>Équipe</th>
+              <th>Date de Début</th>
+              <th>Date de Fin</th>
+              <th>Actions</th>
+              <th></th>
+            </tr>
+          </thead>
+          @if (mission$ | async; as missions) {
+            <tbody>
+              @for (mission of missions; track mission.id) {
+                @if (mission.statut == "Terminee" || mission.statut == "Annulee" || mission.statut == "Echouee") {
+                  <tr>
+                    <td>{{ mission.nom }}</td>
+                    <td>{{ mission.rang }}</td>
+                    <td>{{ mission.statut }}</td>
+                    <td>{{ mission.equipeNom }}</td>
+                    <td>{{ mission.dateDebut | date }}</td>
+                    <td>{{ mission.dateFin | date }}</td>
+                    <td class="actions">
+                      <button type="button" (click)="editer(mission.id)">Éditer</button>
+                      <button type="button" (click)="supprimer(mission.id)">Supprimer</button>
+                      <button type="button" (click)="assigner(mission.id)">Assigner</button>
+                      <button type="button" (click)="voir(mission.id)">Voir</button>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          }
+        </table>
       </div>
     </div>
-  }
+  </div>
+
+@if (show === "modify" || show === "detail") {
+  <div class="modal">
+    <div class="crud-dialog-overlay"></div>
+    <div class="crud-container">
+      <div class="crud-dialog">
+        <h2 class="dialog-title">{{ editingMission ? 'Modifier la mission' : 'Créer une mission' }}</h2>
+
+        <form [formGroup]="MissionForm" (ngSubmit)="creerOuModifier()">
+          <table class="form-table">
+            <tbody>
+              <tr>
+                <td class="form-label"><label for="nom">Nom</label></td>
+                <td class="form-input">
+                  <input id="nom" type="text" [formControl]="nomCtrl">
+                </td>
+              </tr>
+
+              <tr>
+                <td class="form-label"><label for="description">Description</label></td>
+                <td class="form-input">
+                  <textarea id="description" [formControl]="descriptionCtrl"></textarea>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="form-label"><label for="rang">Rang</label></td>
+                <td class="form-input">
+                  <select id="rang" [formControl]="rangCtrl">
+                    @for (r of rangs; track r) {
+                      <option [value]="r">{{ r }}</option>
+                    }
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="form-label"><label for="gainExp">Gain d'expérience</label></td>
+                <td class="form-input">
+                  <input id="gainExp" type="number" [formControl]="gainExpCtrl">
+                </td>
+              </tr>
+
+              <tr>
+                <td class="form-label"><label for="recompense">Récompense</label></td>
+                <td class="form-input">
+                  <input id="recompense" type="number" [formControl]="recompenseCtrl">
+                </td>
+              </tr>
+
+              @if (editingMission) {
+                <tr>
+                  <td class="form-label"><label for="equipe">Équipe</label></td>
+                  <td class="form-input">
+                    <select id="equipe" [formControl]="equipeCtrl">
+                      @for (e of (equipe$ | async); track e.id) {
+                        <option [value]="e.id">{{ e.id }}</option>
+                      }
+                    </select>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="form-label"><label for="dateDebut">Date de début</label></td>
+                  <td class="form-input">
+                    <input id="dateDebut" type="date" [formControl]="dateDebutCtrl">
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="form-label"><label for="dateFin">Date de fin</label></td>
+                  <td class="form-input">
+                    <input id="dateFin" type="date" [formControl]="dateFinCtrl">
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="form-label"><label for="statut">Statut</label></td>
+                  <td class="form-input">
+                    <select id="statut" [formControl]="statutCtrl">
+                      @for (e of etats; track e) {
+                        <option [value]="e">{{ e }}</option>
+                      }
+                    </select>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+
+          <div class="actions">
+            <button type="submit" [disabled]="MissionForm.invalid" class="btn-primary">
+              {{ editingMission ? 'Modifier' : 'Créer' }}
+            </button>
+            <button type="button" (click)="annulerEditer()" class="btn-secondary">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+}
 
 </section>

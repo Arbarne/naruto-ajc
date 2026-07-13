@@ -217,5 +217,9 @@ public class UtilisateurService {
 		user = daoUtilisateur.save(user);
 		return user;
 	}
+
+	public List<Leader> getAvailableLeaders() {
+		return daoUtilisateur.findAvailabLeaders();
+	}
     
 }

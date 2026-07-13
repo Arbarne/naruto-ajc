@@ -35,4 +35,7 @@ public interface IDAOUtilisateur extends JpaRepository<Utilisateur, Integer> {
 
     public List<Utilisateur> findByEtat(EtatNinja etat);
 
+	@Query("SELECT l FROM Leader l WHERE l.equipe IS NOT NULL AND l.equipe NOT IN (SELECT m.equipe FROM Mission m WHERE m.statut = 'EnCours')")
+	public List<Leader> findAvailabLeaders();
+
 }

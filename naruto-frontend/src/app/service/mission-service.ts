@@ -1,10 +1,10 @@
+import { MissionListView } from './../model/mission-list-view';
 import { inject, Injectable } from '@angular/core';
 import { Mission } from '../model/mission';
 import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth-service';
 import { EntityCreatedOrUpdated } from '../model/entity-created-or-updated'
-import { MissionListView } from '../model/mission-list-view';
 
 
 @Injectable({
@@ -23,6 +23,10 @@ export class MissionService {
 
   public findById(id: number): Observable<Mission> {
     return this.http.get<Mission>(`${this.apiUrl}/${id}`);
+  }
+
+  public findMine(): Observable<MissionListView> {
+    return this.http.get<MissionListView>(`${this.apiUrl}/mine`);
   }
 
   public add(mission: Mission): Observable<Mission> {
@@ -54,5 +58,15 @@ export class MissionService {
     })
   }
 
-  public demarrer(id: number) {}
+  public demarrer(id: number) {
+    return this.http.patch<EntityCreatedOrUpdated>(`${this.apiUrl}/${id}/start`, {
+      id: id, equipeId: this.authService.equipeId
+    })
+  }
+
+  public terminer(id: number) {
+    return this.http.patch<EntityCreatedOrUpdated>(`${this.apiUrl}/${id}/terminer`, {
+      id: id, equipeId: this.authService.equipeId
+    })
+  }
 }

@@ -65,7 +65,7 @@ public class UtilisateurAPIController {
     @PreAuthorize("hasRole('ADMIN')")
     public List<LeaderOptionResponse> findAllLeader() {
         return this.utilisateurService.getAllLeader().stream()
-            .map(leader -> new LeaderOptionResponse(leader.getId(), leader.getNom(), leader.getPrenom()))
+            .map(LeaderOptionResponse::convert)
             .toList();
     }
 
@@ -73,6 +73,17 @@ public class UtilisateurAPIController {
     @PreAuthorize("hasRole('ADMIN')")
     public UtilisateurDetailsResponse findById(@PathVariable String id) {
         return UtilisateurDetailsResponse.convert(this.utilisateurService.getById(Integer.valueOf(id)));
+    }
+
+    @GetMapping("/leader/available")
+    @PreAuthorize("hasRole('ADMIN')")
+    public List<LeaderOptionResponse> findAvailableLeaders() {
+        return utilisateurService
+            .getAvailableLeaders()
+            .stream()
+            .map(LeaderOptionResponse::convert)
+            .toList()
+        ;
     }
 
     @PostMapping("/inscription")

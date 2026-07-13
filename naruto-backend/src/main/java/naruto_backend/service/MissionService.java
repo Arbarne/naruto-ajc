@@ -16,10 +16,12 @@ import naruto_backend.dao.IDAOMission;
 import naruto_backend.dao.IDAOUtilisateur;
 import naruto_backend.model.Equipe;
 import naruto_backend.model.EtatNinja;
+import naruto_backend.model.Leader;
 import naruto_backend.model.Mission;
 import naruto_backend.model.Ninja;
 import naruto_backend.model.RangMission;
 import naruto_backend.model.StatutMission;
+import naruto_backend.model.Utilisateur;
 
 @Service
 public class MissionService {
@@ -94,10 +96,10 @@ public class MissionService {
         return daoMission.save(mission);
     }
 
-    public Mission startMission(Integer id, StartMissionRequest request) {
+    public Mission startMission(Integer id) {
         Mission mission = getById(id);
 
-        mission.setDateDebut(request.getDateDebut());
+        mission.setDateDebut(LocalDate.now());
         mission.setStatut(StatutMission.EnCours);
 
         mission.getEquipe().getLeader().setEtat(EtatNinja.EnMission);
@@ -132,4 +134,47 @@ public class MissionService {
         return daoMission.findByEquipeId(equipeId);
     }
 
+    public Mission getMissionDeUtilisateur(String login) {
+        Utilisateur user = daoUtilisateur.findByLogin(login).orElse(null);
+
+        if (user instanceof Leader leader) {
+            return daoMission.findCurrentMissionByLeaderId(leader.getId()).orElse(null);
+        } else if (user instanceof Ninja ninja) {
+            return daoMission.findCurrentMissionByNinjaId(ninja.getId()).orElse(null);
+        }
+
+        return null;
+    }
+
+    public Equipe getEquipeDeUtilisateur(String login) {
+        Utilisateur user = daoUtilisateur.findByLogin(login).orElse(null);
+
+        if (user instanceof Leader leader) {
+            return leader.getEquipe();
+        }
+        if (user instanceof Ninja ninja) {
+            return ninja.getEquipe();
+        }
+
+        return null;
+    }
+
+    public Mission terminerMission(Integer id) {
+        Mission mission = getById(id);
+
+        if (mission == null) return null;
+
+        mission.setStatut(StatutMission.Terminee);
+        mission.setDateFin(LocalDate.now());
+
+        mission.getEquipe().getLeader().setEtat(EtatNinja.Disponible);
+        daoUtilisateur.save(mission.getEquipe().getLeader());
+
+        for (Ninja ninja : mission.getEquipe().getNinjas()) {
+            ninja.setEtat(EtatNinja.Disponible);
+            daoUtilisateur.save(ninja);
+        }
+
+        return daoMission.save(mission);
+    }
 }

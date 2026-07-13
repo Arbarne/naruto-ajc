@@ -47,7 +47,8 @@
 .divider-badge {
   flex: 0 0 auto;
   margin: 0 0.75rem;
-  font-size: 1rem;
+  width: 2rem;
+  height: auto;
 }
 
 form {
@@ -93,20 +94,6 @@ form {
   cursor: pointer;
   padding: 0 0.8rem;
   font-size: 1rem;
-}
-
-.field-wrapper {
-  position: relative;
-}
-
-.walker {
-  position: absolute;
-  left: -38px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 28px;
-  height: auto;
-  pointer-events: none;
 }
 
 .field-row {

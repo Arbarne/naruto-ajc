@@ -133,21 +133,15 @@
 
             <dl class="info-rows">
               <div class="info-row">
-                <dt>Spécialité</dt>
-                <dd>{{ profil.specialite }}</dd>
-              </div>
-              <div class="info-row">
-                <dt>Village</dt>
-                <dd>Konoha</dd>
-              </div>
-              <div class="info-row">
                 <dt>Statut</dt>
                 <dd class="statut" [class.statut--dispo]="profil.etatNinja === 'Disponible'" [class.statut--mission]="profil.etatNinja === 'EnMission'" [class.statut--decede]="profil.etatNinja === 'Decede'">{{ profil.etatNinja }}</dd>
               </div>
-              <div class="info-row">
-                <dt>Équipe</dt>
-                <dd>{{ profil.equipeBasicInfo.nom ?? '—' }}</dd>
-              </div>
+              @if (profil.type !== 'Ninja') {
+                <div class="info-row">
+                  <dt>Équipe</dt>
+                  <dd>{{ profil.equipeBasicInfo.nom ?? '—' }}</dd>
+                </div>
+              }
             </dl>
 
             <h4>Statistiques</h4>
@@ -187,6 +181,38 @@
               </div>
             </div>
 
+            <div class="form-grid">
+              <div class="field">
+                <label for="typeSelect">Type</label>
+                <select id="typeSelect" (change)="changerType(profil, $any($event.target).value)">
+                  @for (t of types; track t) {
+                    <option [value]="t" [selected]="t === profil.type">{{ t }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="specialiteSelect">Spécialité</label>
+                <select id="specialiteSelect" (change)="changerSpecialite(profil, $any($event.target).value)">
+                  @for (s of specialites; track s) {
+                    <option [value]="s" [selected]="s === profil.specialite">{{ s }}</option>
+                  }
+                </select>
+              </div>
+
+              @if (profil.type === 'Ninja') {
+                <div class="field">
+                  <label for="equipeSelect">Équipe</label>
+                  <select id="equipeSelect" (change)="changerEquipe(profil, $any($event.target).value)">
+                    <option value="" [selected]="profil.equipeBasicInfo.id === -1">Aucune</option>
+                    @for (e of (equipes$ | async); track e.id) {
+                      <option [value]="e.id" [selected]="e.id === profil.equipeBasicInfo.id">{{ e.nom }}</option>
+                    }
+                  </select>
+                </div>
+              }
+            </div>
+
             <div class="actions">
               <button type="button" (click)="modifierProfil(profil)">Modifier</button>
               <button type="button" (click)="supprimer(profil)">Supprimer</button>
@@ -203,6 +229,7 @@
               <thead>
                 <tr>
                   <th>Id</th>
+                  <th>Type</th>
                   <th>Nom</th>
                   <th>Prénom</th>
                   <th>Rang</th>
@@ -216,6 +243,7 @@
                 @for (profil of profils; track profil.id) {
                   <tr class="clickable-row" (click)="voirProfil(profil)">
                     <td>{{ profil.id }}</td>
+                    <td>{{ profil.type }}</td>
                     <td>{{ profil.nom }}</td>
                     <td>{{ profil.prenom }}</td>
                     <td>{{ profil.rang }}</td>

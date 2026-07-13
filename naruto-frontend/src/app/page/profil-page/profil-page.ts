@@ -3,8 +3,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Observable, Subject, startWith, switchMap } from 'rxjs';
 import { UtilisateurService } from '../../service/utilisateur-service';
+import { EquipeService } from '../../service/equipe-service';
 import { AuthService } from '../../service/auth-service';
-import { Profil } from '../../model/profil';
+import { Profil, ProfilUpdateRequest, UserType } from '../../model/profil';
+import { Equipe } from '../../model/equipe';
 import { Navigation } from '../../component/navigation/navigation';
 import { RangNinja } from '../../model/rang-ninja.enum';
 import { Specialite } from '../../model/specialite.enum';
@@ -23,15 +25,18 @@ import { EtatNinja } from '../../model/etat-ninja.enum';
 export class ProfilPage implements OnInit {
 
   private utilisateurService: UtilisateurService = inject(UtilisateurService);
+  private equipeService: EquipeService = inject(EquipeService);
   protected authService: AuthService = inject(AuthService);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   protected readonly rangs = Object.values(RangNinja);
   protected readonly specialites = Object.values(Specialite);
   protected readonly etats = Object.values(EtatNinja);
+  protected readonly types: UserType[] = ['Ninja', 'Leader', 'Hokage'];
 
   private refresh$: Subject<void> = new Subject<void>();
   protected profils$!: Observable<Profil[]>;
+  protected equipes$!: Observable<Equipe[]>;
 
   protected selectedProfil: Profil | null = null;
   protected mode: '' | 'creer' | 'modifier' = '';
@@ -100,11 +105,23 @@ export class ProfilPage implements OnInit {
         startWith(null),
         switchMap(() => this.utilisateurService.findAll())
       );
+      this.equipes$ = this.refresh$.pipe(
+        startWith(null),
+        switchMap(() => this.equipeService.findAll())
+      );
     }
   }
 
   private reload() {
     this.refresh$.next();
+  }
+
+  // Rafraichit la carte affichee (au lieu de revenir au tableau) apres une modification
+  private rafraichirSelection(id: number) {
+    this.utilisateurService.findById(id).subscribe(profil => {
+      this.selectedProfil = profil;
+      this.reload();
+    });
   }
 
   protected tauxReussite(profil: Profil): number {
@@ -192,12 +209,71 @@ export class ProfilPage implements OnInit {
         delete request.password;
       }
 
-      this.utilisateurService.update(this.selectedProfil.id, request).subscribe(() => {
+      const id = this.selectedProfil.id;
+
+      this.utilisateurService.update(id, request).subscribe(() => {
         this.mode = '';
-        this.selectedProfil = null;
-        this.reload();
+        this.rafraichirSelection(id);
       });
     }
+  }
+
+  public changerType(profil: Profil, type: string) {
+    if (type === profil.type) {
+      return;
+    }
+
+    this.utilisateurService.updateType(profil.id, type as UserType).subscribe(() => {
+      this.rafraichirSelection(profil.id);
+    });
+  }
+
+  public changerSpecialite(profil: Profil, specialite: string) {
+    if (specialite === profil.specialite) {
+      return;
+    }
+
+    const request: ProfilUpdateRequest = {
+      login: profil.login,
+      nom: profil.nom,
+      prenom: profil.prenom,
+      genre: profil.genre,
+      specialite: specialite as Specialite,
+      rang: profil.rang,
+      etat: profil.etatNinja,
+      niveau: profil.niveau,
+      expActuel: profil.expActuel,
+      pvMax: profil.pvMax,
+      pvActuel: profil.pvActuel,
+      chakraMax: profil.chakraMax,
+      chakraActuel: profil.chakraActuel,
+      nbEchecs: profil.nbEchecs,
+      nbReussites: profil.nbReussites,
+      argent: profil.argent,
+    };
+
+    this.utilisateurService.update(profil.id, request).subscribe(() => {
+      this.rafraichirSelection(profil.id);
+    });
+  }
+
+  // Reassignation directe possible uniquement pour un Ninja : cote back, le lien Leader -> equipe
+  // est le cote inverse (mappedBy) de la relation, le modifier ici n'aurait aucun effet en base.
+  public changerEquipe(profil: Profil, equipeId: string) {
+    const id = equipeId ? Number(equipeId) : null;
+    const idActuel = profil.equipeBasicInfo.id === -1 ? null : profil.equipeBasicInfo.id;
+
+    if (id === idActuel) {
+      return;
+    }
+
+    const appel = id === null
+      ? this.equipeService.removeNinja(profil.id)
+      : this.equipeService.addNinja(id, profil.id);
+
+    appel.subscribe(() => {
+      this.rafraichirSelection(profil.id);
+    });
   }
 
   public supprimer(profil: Profil) {

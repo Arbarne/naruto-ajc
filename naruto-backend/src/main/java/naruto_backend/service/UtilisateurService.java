@@ -2,12 +2,14 @@ package naruto_backend.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import naruto_backend.api.request.SubscriptionRequest;
@@ -221,5 +223,29 @@ public class UtilisateurService {
 	public List<Leader> getAvailableLeaders() {
 		return daoUtilisateur.findAvailabLeaders();
 	}
-    
+
+	private static final Set<String> TYPES_VALIDES = Set.of("Ninja", "Leader", "Hokage");
+
+	@Transactional
+	public void updateType(Integer id, String type) {
+		if (!TYPES_VALIDES.contains(type)) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Type invalide : " + type);
+		}
+
+		Utilisateur utilisateur = this.getById(id);
+
+		if (utilisateur instanceof Leader leader && leader.getEquipe() != null) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+				"Ce leader dirige une équipe : réassignez-la ou supprimez-la d'abord");
+		}
+
+		// Une fois le type change, la colonne equipe (specifique au mapping Ninja) n'a plus de sens.
+		if (utilisateur instanceof Ninja ninja && ninja.getEquipe() != null) {
+			ninja.setEquipe(null);
+			daoUtilisateur.save(ninja);
+		}
+
+		daoUtilisateur.updateUserType(id, type);
+	}
+
 }

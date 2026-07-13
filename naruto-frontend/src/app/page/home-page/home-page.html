@@ -1,6 +1,78 @@
 <section class="home-page">
   <button type="button" class="deconnexion-btn" (click)="deconnexion()">🚪 Déconnexion</button>
 
+  @if (authService.role !== 'ADMIN') {
+    <button type="button" class="profil-btn" (click)="voirMonProfil()">🥷 Mon profil</button>
+  }
+
+  @if (monProfil(); as profil) {
+    <div class="mon-profil-overlay" (click)="fermerMonProfil()">
+      <div class="mon-profil-card" (click)="$event.stopPropagation()">
+        <div class="stat-card-header">
+          <div class="avatar">{{ profil.prenom.charAt(0) }}{{ profil.nom.charAt(0) }}</div>
+          <div class="identity">
+            <h3>{{ profil.prenom }} {{ profil.nom }}</h3>
+            <span class="badge">{{ profil.rang }}</span>
+          </div>
+        </div>
+
+        <dl class="info-rows">
+          <div class="info-row">
+            <dt>Spécialité</dt>
+            <dd>{{ profil.specialite }}</dd>
+          </div>
+          <div class="info-row">
+            <dt>Statut</dt>
+            <dd>{{ profil.etatNinja }}</dd>
+          </div>
+          <div class="info-row">
+            <dt>Équipe</dt>
+            <dd>{{ profil.equipeBasicInfo.nom ?? '—' }}</dd>
+          </div>
+        </dl>
+
+        <div class="stat-tiles">
+          <div class="stat-tile">
+            <span class="stat-tile-value">{{ profil.niveau }}</span>
+            <span class="stat-tile-label">Niveau</span>
+          </div>
+          <div class="stat-tile">
+            <span class="stat-tile-value">{{ profil.argent }}</span>
+            <span class="stat-tile-label">Argent</span>
+          </div>
+          <div class="stat-tile">
+            <span class="stat-tile-value">{{ tauxReussite(profil) }}%</span>
+            <span class="stat-tile-label">Taux réussite</span>
+          </div>
+        </div>
+
+        <div class="bar-row">
+          <div class="bar-label">
+            <span>PV</span>
+            <span>{{ profil.pvActuel }} / {{ profil.pvMax }}</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill bar-fill--pv" [style.width.%]="pourcentage(profil.pvActuel, profil.pvMax)"></div>
+          </div>
+        </div>
+
+        <div class="bar-row">
+          <div class="bar-label">
+            <span>Chakra</span>
+            <span>{{ profil.chakraActuel }} / {{ profil.chakraMax }}</span>
+          </div>
+          <div class="bar-track">
+            <div class="bar-fill bar-fill--chakra" [style.width.%]="pourcentage(profil.chakraActuel, profil.chakraMax)"></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" (click)="fermerMonProfil()">Fermer</button>
+        </div>
+      </div>
+    </div>
+  }
+
   <div class="home-map">
     <button type="button" class="map-link map-link--caserne" [disabled]="enDeplacement()" (click)="teleporter('/equipe')" aria-label="Caserne des ninjas"></button>
     @if (authService.role === 'ADMIN') {

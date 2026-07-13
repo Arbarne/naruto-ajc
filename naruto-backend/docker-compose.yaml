@@ -18,6 +18,9 @@ services:
       retries: 10
       interval: 5s
 
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./naruto-init.sql:/docker-entrypoint-initdb.d/setup.sql
   java:
     build: .
 
@@ -35,6 +38,10 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+
+volumes:
+  db_data:
+    name: naruto-db-data
 
 networks:
   naruto:

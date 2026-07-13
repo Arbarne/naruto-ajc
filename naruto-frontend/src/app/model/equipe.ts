@@ -1,12 +1,9 @@
-export interface NinjaSimple {
-  id: number;
-  nom: string;
-}
+import { NinjaOption } from './ninja-option';
 
 export interface Equipe {
   id: number;
   nom: string;
   leaderId: number;
   leaderNom: string;
-  ninjas: NinjaSimple[];
+  ninjas: NinjaOption[];
 }

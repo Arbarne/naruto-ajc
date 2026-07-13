@@ -11,8 +11,8 @@ public class EquipeDetailsResponse {
     private String nom;
     private Integer leaderId;
     private String leaderNom;
-    private List<NinjaSimpleView> ninjas;
-    
+    private List<NinjaOptionResponse> ninjas;
+
     public Integer getId() {
         return id;
     }
@@ -37,10 +37,10 @@ public class EquipeDetailsResponse {
     public void setLeaderNom(String leaderNom) {
         this.leaderNom = leaderNom;
     }
-    public List<NinjaSimpleView> getNinjas() {
+    public List<NinjaOptionResponse> getNinjas() {
         return ninjas;
     }
-    public void setNinjas(List<NinjaSimpleView> ninjas) {
+    public void setNinjas(List<NinjaOptionResponse> ninjas) {
         this.ninjas = ninjas;
     }
 
@@ -53,13 +53,17 @@ public class EquipeDetailsResponse {
         response.setNinjas(
             equipe.getNinjas()
             .stream()
-            .map(ninja -> new NinjaSimpleView(
+            .map(ninja -> new NinjaOptionResponse(
                       ninja.getId(),
-                      ninja.getNom()
+                      ninja.getLogin(),
+                      ninja.getNom(),
+                      ninja.getPrenom(),
+                      ninja.getRang() != null ? ninja.getRang().toString() : null,
+                      ninja.getSpecialite() != null ? ninja.getSpecialite().toString() : null
                   ))
                   .toList());
         return response;
     }
-    
+
 
 }

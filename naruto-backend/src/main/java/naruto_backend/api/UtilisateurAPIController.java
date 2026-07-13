@@ -51,7 +51,13 @@ public class UtilisateurAPIController {
     @PreAuthorize("hasRole('LEADER') or hasRole('ADMIN')")
     public List<NinjaOptionResponse> findAllNinja() {
         return this.utilisateurService.getAllNinja().stream()
-            .map(ninja -> new NinjaOptionResponse(ninja.getId(), ninja.getNom(), ninja.getPrenom()))
+            .map(ninja -> new NinjaOptionResponse(
+                ninja.getId(),
+                ninja.getLogin(),
+                ninja.getNom(),
+                ninja.getPrenom(),
+                ninja.getRang() != null ? ninja.getRang().toString() : null,
+                ninja.getSpecialite() != null ? ninja.getSpecialite().toString() : null))
             .toList();
     }
 

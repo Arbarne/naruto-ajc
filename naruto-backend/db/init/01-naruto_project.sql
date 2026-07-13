@@ -106,7 +106,7 @@ CREATE TABLE `utilisateur` (
 --
 
 INSERT INTO `utilisateur` (`user_type`, `id`, `argent`, `chakra_actuel`, `chakra_max`, `etat`, `exp_actuel`, `genre`, `login`, `nb_echecs`, `nb_reussites`, `niveau`, `nom`, `password`, `prenom`, `pv_actuel`, `pv_max`, `rang`, `specialite`, `equipe`) VALUES
-('Ninja', 1, 1200, 100, 100, 'Disponible', 4500, 'Homme', 'naruto', 3, 42, 15, 'Uzumaki', '$2a$12$FS8DZ/zHoN1ZaFakuupcguAtJ939Iny8lXGcNRchKbwOIxmo0VR32', 'Naruto', 100, 100, 'Chunin', 'Ninjutsu', 1),
+('Hokage', 1, 1200, 100, 100, 'Disponible', 4500, 'Homme', 'naruto', 3, 42, 15, 'Uzumaki', '$2a$12$FS8DZ/zHoN1ZaFakuupcguAtJ939Iny8lXGcNRchKbwOIxmo0VR32', 'Naruto', 100, 100, 'Chunin', 'Ninjutsu', 1),
 ('Leader', 2, 950, 95, 95, 'Disponible', 4300, 'Homme', 'sasuke', 2, 40, 15, 'Uchiha', '$2a$10$dummy', 'Sasuke', 95, 95, 'Chunin', 'Ninjutsu', NULL),
 ('Ninja', 3, 850, 90, 90, 'Disponible', 4000, 'Femme', 'sakura', 4, 35, 14, 'Haruno', '$2a$10$dummy', 'Sakura', 90, 90, 'Chunin', 'Medecine', 1),
 ('Ninja', 4, 2000, 180, 180, 'Disponible', 12000, 'Homme', 'kakashi', 1, 210, 35, 'Hatake', '$2a$10$dummy', 'Kakashi', 180, 180, 'Jonin', 'Ninjutsu', 2),
@@ -115,7 +115,12 @@ INSERT INTO `utilisateur` (`user_type`, `id`, `argent`, `chakra_actuel`, `chakra
 ('Leader', 7, 760, 78, 78, 'Disponible', 2950, 'Homme', 'shino', 3, 31, 12, 'Aburame', '$2a$10$dummy', 'Shino', 78, 78, 'Genin', 'Ninjutsu', NULL),
 ('Leader', 8, 1800, 170, 170, 'Disponible', 11000, 'Homme', 'gai', 2, 205, 34, 'Gai', '$2a$10$dummy', 'Maito', 170, 170, 'Jonin', 'Taijutsu', NULL),
 ('Ninja', 9, 900, 88, 88, 'Disponible', 3400, 'Homme', 'lee', 3, 33, 13, 'Lee', '$2a$10$dummy', 'Rock', 88, 88, 'Genin', 'Taijutsu', 3),
-('Ninja', 10, 850, 84, 84, 'Disponible', 3250, 'Femme', 'tenten', 4, 32, 13, NULL, '$2a$10$dummy', 'Tenten', 84, 84, 'Genin', 'Genjutsu', 3);
+('Ninja', 10, 850, 84, 84, 'Disponible', 3250, 'Femme', 'tenten', 4, 32, 13, NULL, '$2a$10$dummy', 'Tenten', 84, 84, 'Genin', 'Genjutsu', 3),
+
+-- Comptes de test (mot de passe en clair : naruto123), utilises pour tester les permissions par role
+('Ninja', 100, 0, 100, 100, 'Disponible', 0, 'Homme', 'testuser', 0, 0, 1, 'Test', '$2a$10$OdrMbpJq4rZAb7NrJQUat.FqLfYMB/3XRHkps2y2D0flR0/aPCKES', 'Utilisateur', 100, 100, 'Genin', 'Aucune', NULL),
+('Hokage', 101, 0, 100, 100, 'Disponible', 0, 'Homme', 'hokage_test', 0, 0, 1, 'Test', '$2b$10$BOntl09kLhmAuVzVgLs.UOZs536rE4Wi38SgtpjHIrwqORFFLsnsK', 'Hokage', 100, 100, NULL, 'Aucune', NULL),
+('Leader', 102, 0, 100, 100, 'Disponible', 0, 'Homme', 'leader_test', 0, 0, 1, 'Test', '$2b$10$BOntl09kLhmAuVzVgLs.UOZs536rE4Wi38SgtpjHIrwqORFFLsnsK', 'Leader', 100, 100, 'Genin', 'Aucune', NULL);
 
 --
 -- Index pour les tables déchargées

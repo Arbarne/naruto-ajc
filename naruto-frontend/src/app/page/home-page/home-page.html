@@ -2,10 +2,37 @@
   <button type="button" class="deconnexion-btn" (click)="deconnexion()">🚪 Déconnexion</button>
 
   <div class="home-map">
-    <a class="map-link map-link--caserne" routerLink="/equipe" aria-label="Caserne des ninjas"></a>
+    <button type="button" class="map-link map-link--caserne" [disabled]="enDeplacement()" (click)="teleporter('/equipe')" aria-label="Caserne des ninjas"></button>
     @if (authService.role === 'ADMIN') {
-      <a class="map-link map-link--hokage" routerLink="/profil" aria-label="Bureau du Hokage"></a>
+      <button type="button" class="map-link map-link--hokage" [disabled]="enDeplacement()" (click)="teleporter('/profil')" aria-label="Bureau du Hokage"></button>
     }
-    <a class="map-link map-link--archives" routerLink="/mission" aria-label="Archives des missions"></a>
+    <button type="button" class="map-link map-link--archives" [disabled]="enDeplacement()" (click)="teleporter('/mission')" aria-label="Archives des missions"></button>
+
+    @if (poofDepartVisible()) {
+      <img
+        class="village-poof"
+        src="/assets/images/poof.png"
+        [style.left.%]="poofPos().left"
+        [style.top.%]="poofPos().top"
+        alt="">
+    }
+
+    @if (poofArriveeVisible()) {
+      <img
+        class="village-poof"
+        src="/assets/images/poof.png"
+        [style.left.%]="poofPos().left"
+        [style.top.%]="poofPos().top"
+        alt="">
+    }
+
+    @if (spriteVisible()) {
+      <img
+        class="village-sprite"
+        [src]="sprite"
+        [style.left.%]="spritePos().left"
+        [style.top.%]="spritePos().top"
+        alt="">
+    }
   </div>
 </section>

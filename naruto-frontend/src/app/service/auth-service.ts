@@ -13,6 +13,7 @@ export class AuthService {
   private _token: string = sessionStorage.getItem("token") ?? "";
   private _role: Role = (sessionStorage.getItem("role") as Role) ?? "";
   private _equipeId: number | null = sessionStorage.getItem("equipeId") ? parseInt(sessionStorage.getItem("equipeId")!) : null
+  private _login: string = sessionStorage.getItem("login") ?? "";
 
   public get token(): string {
     return this._token;
@@ -45,6 +46,15 @@ export class AuthService {
     }
   }
 
+  public get login(): string {
+    return this._login;
+  }
+
+  public set login(value: string) {
+    this._login = value;
+    sessionStorage.setItem("login", value);
+  }
+
   public auth(authRequest: AuthRequest): Observable<AuthResponse> {
     return this.http.post<AuthResponse>('/auth', authRequest);
   }
@@ -57,8 +67,10 @@ export class AuthService {
     this._token = "";
     this._role = "";
     this._equipeId = null;
+    this._login = "";
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("role");
     sessionStorage.removeItem("equipeId");
+    sessionStorage.removeItem("login");
   }
 }

@@ -117,6 +117,11 @@ export class EquipePage implements OnInit {
     return equipe.ninjas.filter(ninja => ninja.login !== this.authService.login);
   }
 
+  // Pour le Leader : ne propose que les ninjas sans equipe, ou deja membres de l'equipe geree
+  protected ninjasDisponibles(ninjas: NinjaOption[], equipe: Equipe): NinjaOption[] {
+    return ninjas.filter(ninja => ninja.equipeId == null || ninja.equipeId === equipe.id);
+  }
+
   public toggleNinjaSelection(ninjaId: number, selectionne: boolean) {
     if (selectionne) {
       this.ninjasSelectionnes.add(ninjaId);

@@ -110,15 +110,6 @@ form {
   color: #cfc9c3;
 }
 
-.forgot {
-  color: #e0703a;
-  text-decoration: none;
-}
-
-.forgot:hover {
-  text-decoration: underline;
-}
-
 .submit-btn {
   border: none;
   border-radius: 10px;

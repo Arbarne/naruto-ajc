@@ -11,6 +11,7 @@
 
         @if (mode === 'creer' || mode === 'modifier') {
           <!-- Formulaire creer/modifier -->
+          <h3>{{ mode === 'modifier' ? 'Modifier le profil' : 'Nouveau profil' }}</h3>
           <form [formGroup]="ProfilForm" (ngSubmit)="creerOuModifier()">
             <div class="form-grid">
               <div class="field">
@@ -181,6 +182,8 @@
               </div>
             </div>
 
+            <h4>Gestion du profil</h4>
+
             <div class="form-grid">
               <div class="field">
                 <label for="typeSelect">Type</label>
@@ -222,6 +225,7 @@
 
         } @else {
           <!-- Tableau -->
+          <h3>Liste des profils</h3>
           <button type="button" (click)="nouveauProfil()">Nouveau profil</button>
 
           @if (profils$ | async; as profils) {

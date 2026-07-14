@@ -5,7 +5,7 @@
   <div class="crud-container">
     <div class="crud-dialog">
       <app-navigation></app-navigation>
-      <h2>Équipes</h2>
+      <h2>{{ authService.role === 'ADMIN' ? 'Équipes' : 'Mon équipe' }}</h2>
 
       @if (authService.role === 'ADMIN') {
         @if (!showForm) {
@@ -13,6 +13,7 @@
         }
 
         @if (showForm) {
+          <h3>{{ editingEquipe ? 'Modifier l\'équipe' : 'Nouvelle équipe' }}</h3>
           <form [formGroup]="EquipeForm" (ngSubmit)="creerOuModifier()">
             <div class="field">
               <label for="nom">Nom</label>
@@ -52,6 +53,7 @@
 
         @if (equipes$ | async; as equipes) {
           @if (missions$ | async; as missions) {
+            <h3>Liste des équipes</h3>
             <table>
               <thead>
                 <tr>
@@ -87,12 +89,26 @@
 
       @if (authService.role === 'LEADER' || authService.role === 'USER') {
         @if (maEquipe$ | async; as equipe) {
-          <h3>{{ equipe.nom }}</h3>
-          <p>Leader : {{ equipe.leaderNom }}</p>
           @if (missions$ | async; as missions) {
-            <p>Mission assignée : {{ missionAssignee(equipe.nom, missions) ?? 'Aucune' }}</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>Nom</th>
+                  <th>Leader</th>
+                  <th>Mission assignée</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ equipe.nom }}</td>
+                  <td>{{ equipe.leaderNom }}</td>
+                  <td>{{ missionAssignee(equipe.nom, missions) ?? '—' }}</td>
+                </tr>
+              </tbody>
+            </table>
           }
 
+          <h4>Coéquipiers</h4>
           <table>
             <thead>
               <tr>
@@ -122,9 +138,10 @@
             @if (!gestionNinjasOuverte) {
               <button type="button" (click)="ouvrirGestionNinjas(equipe)">Gérer les ninjas</button>
             } @else {
+              <h4>Ninjas disponibles</h4>
               @if (ninjaOptions$ | async; as ninjas) {
                 <div class="ninja-checklist">
-                  @for (ninja of ninjas; track ninja.id) {
+                  @for (ninja of ninjasDisponibles(ninjas, equipe); track ninja.id) {
                     <label class="ninja-checklist-item">
                       <input
                         type="checkbox"
@@ -146,6 +163,7 @@
           @if (authService.role === 'LEADER') {
             <p>Vous ne dirigez aucune équipe pour l'instant.</p>
 
+            <h3>Créer mon équipe</h3>
             <form [formGroup]="EquipeForm" (ngSubmit)="creerMonEquipe()">
               <div class="field">
                 <label for="nomEquipe">Nom de l'équipe</label>

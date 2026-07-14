@@ -5,4 +5,5 @@ export interface NinjaOption {
   prenom: string;
   rang: string;
   specialite: string;
+  equipeId: number | null;
 }

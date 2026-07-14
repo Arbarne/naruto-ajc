@@ -12,7 +12,7 @@ body {
   height: 100%;
 }
 button {
-  padding: .4rem;
+  padding: .6rem 1rem;
   border-radius: 0;
   border: 0;
   font-size: 1.3rem;
@@ -23,14 +23,26 @@ button:hover:not(:disabled) {
   cursor: pointer;
 }
 
+button:hover{
+  color: var(--theme-red-color);
+}
+
 button.green {
   color: white;
   background-color: var(--theme-green-color);
 }
 
+button.green:hover {
+  background-color: var(--theme-green-color-dark);
+}
+
 button.red {
   color: white;
   background-color: var(--theme-red-color);
+}
+
+button.red:hover {
+  background-color: var(--theme-red-color-dark);
 }
 
 :root {
@@ -39,5 +51,7 @@ button.red {
   --theme-brown-color-dark: #622B2B;
   --theme-brown-color: #91654f;
   --theme-green-color: #39a34c;
+  --theme-green-color-dark: #0e6e20;
+  --theme-paper-color: #f6ecd9;
 }
 

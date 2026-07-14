@@ -14,28 +14,25 @@
         }
         @if (currentMission$ | async; as currentMission) {
           <h3>mission actuelle</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Rang</th>
-                <th>Statut</th>
-                <th>Équipe</th>
-                <th>Date de Début</th>
-                <th>Date de Fin</th>
-                <th>Actions</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{ currentMission.nom }}</td>
-                <td>{{ currentMission.rang }}</td>
-                <td>{{ currentMission.statut }}</td>
-                <td>{{ currentMission.equipeNom }}</td>
-                <td>{{ currentMission.dateDebut | date }}</td>
-                <td>{{ currentMission.dateFin | date }}</td>
-                <td class="actions">
+          <div class="table-missions">
+            <div class="table-missions-header">
+              <div class="table-missions-header-item">Nom</div>
+              <div class="table-missions-header-item">Rang</div>
+              <div class="table-missions-header-item">Statut</div>
+              <div class="table-missions-header-item">Équipe</div>
+              <div class="table-missions-header-item">Date de Début</div>
+              <div class="table-missions-header-item">Date de Fin</div>
+              <div class="table-missions-header-item">Actions</div>
+            </div>
+            <div class="table-missions-body">
+              <div class="table-missions-body-item">
+                <div>{{ currentMission.nom }}</div>
+                <div>{{ currentMission.rang }}</div>
+                <div>{{ currentMission.statut }}</div>
+                <div>{{ currentMission.equipeNom }}</div>
+                <div>{{ currentMission.dateDebut | date }}</div>
+                <div>{{ currentMission.dateFin | date }}</div>
+                <div class="actions">
                   @if (authService.role === "LEADER") {
                     @if (currentMission.statut == "Disponible") {
                       <button type="button" (click)="demarrer(currentMission.id)"><i class="bx bx-door-open"></i></button>
@@ -45,51 +42,48 @@
                     }
                   }
                   <button title="Voir" type="button" (click)="voir(currentMission.id)"><i class='bx bx-search-alt'></i></button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                </div>
+              </div>
+            </div>
+          </div>
         }
         @else {
           <h3>missions disponibles</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Rang</th>
-                <th>Statut</th>
-                <th>Équipe</th>
-                <th>Date de Début</th>
-                <th>Date de Fin</th>
-                <th>Actions</th>
-                <th></th>
-              </tr>
-            </thead>
+          <div class="table-missions">
+            <div class="table-missions-header">
+              <div class="table-missions-header-item">Nom</div>
+              <div class="table-missions-header-item">Rang</div>
+              <div class="table-missions-header-item">Statut</div>
+              <div class="table-missions-header-item">Équipe</div>
+              <div class="table-missions-header-item">Date de Début</div>
+              <div class="table-missions-header-item">Date de Fin</div>
+              <div class="table-missions-header-item">Actions</div>
+            </div>
             @if (mission$ | async; as missions) {
-              <tbody>
+              <div class="table-missions-body">
                 @for (mission of missions; track mission.id) {
                   @if (mission.statut === "Disponible" && !mission.equipeNom) {
-                    <tr>
-                      <td>{{ mission.nom }}</td>
-                      <td>{{ mission.rang }}</td>
-                      <td>{{ mission.statut }}</td>
-                      <td>{{ mission.equipeNom }}</td>
-                      <td>{{ mission.dateDebut | date }}</td>
-                      <td>{{ mission.dateFin | date }}</td>
-                      <td class="actions">
+                    <div class="table-missions-body-item">
+                      <div>{{ mission.nom }}</div>
+                      <div>{{ mission.rang }}</div>
+                      <div>{{ mission.statut }}</div>
+                      <div>{{ mission.equipeNom }}</div>
+                      <div>{{ mission.dateDebut | date }}</div>
+                      <div>{{ mission.dateFin | date }}</div>
+                      <div class="actions">
                       @if (authService.role === "ADMIN") {
                         <button title="Editer" type="button" (click)="editer(mission.id, 'modify')"><i class='bx bx-pencil'></i></button>
                         <button class="red" title="Supprimer" type="button" (click)="supprimer(mission.id)"><i class='bx bx-trash'></i></button>
                         <button class="green" title="Assigner" type="button" (click)="assigner(mission.id)"><i class='bx bx-user-plus'></i></button>
                       }
                       <button title="Voir" type="button" (click)="voir(mission.id)"><i class='bx bx-search-alt'></i></button>
-                      </td>
-                    </tr>
+                      </div>
+                    </div>
                   }
                 }
-              </tbody>
+              </div>
             }
-          </table>
+          </div>
         }
         <h3>missions archivées</h3>
         <div class="table-missions">
@@ -131,7 +125,7 @@
 
 @if (show === "modify" || show === "detail" || show === "assign") {
   <div class="modal">
-    <div class="crud-dialog-overlay"></div>
+    <div class="crud-dialog-overlay" (click)="annulerEditer()"></div>
     <div class="crud-container">
       <div class="crud-dialog">
         @if (show === "modify" || show === "detail" ) {
@@ -146,7 +140,7 @@
                       <p id="nom">{{ nomCtrl.value }}</p>
                     }
                     @else {
-                      <input id="nom" type="text" [formControl]="nomCtrl">
+                      <input id="nom" type="text" [formControl]="nomCtrl" placeholder="Récupérer chat Tora">
                     }
                   </td>
                 </tr>
@@ -158,7 +152,7 @@
                       <p id="description">{{ descriptionCtrl.value }}</p>
                     }
                     @else {
-                      <textarea id="description" [formControl]="descriptionCtrl"></textarea>
+                      <textarea id="description" [formControl]="descriptionCtrl" placeholder="Le hokage a perdu son chat. Aidez-le à le retrouver!"></textarea>
                     }
                   </td>
                 </tr>
@@ -186,7 +180,7 @@
                       <p id="gainExp">{{ gainExpCtrl.value }}</p>
                     }
                     @else {
-                      <input id="gainExp" type="number" [formControl]="gainExpCtrl">
+                      <input id="gainExp" type="number" [formControl]="gainExpCtrl" placeholder="100">
                     }
                   </td>
                 </tr>
@@ -198,7 +192,7 @@
                       <p id="recompense">{{ recompenseCtrl.value }}</p>
                     }
                     @else {
-                      <input id="recompense" type="number" [formControl]="recompenseCtrl">
+                      <input id="recompense" type="number" [formControl]="recompenseCtrl" placeholder="10">
                     }
                   </td>
                 </tr>
@@ -266,10 +260,14 @@
             </table>
 
             <div class="actions">
+            @if (show === "detail") {
+              <button type="button" (click)="annulerEditer()" class="btn-secondary">Fermer</button>
+            } @else {
               <button type="submit" [disabled]="MissionForm.invalid" class="green">
                 {{ editingMission ? 'Modifier' : 'Créer' }}
               </button>
               <button type="button" (click)="annulerEditer()" class="btn-secondary">Annuler</button>
+            }
             </div>
           </form>
         }
@@ -283,7 +281,7 @@
                   <td class="form-input">
                     <select id="equipeAssign" [formControl]="equipeCtrl">
                       @for (e of (equipe$ | async); track e.id) {
-                        <option [value]="e.id">{{ e.id }}</option>
+                        <option [value]="e.id">{{ e.nom }}</option>
                       }
                     </select>
                   </td>
@@ -292,7 +290,7 @@
             </table>
 
             <div class="actions">
-              <button type="submit" [disabled]="equipeCtrl.invalid" class="btn-primary">Valider</button>
+              <button type="submit" [disabled]="equipeCtrl.invalid" class="btn-primary green">Valider</button>
               <button type="button" (click)="annulerEditer()" class="btn-secondary">Annuler</button>
             </div>
           </form>

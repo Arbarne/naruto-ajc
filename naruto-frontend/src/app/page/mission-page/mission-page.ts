@@ -108,7 +108,7 @@ export class MissionPage implements OnInit {
   public nouvelleMission() {
     this.show = "modify";
     this.editingMission = null;
-    this.MissionForm.reset();
+    this.MissionForm.reset({ rang: this.rangs[0] });
   }
 
   public creerOuModifier() {
@@ -128,7 +128,6 @@ export class MissionPage implements OnInit {
 
   public editer(id: number, show: "modify" | "detail" | "assign") {
     this.show = show;
-    console.log(show)
 
     this.missionService.findById(id).subscribe((mission) => {
       this.editingMission = mission;

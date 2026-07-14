@@ -1,8 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 
+@font-face {
+  font-family: "Ninja";
+  src: url('/assets/fonts/njnaruto.ttf');
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
   height: 100%;
 }
+button {
+  padding: .4rem;
+  border-radius: 0;
+  border: 0;
+  font-size: 1.3rem;
+  background-color: white;
+}
+
+button:hover:not(:disabled) {
+  cursor: pointer;
+}
+
+button.green {
+  color: white;
+  background-color: var(--theme-green-color);
+}
+
+button.red {
+  color: white;
+  background-color: var(--theme-red-color);
+}
+
+:root {
+  --theme-red-color-dark: #da311d;
+  --theme-red-color: #d65858;
+  --theme-brown-color-dark: #622B2B;
+  --theme-brown-color: #91654f;
+  --theme-green-color: #39a34c;
+}
+

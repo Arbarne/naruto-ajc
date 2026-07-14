@@ -26,7 +26,7 @@ export class MissionPage implements OnInit {
 
   private missionService: MissionService = inject(MissionService);
   private equipeService: EquipeService = inject(EquipeService);
-  private authService: AuthService = inject(AuthService);
+  protected authService: AuthService = inject(AuthService);
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   protected readonly rangs = Object.values(RangMission);
@@ -37,7 +37,7 @@ export class MissionPage implements OnInit {
   private refresh$: Subject<void> = new Subject<void>();
   protected equipe$!: Observable<Equipe[]>;
 
-  protected show: "" | "detail" | "modify" = ""
+  protected show: "" | "detail" | "modify" | "assign" = ""
 
   protected MissionForm!: FormGroup;
   protected nomCtrl!: FormControl;
@@ -49,6 +49,9 @@ export class MissionPage implements OnInit {
   protected dateDebutCtrl!: FormControl;
   protected dateFinCtrl!: FormControl;
   protected statutCtrl!: FormControl;
+
+  protected AssignForm!: FormGroup;
+
   protected editingMission!: Mission | null;
 
   ngOnInit(): void {
@@ -92,6 +95,10 @@ export class MissionPage implements OnInit {
       dateFin: this.dateFinCtrl,
       statut: this.statutCtrl
     });
+
+    this.AssignForm = this.formBuilder.group({
+      equipeId: this.equipeCtrl
+    })
   }
 
   private reload() {
@@ -119,8 +126,9 @@ export class MissionPage implements OnInit {
     });
   }
 
-  public editer(id: number) {
-    this.show = "modify";
+  public editer(id: number, show: "modify" | "detail" | "assign") {
+    this.show = show;
+    console.log(show)
 
     this.missionService.findById(id).subscribe((mission) => {
       this.editingMission = mission;
@@ -147,11 +155,13 @@ export class MissionPage implements OnInit {
     this.missionService.deleteById(id).subscribe(() => this.reload());
   }
 
+  public ouvrirAssignMenu(id: number) {
+    this.show = "assign"
+
+  }
+
   public assigner(id: number) {
-    const observable = this.missionService.assigner(id)
-    if (observable) {
-      observable.subscribe(() => this.reload())
-    }
+    this.editer(id, "assign")
   }
 
   public demarrer(id: number) {
@@ -169,9 +179,11 @@ export class MissionPage implements OnInit {
   }
 
   public voir(id: number) {
-    this.show = "detail";
-    this.missionService.findById(id).subscribe((mission) => {
-      this.editingMission = mission
-    })
+    this.editer(id, "detail")
+  }
+
+  getEquipeLabel(equipeId: number | string, equipes: Equipe[]): string {
+    const equipe = equipes.find(e => e.id === equipeId);
+    return equipe ? equipe.nom : '';
   }
 }

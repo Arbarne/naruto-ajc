@@ -97,8 +97,8 @@ public class MissionDetailsResponse {
         response.setRang(mission.getRang());
         response.setGainExp(mission.getGainExp());
         response.setRecompense(mission.getRecompense());
-        response.setEquipeId(mission.getEquipe().getId());
-        response.setEquipeNom(mission.getEquipe().getNom());
+        response.setEquipeId(mission.getEquipe() != null ? mission.getEquipe().getId() : null);
+        response.setEquipeNom(mission.getEquipe() != null ? mission.getEquipe().getNom() : null);
         response.setDateDebut(mission.getDateDebut());
         response.setDateFin(mission.getDateFin());
         response.setStatut(mission.getStatut());

@@ -37,7 +37,6 @@ public class EquipeApiController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public List<EquipeListResponse> findAll() {
         return service.getAll()
                 .stream()

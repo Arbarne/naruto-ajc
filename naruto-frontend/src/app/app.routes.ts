@@ -6,46 +6,54 @@ import { MissionPage } from './page/mission-page/mission-page';
 import { EquipePage } from './page/equipe-page/equipe-page';
 import { HomePage } from './page/home-page/home-page';
 import { ProfilPage } from './page/profil-page/profil-page';
+import { authGuard } from './guard/auth-guard';
+
+const appName = 'Projet Naruto'
+const formatTitle = (pageName: string) => {
+  return pageName + " - " + appName
+}
 
 export const routes: Routes = [
   {
     path: 'home',
     component: HomePage,
-  },
-
-  {
-    path: 'accueil',
-    component: AccueilPage,
+    title: formatTitle('Village'),
+    canActivate: [ authGuard ]
   },
 
   {
     path: 'inscription',
     component: InscriptionPage,
+    title: formatTitle('Inscription')
   },
 
   {
     path: 'connexion',
     component: ConnexionPage,
+    title: formatTitle('Connexion'),
   },
 
   {
     path: 'mission',
     component: MissionPage,
-    // canActivate: [ authGuard ]
+    title: formatTitle('Archives des missions'),
+    canActivate: [ authGuard ]
   },
 
   {
     path: 'equipe',
     component: EquipePage,
-    // canActivate: [ authGuard ]
+    title: formatTitle('Caserne des ninjas'),
+    canActivate: [ authGuard ]
   },
 
   {
     path: 'profil',
     component: ProfilPage,
-    // canActivate: [ authGuard ]
+    title: formatTitle('Bureau du Hokage'),
+    canActivate: [ authGuard ]
   },
 
-  // Todo: redirect l'accueil vers la carte quand connecté (homeGuard ou qqch comme ca)
-  { path: '', redirectTo: 'accueil', pathMatch: 'full' }
+  // Todo: redirect l'accueil vers la carte quand connecté
+  { path: '', redirectTo: 'home', pathMatch: 'full' }
 ];

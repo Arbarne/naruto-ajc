@@ -10,7 +10,10 @@ export class LeaderService {
   private http: HttpClient = inject(HttpClient);
   private apiUrl: string = '/utilisateur/leader';
 
-  public findAll(): Observable<LeaderOption[]> {
+  public findAll(equipeId?: number): Observable<LeaderOption[]> {
+    if (equipeId != null) {
+      return this.http.get<LeaderOption[]>(this.apiUrl, { params: { equipeId } });
+    }
     return this.http.get<LeaderOption[]>(this.apiUrl);
   }
 }

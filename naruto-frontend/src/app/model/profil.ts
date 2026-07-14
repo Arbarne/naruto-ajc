@@ -8,8 +8,11 @@ export interface ProfilEquipe {
   nom: string | null;
 }
 
+export type UserType = 'Ninja' | 'Leader' | 'Hokage';
+
 export interface Profil {
   id: number;
+  type: UserType;
   login: string;
   nom: string;
   prenom: string;

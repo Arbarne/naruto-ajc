@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Observable, Subject, catchError, forkJoin, of, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, catchError, combineLatest, forkJoin, of, startWith, switchMap } from 'rxjs';
 import { EquipeService, EquipeRequest } from '../../service/equipe-service';
 import { NinjaService } from '../../service/ninja-service';
 import { LeaderService } from '../../service/leader-service';
@@ -35,6 +35,8 @@ export class EquipePage implements OnInit {
   private formBuilder: FormBuilder = inject(FormBuilder);
 
   private refresh$: Subject<void> = new Subject<void>();
+  // equipeId de l'equipe en cours de modification (undefined en creation), pour garder son leader visible
+  private leaderFilterEquipeId$: BehaviorSubject<number | undefined> = new BehaviorSubject<number | undefined>(undefined);
 
   protected equipes$!: Observable<Equipe[]>;
   protected maEquipe$!: Observable<Equipe | null>;
@@ -75,7 +77,11 @@ export class EquipePage implements OnInit {
         switchMap(() => this.equipeService.findAll())
       );
       this.ninjaOptions$ = this.ninjaService.findAll();
-      this.leaderOptions$ = this.leaderService.findAll();
+      // Se rafraichit a l'ouverture du formulaire ET apres chaque creation/modification/suppression d'equipe
+      this.leaderOptions$ = combineLatest([
+        this.refresh$.pipe(startWith(null)),
+        this.leaderFilterEquipeId$,
+      ]).pipe(switchMap(([, equipeId]) => this.leaderService.findAll(equipeId)));
       return;
     }
 
@@ -111,6 +117,11 @@ export class EquipePage implements OnInit {
     return equipe.ninjas.filter(ninja => ninja.login !== this.authService.login);
   }
 
+  // Pour le Leader : ne propose que les ninjas sans equipe, ou deja membres de l'equipe geree
+  protected ninjasDisponibles(ninjas: NinjaOption[], equipe: Equipe): NinjaOption[] {
+    return ninjas.filter(ninja => ninja.equipeId == null || ninja.equipeId === equipe.id);
+  }
+
   public toggleNinjaSelection(ninjaId: number, selectionne: boolean) {
     if (selectionne) {
       this.ninjasSelectionnes.add(ninjaId);
@@ -140,6 +151,7 @@ export class EquipePage implements OnInit {
     this.ninjasSelectionnes = new Set();
     this.ninjasOriginaux = new Set();
     this.EquipeForm.reset();
+    this.leaderFilterEquipeId$.next(undefined);
   }
 
   public editer(equipe: Equipe) {
@@ -149,6 +161,8 @@ export class EquipePage implements OnInit {
     this.leaderIdCtrl.setValue(equipe.leaderId);
     this.ninjasOriginaux = new Set(equipe.ninjas.map(ninja => ninja.id));
     this.ninjasSelectionnes = new Set(this.ninjasOriginaux);
+    // Le leader actuel de l'equipe doit rester visible meme s'il n'est plus "disponible"
+    this.leaderFilterEquipeId$.next(equipe.id);
   }
 
   public annulerEditer() {

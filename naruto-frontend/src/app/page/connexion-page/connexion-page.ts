@@ -23,8 +23,6 @@ export class ConnexionPage {
   });
 
   protected showPassword: boolean = false;
-  protected usernameWalking: boolean = false;
-  protected passwordWalking: boolean = false;
 
   public async connecter() {
     this.loginError.set(false);

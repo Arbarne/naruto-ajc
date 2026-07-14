@@ -59,7 +59,8 @@ public class EquipeDetailsResponse {
                       ninja.getNom(),
                       ninja.getPrenom(),
                       ninja.getRang() != null ? ninja.getRang().toString() : null,
-                      ninja.getSpecialite() != null ? ninja.getSpecialite().toString() : null
+                      ninja.getSpecialite() != null ? ninja.getSpecialite().toString() : null,
+                      ninja.getEquipe() != null ? ninja.getEquipe().getId() : null
                   ))
                   .toList());
         return response;

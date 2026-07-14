@@ -47,7 +47,8 @@
 .divider-badge {
   flex: 0 0 auto;
   margin: 0 0.75rem;
-  font-size: 1rem;
+  width: 2rem;
+  height: auto;
 }
 
 form {

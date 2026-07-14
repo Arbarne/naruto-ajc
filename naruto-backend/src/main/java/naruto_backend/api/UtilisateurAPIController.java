@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -20,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import jakarta.validation.Valid;
 import naruto_backend.api.request.SubscriptionRequest;
 import naruto_backend.api.request.UpdateUtilisateurRequest;
+import naruto_backend.api.request.UpdateUtilisateurTypeRequest;
 import naruto_backend.api.response.LeaderOptionResponse;
 import naruto_backend.api.response.NinjaOptionResponse;
 import naruto_backend.api.response.UtilisateurDetailsResponse;
@@ -57,14 +59,18 @@ public class UtilisateurAPIController {
                 ninja.getNom(),
                 ninja.getPrenom(),
                 ninja.getRang() != null ? ninja.getRang().toString() : null,
-                ninja.getSpecialite() != null ? ninja.getSpecialite().toString() : null))
+                ninja.getSpecialite() != null ? ninja.getSpecialite().toString() : null,
+                ninja.getEquipe() != null ? ninja.getEquipe().getId() : null))
             .toList();
     }
 
     @GetMapping("/leader")
     @PreAuthorize("hasRole('ADMIN')")
-    public List<LeaderOptionResponse> findAllLeader() {
+    public List<LeaderOptionResponse> findAllLeader(@RequestParam(required = false) Integer equipeId) {
+        // Seuls les leaders sans equipe sont proposes, sauf le leader actuel de l'equipe en cours de modification.
         return this.utilisateurService.getAllLeader().stream()
+            .filter(leader -> leader.getEquipe() == null
+                || (equipeId != null && equipeId.equals(leader.getEquipe().getId())))
             .map(LeaderOptionResponse::convert)
             .toList();
     }
@@ -73,6 +79,14 @@ public class UtilisateurAPIController {
     @PreAuthorize("hasRole('ADMIN')")
     public UtilisateurDetailsResponse findById(@PathVariable String id) {
         return UtilisateurDetailsResponse.convert(this.utilisateurService.getById(Integer.valueOf(id)));
+    }
+
+    @GetMapping("/mine")
+    public UtilisateurDetailsResponse findMine(Authentication authentication) {
+        Utilisateur utilisateur = this.utilisateurService.getByLogin(authentication.getName())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return UtilisateurDetailsResponse.convert(utilisateur);
     }
 
     @GetMapping("/leader/available")
@@ -114,6 +128,14 @@ public class UtilisateurAPIController {
         return new EntityUpdatedResponse(id, true);
     }
     
+    @PutMapping("/{id}/type")
+    @PreAuthorize("hasRole('ADMIN')")
+    public EntityUpdatedResponse updateType(@PathVariable Integer id, @Valid @RequestBody UpdateUtilisateurTypeRequest request) {
+        this.utilisateurService.updateType(id, request.getType());
+
+        return new EntityUpdatedResponse(id, true);
+    }
+
     @PutMapping("/{id}/equipe/{equipeId}")
     @PreAuthorize("hasRole('LEADER') or hasRole('ADMIN')")
     public EntityUpdatedResponse update(@PathVariable Integer id, @PathVariable Integer equipeId, Authentication authentication) {

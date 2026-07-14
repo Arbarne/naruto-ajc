@@ -1,6 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth-service';
+import { UtilisateurService } from '../../service/utilisateur-service';
+import { Profil } from '../../model/profil';
 
 interface Position {
   left: number;
@@ -21,12 +24,13 @@ const dureePoofArrivee = 900;
 
 @Component({
   selector: 'app-home-page',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })
 export class HomePage {
   protected authService: AuthService = inject(AuthService);
+  private utilisateurService: UtilisateurService = inject(UtilisateurService);
   private router: Router = inject(Router);
 
   protected enDeplacement = signal(false);
@@ -35,6 +39,7 @@ export class HomePage {
   protected poofDepartVisible = signal(false);
   protected poofArriveeVisible = signal(false);
   protected poofPos = signal<Position>({ ...positionInitiale });
+  protected monProfil = signal<Profil | null>(null);
 
   protected get sprite(): string {
     switch (this.authService.role) {
@@ -78,5 +83,22 @@ export class HomePage {
   public deconnexion() {
     this.authService.resetAuth();
     this.router.navigate(['/connexion']);
+  }
+
+  public voirMonProfil() {
+    this.utilisateurService.findMine().subscribe(profil => this.monProfil.set(profil));
+  }
+
+  public fermerMonProfil() {
+    this.monProfil.set(null);
+  }
+
+  protected tauxReussite(profil: Profil): number {
+    const total = profil.nbReussites + profil.nbEchecs;
+    return total === 0 ? 0 : Math.round((profil.nbReussites / total) * 100);
+  }
+
+  protected pourcentage(actuel: number, max: number): number {
+    return max === 0 ? 0 : Math.round((actuel / max) * 100);
   }
 }

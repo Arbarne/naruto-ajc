@@ -13,6 +13,7 @@ import naruto_backend.model.Utilisateur;
 public class UtilisateurDetailsResponse {
 
 	private Integer id;
+	private String type;
 	private String login;
 	private String nom;
 	private String prenom;
@@ -38,6 +39,15 @@ public class UtilisateurDetailsResponse {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getLogin() {
@@ -213,6 +223,7 @@ public class UtilisateurDetailsResponse {
         response.equipe = new EquipeBasicInfo();
 
         response.setId(utilisateur.getId());
+        response.setType(utilisateur.getClass().getSimpleName());
         response.setLogin(utilisateur.getLogin());
         response.setNom(utilisateur.getNom());
         response.setPrenom(utilisateur.getPrenom());

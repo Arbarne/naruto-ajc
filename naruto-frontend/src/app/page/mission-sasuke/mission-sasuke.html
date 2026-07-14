@@ -1,0 +1,63 @@
+<audio #ost (ended)="onOstEnded()"></audio>
+<audio #poofSFX src="assets/audio/jutsu.mp3"></audio>
+<audio #sasukeeee src="assets/audio/sasukeeee.mp3"></audio>
+
+@if (!gameStarted) {
+  <div id="formStart">
+    <input
+      id="inputName"
+      type="text"
+      placeholder="naruto"
+      [(ngModel)]="inputName"
+      (keyup)="onNameKeyup($event)">
+    <input
+      id="btnStart"
+      type="button"
+      value="Start !"
+      [disabled]="inputName.length === 0"
+      (click)="start()">
+  </div>
+}
+
+<div id="grass" #grass [class.visible]="gameStarted">
+  <img
+    id="narutoVictory"
+    [class.show]="showVictory()"
+    src="assets/images/pikachu/narutoVictory_.jpg">
+
+  <div id="victoryText" [class.show]="showVictory()">{{ victoryText() }}</div>
+
+  <button
+    id="replayButton"
+    [class.show]="showVictory()"
+    (click)="restart()">Rejouer</button>
+
+  <button
+    id="replayButton"
+    [class.show]="showVictory()"
+    (click)="ramenerSasukeAuVillage()">Ramener Sasuke au village</button>
+
+  <div class="poof" [style.top.px]="poof1Top()" [style.left.px]="poof1Left()">
+    <img
+      #imgPoof1
+      class="imgPoof"
+      (animationend)="onPoofAnimationEnd($event, 1)"
+      src="assets/images/pikachu/poof.png">
+  </div>
+
+  <div class="poof" [style.top.px]="poof2Top()" [style.left.px]="poof2Left()">
+    <img
+      #imgPoof2
+      class="imgPoof"
+      (animationend)="onPoofAnimationEnd($event, 2)"
+      src="assets/images/pikachu/poof.png">
+  </div>
+
+  <div id="naruto" [style.top.px]="posY" [style.left.px]="posX" [attr.title]="prenom">
+    <img #imgNaruto [src]="narutoImgSrc">
+  </div>
+
+  <div id="sasuke" [style.top.px]="sasukeY()" [style.left.px]="sasukeX()">
+    <img #imgSasuke [src]="sasukeImgSrc">
+  </div>
+</div>

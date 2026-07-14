@@ -7,6 +7,7 @@ import { EquipePage } from './page/equipe-page/equipe-page';
 import { HomePage } from './page/home-page/home-page';
 import { ProfilPage } from './page/profil-page/profil-page';
 import { authGuard } from './guard/auth-guard';
+import { MissionSasuke } from './page/mission-sasuke/mission-sasuke';
 
 const appName = 'Projet Naruto'
 const formatTitle = (pageName: string) => {
@@ -51,6 +52,13 @@ export const routes: Routes = [
     path: 'profil',
     component: ProfilPage,
     title: formatTitle('Bureau du Hokage'),
+    canActivate: [ authGuard ]
+  },
+
+  {
+    path: 'mission-sasuke',
+    component: MissionSasuke,
+    title: formatTitle('Mission : Capturer Sasuke'),
     canActivate: [ authGuard ]
   },
 

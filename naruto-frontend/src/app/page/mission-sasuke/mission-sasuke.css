@@ -1,0 +1,122 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url("/assets/images/pikachu/water.png");
+  background-size: 100% 100%;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+#grass {
+  display: none;
+  position: relative;
+  width: 600px;
+  height: 600px;
+  background-image: url("/assets/images/pikachu/Grass.png");
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+#grass.visible {
+  display: flex;
+}
+
+#naruto {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 50px;
+  z-index: 0;
+}
+
+#naruto img {
+  width: 100%;
+  height: 100%;
+}
+
+#sasuke {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+}
+
+#sasuke img {
+  width: 100%;
+  height: 100%;
+}
+
+.poof {
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  z-index: 1;
+}
+
+.imgPoof {
+  width: 100%;
+  height: 100%;
+  scale: 0;
+}
+
+.imgPoof.animating {
+  animation: poofAnim 1.5s linear;
+}
+
+@keyframes poofAnim {
+  from {
+    opacity: 0;
+    scale: 0;
+  }
+  10% {
+    opacity: 1;
+    scale: 1;
+  }
+  to {
+    opacity: 0;
+    scale: 1;
+  }
+}
+
+#narutoVictory, #victoryText, #replayButton {
+  border: 4px solid #f0a000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  scale: 0;
+  transition: scale 0.1s ease-in;
+  z-index: 2;
+  border-radius: 10px;
+}
+
+#narutoVictory.show, #victoryText.show, #replayButton.show {
+  scale: 1;
+}
+
+#narutoVictory {
+  width: 70%;
+  height: 50%;
+}
+
+#victoryText, #replayButton {
+  background: rgba(255, 255, 100, 0.75);
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+#victoryText {
+  padding: 16px 24px;
+  font-size: 2rem;
+}
+
+#replayButton {
+  font-family: inherit;
+  padding: 12px 16px;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+#replayButton:active {
+  translate: 1px 2px;
+}

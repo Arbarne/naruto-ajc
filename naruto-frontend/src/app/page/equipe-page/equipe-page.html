@@ -8,9 +8,7 @@
       <h2>Equipes</h2>
 
       @if (authService.role === 'ADMIN') {
-        @if (!showForm) {
-          <button type="button" class="green" (click)="nouvelleEquipe()"><i class="bx bx-plus"></i> Nouvelle équipe</button>
-        }
+        <button type="button" class="green" (click)="nouvelleEquipe()"><i class="bx bx-plus"></i> Nouvelle équipe</button>
 
         @if (showForm) {
         <div class="modal">

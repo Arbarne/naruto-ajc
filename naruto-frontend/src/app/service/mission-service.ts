@@ -5,6 +5,7 @@ import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from './auth-service';
 import { EntityCreatedOrUpdated } from '../model/entity-created-or-updated'
+import { MissionAssign } from '../model/mission-assign';
 
 
 @Injectable({
@@ -52,10 +53,8 @@ export class MissionService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  public assigner(id: number): Observable<EntityCreatedOrUpdated>{
-    return this.http.put<EntityCreatedOrUpdated>(`${this.apiUrl}/assign`, {
-      id: id, equipeId: this.authService.equipeId
-    })
+  public assigner(mission: MissionAssign): Observable<EntityCreatedOrUpdated>{
+    return this.http.put<EntityCreatedOrUpdated>(`${this.apiUrl}/assign`, mission)
   }
 
   public demarrer(id: number) {

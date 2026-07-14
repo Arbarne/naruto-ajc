@@ -273,7 +273,7 @@
         }
         @if (show === "assign") {
           <h3 class="dialog-title">Assigner une équipe</h3>
-          <form [formGroup]="MissionForm" (ngSubmit)="creerOuModifier()">
+          <form [formGroup]="MissionForm" (ngSubmit)="validerAssignation()">
             <table class="form-table">
               <tbody>
                 <tr>

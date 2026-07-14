@@ -11,6 +11,7 @@ import { RangMission } from '../../model/rang-mission.enum';
 import { EtatMission } from '../../model/etat-mission.enum';
 import { MissionListView } from '../../model/mission-list-view';
 import { Navigation } from '../../component/navigation/navigation';
+import { MissionAssign } from '../../model/mission-assign';
 
 @Component({
   selector: 'app-mission-page',
@@ -124,6 +125,21 @@ export class MissionPage implements OnInit {
 
       this.reload();
     });
+  }
+
+  public validerAssignation() {
+    const assignation: MissionAssign = {
+      ...this.AssignForm.getRawValue(),
+      id: this.editingMission?.id
+    }
+
+    this.missionService.assigner(assignation).subscribe(() => {
+      this.show = "";
+      this.editingMission = null;
+      this.AssignForm.reset();
+
+      this.reload();
+    })
   }
 
   public editer(id: number, show: "modify" | "detail" | "assign") {

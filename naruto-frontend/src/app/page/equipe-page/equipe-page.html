@@ -1,161 +1,157 @@
-<section class="equipe-page">
+<section class="equipe-page app-page">
 
   <div class="crud-dialog-overlay">
   </div>
   <div class="crud-container">
     <div class="crud-dialog">
       <app-navigation></app-navigation>
-      <h2>{{ authService.role === 'ADMIN' ? 'Équipes' : 'Mon équipe' }}</h2>
+      <h2>Equipes</h2>
 
       @if (authService.role === 'ADMIN') {
         @if (!showForm) {
-          <button type="button" (click)="nouvelleEquipe()">Nouvelle équipe</button>
+          <button type="button" class="green" (click)="nouvelleEquipe()"><i class="bx bx-plus"></i> Nouvelle équipe</button>
         }
 
         @if (showForm) {
-          <h3>{{ editingEquipe ? 'Modifier l\'équipe' : 'Nouvelle équipe' }}</h3>
-          <form [formGroup]="EquipeForm" (ngSubmit)="creerOuModifier()">
-            <div class="field">
-              <label for="nom">Nom</label>
-              <input id="nom" type="text" [formControl]="nomCtrl">
-            </div>
+        <div class="modal">
+          <div class="crud-dialog-overlay" (click)="annulerEditer()"></div>
+            <div class="crud-container">
+              <div class="crud-dialog">
+                <h3 class="dialog-title">{{ editingEquipe ? 'Modifier l\'équipe' : 'Créer une équipe' }}</h3>
+                <form [formGroup]="EquipeForm" (ngSubmit)="creerOuModifier()">
+                  <div class="field">
+                    <label for="nom">Nom</label>
+                    <input id="nom" type="text" [formControl]="nomCtrl">
+                  </div>
 
-            <div class="field">
-              <label for="leaderId">Leader</label>
-              <select id="leaderId" [formControl]="leaderIdCtrl">
-                @for (leader of (leaderOptions$ | async); track leader.id) {
-                  <option [value]="leader.id">{{ leader.prenom }} {{ leader.nom }}</option>
-                }
-              </select>
-            </div>
+                  <div class="field">
+                    <label for="leaderId">Leader</label>
+                    <select id="leaderId" [formControl]="leaderIdCtrl">
+                      @for (leader of (leaderOptions$ | async); track leader.id) {
+                        <option [value]="leader.id">{{ leader.prenom }} {{ leader.nom }}</option>
+                      }
+                    </select>
+                  </div>
 
-            <div class="field">
-              <label>Ninjas de l'équipe</label>
-              <div class="ninja-checklist">
-                @for (ninja of (ninjaOptions$ | async); track ninja.id) {
-                  <label class="ninja-checklist-item">
-                    <input
-                      type="checkbox"
-                      [checked]="ninjasSelectionnes.has(ninja.id)"
-                      (change)="toggleNinjaSelection(ninja.id, $any($event.target).checked)">
-                    {{ ninja.prenom }} {{ ninja.nom }} — {{ ninja.rang }} / {{ ninja.specialite }}
-                  </label>
-                }
+                  <div class="field">
+                    <label>Ninjas de l'équipe</label>
+                    <div class="ninja-checklist">
+                      @for (ninja of (ninjaOptions$ | async); track ninja.id) {
+                        <label class="ninja-checklist-item">
+                          <input
+                            type="checkbox"
+                            [checked]="ninjasSelectionnes.has(ninja.id)"
+                            (change)="toggleNinjaSelection(ninja.id, $any($event.target).checked)">
+                          {{ ninja.prenom }} {{ ninja.nom }} — {{ ninja.rang }} / {{ ninja.specialite }}
+                        </label>
+                      }
+                    </div>
+                  </div>
+
+                  <div class="actions">
+                    <button type="submit" [disabled]="EquipeForm.invalid" class="green">{{ editingEquipe ? 'Modifier' : 'Créer' }}</button>
+                    <button type="button" (click)="annulerEditer()">Annuler</button>
+                  </div>
+                </form>
               </div>
             </div>
-
-            <div class="actions">
-              <button type="submit" [disabled]="EquipeForm.invalid">{{ editingEquipe ? 'Modifier' : 'Créer' }}</button>
-              <button type="button" (click)="annulerEditer()">Annuler</button>
-            </div>
-          </form>
+          </div>
         }
 
         @if (equipes$ | async; as equipes) {
           @if (missions$ | async; as missions) {
-            <h3>Liste des équipes</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Nom</th>
-                  <th>Leader</th>
-                  <th>Ninjas</th>
-                  <th>Mission assignée</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
+            <div class="data-table table-equipes">
+              <div class="data-table-header">
+                <div class="data-table-header-item">Nom</div>
+                <div class="data-table-header-item">Leader</div>
+                <div class="data-table-header-item">Ninjas</div>
+                <div class="data-table-header-item">Mission assignée</div>
+                <div class="data-table-header-item">Actions</div>
+              </div>
+              <div class="data-table-body">
                 @for (equipe of equipes; track equipe.id) {
-                  <tr>
-                    <td>{{ equipe.nom }}</td>
-                    <td>{{ equipe.leaderNom }}</td>
-                    <td>
+                  <div class="data-table-body-item">
+                    <div>{{ equipe.nom }}</div>
+                    <div>{{ equipe.leaderNom }}</div>
+                    <div>
                       @for (ninja of equipe.ninjas; track ninja.id) {
                         <span class="tag">{{ ninja.nom }} ({{ ninja.rang }})</span>
                       }
-                    </td>
-                    <td>{{ missionAssignee(equipe.nom, missions) ?? '—' }}</td>
-                    <td class="actions">
-                      <button type="button" (click)="editer(equipe)">Modifier</button>
-                      <button type="button" (click)="supprimer(equipe)">Supprimer</button>
-                    </td>
-                  </tr>
+                    </div>
+                    <div>{{ missionAssignee(equipe.nom, missions) ?? '—' }}</div>
+                    <div class="actions">
+                      <button type="button" (click)="editer(equipe)" title="Modifier"><i class='bx bx-pencil'></i></button>
+                      <button type="button" (click)="supprimer(equipe)" title="Supprimer" class="red"><i class='bx bx-trash'></i></button>
+                    </div>
+                  </div>
                 }
-              </tbody>
-            </table>
+              </div>
+            </div>
           }
         }
       }
 
       @if (authService.role === 'LEADER' || authService.role === 'USER') {
         @if (maEquipe$ | async; as equipe) {
+          <h3>{{ equipe.nom }}</h3>
+          <p>Leader : {{ equipe.leaderNom }}</p>
           @if (missions$ | async; as missions) {
-            <table>
-              <thead>
-                <tr>
-                  <th>Nom</th>
-                  <th>Leader</th>
-                  <th>Mission assignée</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{{ equipe.nom }}</td>
-                  <td>{{ equipe.leaderNom }}</td>
-                  <td>{{ missionAssignee(equipe.nom, missions) ?? '—' }}</td>
-                </tr>
-              </tbody>
-            </table>
+            <p>Mission assignée : {{ missionAssignee(equipe.nom, missions) ?? 'Aucune' }}</p>
           }
 
-          <h4>Coéquipiers</h4>
-          <table>
-            <thead>
-              <tr>
-                @if (authService.role !== 'USER') {
-                  <th>Id</th>
-                }
-                <th>Nom</th>
-                <th>Rang</th>
-                <th>Spécialité</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (ninja of coequipiers(equipe); track ninja.id) {
-                <tr>
-                  @if (authService.role !== 'USER') {
-                    <td>{{ ninja.id }}</td>
-                  }
-                  <td>{{ ninja.nom }}</td>
-                  <td>{{ ninja.rang }}</td>
-                  <td>{{ ninja.specialite }}</td>
-                </tr>
+          <div class="data-table table-ninjas" [class.table-ninjas--user]="authService.role === 'USER'">
+            <div class="data-table-header">
+              @if (authService.role !== 'USER') {
+                <div class="data-table-header-item">Id</div>
               }
-            </tbody>
-          </table>
-
-          @if (authService.role === 'LEADER') {
-            @if (!gestionNinjasOuverte) {
-              <button type="button" (click)="ouvrirGestionNinjas(equipe)">Gérer les ninjas</button>
-            } @else {
-              <h4>Ninjas disponibles</h4>
-              @if (ninjaOptions$ | async; as ninjas) {
-                <div class="ninja-checklist">
-                  @for (ninja of ninjasDisponibles(ninjas, equipe); track ninja.id) {
-                    <label class="ninja-checklist-item">
-                      <input
-                        type="checkbox"
-                        [checked]="ninjasSelectionnes.has(ninja.id)"
-                        (change)="toggleNinjaSelection(ninja.id, $any($event.target).checked)">
-                      {{ ninja.prenom }} {{ ninja.nom }}
-                    </label>
+              <div class="data-table-header-item">Nom</div>
+              <div class="data-table-header-item">Rang</div>
+              <div class="data-table-header-item">Spécialité</div>
+            </div>
+            <div class="data-table-body">
+              @for (ninja of coequipiers(equipe); track ninja.id) {
+                <div class="data-table-body-item">
+                  @if (authService.role !== 'USER') {
+                    <div>{{ ninja.id }}</div>
                   }
+                  <div>{{ ninja.nom }}</div>
+                  <div>{{ ninja.rang }}</div>
+                  <div>{{ ninja.specialite }}</div>
                 </div>
               }
+            </div>
+          </div>
 
-              <div class="actions">
-                <button type="button" (click)="enregistrerNinjas(equipe)">Enregistrer</button>
-                <button type="button" (click)="annulerGestionNinjas()">Annuler</button>
+          @if (authService.role === 'LEADER') {
+            <button type="button" (click)="ouvrirGestionNinjas(equipe)" class="green margin-top-24">Gérer les ninjas</button>
+
+            @if (gestionNinjasOuverte) {
+              <div class="modal">
+                <div class="crud-dialog-overlay" (click)="annulerGestionNinjas()"></div>
+                <div class="crud-container">
+                  <div class="crud-dialog">
+                    <h3 class="dialog-title">Gérer les ninjas</h3>
+
+                    @if (ninjaOptions$ | async; as ninjas) {
+                      <div class="ninja-checklist">
+                        @for (ninja of ninjas; track ninja.id) {
+                          <label class="ninja-checklist-item">
+                            <input
+                              type="checkbox"
+                              [checked]="ninjasSelectionnes.has(ninja.id)"
+                              (change)="toggleNinjaSelection(ninja.id, $any($event.target).checked)">
+                            {{ ninja.prenom }} {{ ninja.nom }}
+                          </label>
+                        }
+                      </div>
+                    }
+
+                    <div class="actions margin-top-24">
+                      <button type="button" (click)="enregistrerNinjas(equipe)" class="green">Enregistrer</button>
+                      <button type="button" (click)="annulerGestionNinjas()">Annuler</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             }
           }
@@ -163,7 +159,6 @@
           @if (authService.role === 'LEADER') {
             <p>Vous ne dirigez aucune équipe pour l'instant.</p>
 
-            <h3>Créer mon équipe</h3>
             <form [formGroup]="EquipeForm" (ngSubmit)="creerMonEquipe()">
               <div class="field">
                 <label for="nomEquipe">Nom de l'équipe</label>

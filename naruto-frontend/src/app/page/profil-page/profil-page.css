@@ -1,79 +1,11 @@
 .profil-page {
-  background-image: url('/assets/images/image 3.png');
-  background-size: cover;
-  background-position: bottom;
-  background-attachment: fixed;
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  padding: 0;
-  min-height: 100vh;
-  box-sizing: border-box;
-}
-
-.crud-dialog-overlay {
-  position: fixed;
-  background: rgba(0, 0, 0, 0.55);
-  height: 100dvh;
-  width: 100dvw;
-  animation: fade-in-up 0.3s 0.3s ease-in both;
-}
-
-.crud-container {
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100dvh;
-}
-
-.crud-dialog {
-  background-color: rgba(255, 251, 229, 0.8);
-  padding: 2.5rem 3rem;
-  min-width: 1000px;
-  max-width: 90dvw;
-  min-height: 100dvh;
-  box-sizing: border-box;
-  overflow-y: auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  font-family: inherit;
-
-  animation: fade-in-up 0.3s 0.9s ease-in both;
+  --page-bg: url('/assets/images/image 3.png');
 }
 
 .crud-dialog table {
   font-family: inherit;
 }
 
-.crud-menu-avatar {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 30%;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
-  animation: fade-in-up 0.3s 0.5s ease-in both;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 table {
   width: 100%;
@@ -277,3 +209,4 @@ th, td {
 .stat-card .actions button:hover {
   background: #362d24;
 }
+

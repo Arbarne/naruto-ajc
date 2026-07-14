@@ -1,5 +1,5 @@
 
-<section class="mission-page">
+<section class="mission-page app-page">
 
   <div class="main-page">
     <div class="crud-dialog-overlay main">
@@ -14,18 +14,18 @@
         }
         @if (currentMission$ | async; as currentMission) {
           <h3>mission actuelle</h3>
-          <div class="table-missions">
-            <div class="table-missions-header">
-              <div class="table-missions-header-item">Nom</div>
-              <div class="table-missions-header-item">Rang</div>
-              <div class="table-missions-header-item">Statut</div>
-              <div class="table-missions-header-item">Équipe</div>
-              <div class="table-missions-header-item">Date de Début</div>
-              <div class="table-missions-header-item">Date de Fin</div>
-              <div class="table-missions-header-item">Actions</div>
+          <div class="data-table">
+            <div class="data-table-header">
+              <div class="data-table-header-item">Nom</div>
+              <div class="data-table-header-item">Rang</div>
+              <div class="data-table-header-item">Statut</div>
+              <div class="data-table-header-item">Équipe</div>
+              <div class="data-table-header-item">Date de Début</div>
+              <div class="data-table-header-item">Date de Fin</div>
+              <div class="data-table-header-item">Actions</div>
             </div>
-            <div class="table-missions-body">
-              <div class="table-missions-body-item">
+            <div class="data-table-body">
+              <div class="data-table-body-item">
                 <div>{{ currentMission.nom }}</div>
                 <div>{{ currentMission.rang }}</div>
                 <div>{{ currentMission.statut }}</div>
@@ -38,7 +38,7 @@
                       <button type="button" (click)="demarrer(currentMission.id)"><i class="bx bx-door-open"></i></button>
                     }
                     @if (currentMission.statut == "EnCours") {
-                      <button class="green" type="button" (click)="terminer(currentMission.id)"><i class="bx bx-check"></i></button>
+                      <button class="green" type="button" (click)="terminer(currentMission.id)" title="Terminer"><i class="bx bx-check"></i></button>
                     }
                   }
                   <button title="Voir" type="button" (click)="voir(currentMission.id)"><i class='bx bx-search-alt'></i></button>
@@ -47,60 +47,60 @@
             </div>
           </div>
         }
-        @else {
-          <h3>missions disponibles</h3>
-          <div class="table-missions">
-            <div class="table-missions-header">
-              <div class="table-missions-header-item">Nom</div>
-              <div class="table-missions-header-item">Rang</div>
-              <div class="table-missions-header-item">Statut</div>
-              <div class="table-missions-header-item">Équipe</div>
-              <div class="table-missions-header-item">Date de Début</div>
-              <div class="table-missions-header-item">Date de Fin</div>
-              <div class="table-missions-header-item">Actions</div>
-            </div>
-            @if (mission$ | async; as missions) {
-              <div class="table-missions-body">
-                @for (mission of missions; track mission.id) {
-                  @if (mission.statut === "Disponible" && !mission.equipeNom) {
-                    <div class="table-missions-body-item">
-                      <div>{{ mission.nom }}</div>
-                      <div>{{ mission.rang }}</div>
-                      <div>{{ mission.statut }}</div>
-                      <div>{{ mission.equipeNom }}</div>
-                      <div>{{ mission.dateDebut | date }}</div>
-                      <div>{{ mission.dateFin | date }}</div>
-                      <div class="actions">
-                      @if (authService.role === "ADMIN") {
-                        <button title="Editer" type="button" (click)="editer(mission.id, 'modify')"><i class='bx bx-pencil'></i></button>
-                        <button class="red" title="Supprimer" type="button" (click)="supprimer(mission.id)"><i class='bx bx-trash'></i></button>
-                        <button class="green" title="Assigner" type="button" (click)="assigner(mission.id)"><i class='bx bx-user-plus'></i></button>
-                      }
-                      <button title="Voir" type="button" (click)="voir(mission.id)"><i class='bx bx-search-alt'></i></button>
-                      </div>
-                    </div>
-                  }
-                }
+        @else if (mission$ | async; as missions) {
+          @if (missions.filter(m => m.statut === "Disponible" && !m.equipeNom).length) {
+            <h3>missions disponibles</h3>
+            <div class="data-table">
+              <div class="data-table-header">
+                <div class="data-table-header-item">Nom</div>
+                <div class="data-table-header-item">Rang</div>
+                <div class="data-table-header-item">Statut</div>
+                <div class="data-table-header-item">Équipe</div>
+                <div class="data-table-header-item">Date de Début</div>
+                <div class="data-table-header-item">Date de Fin</div>
+                <div class="data-table-header-item">Actions</div>
               </div>
-            }
-          </div>
+                <div class="data-table-body">
+                  @for (mission of missions; track mission.id) {
+                    @if (mission.statut === "Disponible" && !mission.equipeNom) {
+                      <div class="data-table-body-item">
+                        <div>{{ mission.nom }}</div>
+                        <div>{{ mission.rang }}</div>
+                        <div>{{ mission.statut }}</div>
+                        <div>{{ mission.equipeNom }}</div>
+                        <div>{{ mission.dateDebut | date }}</div>
+                        <div>{{ mission.dateFin | date }}</div>
+                        <div class="actions">
+                        @if (authService.role === "ADMIN") {
+                          <button title="Editer" type="button" (click)="editer(mission.id, 'modify')"><i class='bx bx-pencil'></i></button>
+                          <button class="red" title="Supprimer" type="button" (click)="supprimer(mission.id)"><i class='bx bx-trash'></i></button>
+                          <button class="green" title="Assigner" type="button" (click)="assigner(mission.id)"><i class='bx bx-user-plus'></i></button>
+                        }
+                        <button title="Voir" type="button" (click)="voir(mission.id)"><i class='bx bx-search-alt'></i></button>
+                        </div>
+                      </div>
+                    }
+                  }
+                </div>
+            </div>
+          }
         }
         <h3>missions archivées</h3>
-        <div class="table-missions">
-          <div class="table-missions-header">
-            <div class="table-missions-header-item">Nom</div>
-            <div class="table-missions-header-item">Rang</div>
-            <div class="table-missions-header-item">Statut</div>
-            <div class="table-missions-header-item">Équipe</div>
-            <div class="table-missions-header-item">Date de Début</div>
-            <div class="table-missions-header-item">Date de Fin</div>
-            <div class="table-missions-header-item">Actions</div>
+        <div class="data-table">
+          <div class="data-table-header">
+            <div class="data-table-header-item">Nom</div>
+            <div class="data-table-header-item">Rang</div>
+            <div class="data-table-header-item">Statut</div>
+            <div class="data-table-header-item">Équipe</div>
+            <div class="data-table-header-item">Date de Début</div>
+            <div class="data-table-header-item">Date de Fin</div>
+            <div class="data-table-header-item">Actions</div>
           </div>
           @if (mission$ | async; as missions) {
-            <div class="table-missions-body">
+            <div class="data-table-body">
               @for (mission of missions; track mission.id) {
                 @if (mission.statut == "Terminee" || mission.statut == "Annulee" || mission.statut == "Echouee") {
-                  <div class="table-missions-body-item">
+                  <div class="data-table-body-item">
                     <div>{{ mission.nom }}</div>
                     <div>{{ mission.rang }}</div>
                     <div>{{ mission.statut }}</div>

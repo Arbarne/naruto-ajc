@@ -1,81 +1,26 @@
 .equipe-page {
-  background-image: url('/assets/images/image 3.png');
-  background-size: cover;
-  background-position: bottom;
-  background-attachment: fixed;
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  padding: 0;
-  min-height: 100vh;
-  box-sizing: border-box;
+  --page-bg: url('/assets/images/image 3.png');
 }
 
-.crud-dialog-overlay {
-  position: fixed;
-  background: rgba(0, 0, 0, 0.55);
-  height: 100dvh;
-  width: 100dvw;
-  animation: fade-in-up 0.3s 0.3s ease-in both;
-}
-
-.crud-container {
+/* Modale équipe : compacte (la coquille de page vient de styles.css). */
+.modal {
   inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100dvh;
+  z-index: 10;
 }
 
-.crud-dialog {
-  background-color: rgba(255, 251, 229, 0.8);
-  padding: 2.5rem 3rem;
-  min-width: 1000px;
-  max-width: 90dvw;
-  min-height: 100dvh;
-  box-sizing: border-box;
-  overflow-y: auto;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  font-family: inherit;
-
-  animation: fade-in-up 0.3s 0.9s ease-in both;
+/* Dialogue compact et centré, au lieu du plein écran de la page. */
+.modal .crud-container .crud-dialog {
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  max-width: 520px;
+  max-height: 85dvh;
 }
 
-.crud-dialog input,
-.crud-dialog select,
-.crud-dialog textarea,
-.crud-dialog button {
-  font-family: inherit;
-}
-
-.crud-menu-avatar {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 30%;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.4));
-  animation: fade-in-up 0.3s 0.5s ease-in both;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.modal .dialog-title {
+  padding: 0;
+  margin: 0 0 24px;
+  text-align: center;
 }
 
 .field {
@@ -83,6 +28,24 @@
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+}
+
+/* Liste des ninjas à cocher sur 2 colonnes (modale créer/modifier). */
+.ninja-checklist {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 1.5rem;
+}
+
+.ninja-checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ninja-checklist input {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
 }
 
 table {
@@ -116,20 +79,18 @@ th, td {
   margin-top: 0.5rem;
 }
 
-.ninja-checklist {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 0.4rem;
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 0.5rem;
+.table-equipes {
+  margin-top: 24px;
 }
 
-.ninja-checklist-item {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-weight: normal;
+/* Liste des coéquipiers, même style que les listes équipes/missions. */
+.table-ninjas {
+  margin-top: 24px;
+  --table-cols: 0.5fr 2fr 1fr 1.5fr; /* Id | Nom | Rang | Spécialité */
 }
+
+/* Rôle USER : pas de colonne Id → 3 colonnes. */
+.table-ninjas--user {
+  --table-cols: 2fr 1fr 1.5fr; /* Nom | Rang | Spécialité */
+}
+

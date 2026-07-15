@@ -14,7 +14,7 @@ export class ConnexionPage {
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
 
-  private loginError = signal(false);
+  protected loginError = signal(false);
   protected usernameCtrl: FormControl = this.formBuilder.control('', Validators.required);
   protected passwordCtrl: FormControl = this.formBuilder.control('', Validators.required);
   protected connexionForm: FormGroup = this.formBuilder.group({

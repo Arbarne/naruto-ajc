@@ -110,6 +110,13 @@ form {
   color: #cfc9c3;
 }
 
+.error-message {
+  color: #ff5c5c;
+  font-size: 0.8rem;
+  margin: 0;
+  text-align: center;
+}
+
 .submit-btn {
   border: none;
   border-radius: 10px;

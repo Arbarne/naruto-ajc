@@ -2,13 +2,11 @@
   --page-bg: url('/assets/images/image 3.png');
 }
 
-/* Modale équipe : compacte (la coquille de page vient de styles.css). */
 .modal {
   inset: 0;
   z-index: 10;
 }
 
-/* Dialogue compact et centré, au lieu du plein écran de la page. */
 .modal .crud-container .crud-dialog {
   min-width: 0;
   min-height: 0;
@@ -30,11 +28,13 @@
   gap: 0.25rem;
 }
 
-/* Liste des ninjas à cocher sur 2 colonnes (modale créer/modifier). */
 .ninja-checklist {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-height: 40dvh;
+  overflow-y: auto;
+  padding-right: 0.25rem;
 }
 
 .ninja-checklist-item {
@@ -46,6 +46,15 @@
   width: 16px;
   height: 16px;
   flex: 0 0 auto;
+}
+.ninja-checklist-nom {
+  flex: 1 1 auto;
+}
+.ninja-checklist-item .tag {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: 0.85em;
+  color: #555;
 }
 
 table {
@@ -83,14 +92,67 @@ th, td {
   margin-top: 24px;
 }
 
-/* Liste des coéquipiers, même style que les listes équipes/missions. */
 .table-ninjas {
   margin-top: 24px;
-  --table-cols: 0.5fr 2fr 1fr 1.5fr; /* Id | Nom | Rang | Spécialité */
+  --table-cols: 2fr 1fr 1.5fr;
 }
 
-/* Rôle USER : pas de colonne Id → 3 colonnes. */
-.table-ninjas--user {
-  --table-cols: 2fr 1fr 1.5fr; /* Nom | Rang | Spécialité */
+.section-title {
+  margin: 1rem 0 0.5rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--theme-brown-color);
+  font-weight: 700;
 }
 
+.info-rows {
+  margin: 1rem 0 1.5rem;
+}
+
+.equipe-info-card {
+  padding: 0.65rem 1rem;
+  border: 1px solid rgba(145, 101, 79, 0.35);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.equipe-info-card .info-row {
+  padding: 0.35rem 0;
+}
+
+.info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.info-row dt {
+  color: var(--theme-brown-color);
+  font-weight: 600;
+}
+
+.info-row dt::after {
+  content: ':';
+}
+
+.info-row dd {
+  margin: 0;
+  font-weight: 600;
+  color: var(--theme-brown-color-dark);
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid rgba(145, 101, 79, 0.25);
+  margin: 0.1rem 0;
+}
+
+.mission-valeur {
+  color: #a5691e;
+}
+
+.mission-valeur--vide {
+  color: var(--theme-green-color-dark);
+}

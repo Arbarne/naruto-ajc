@@ -40,7 +40,8 @@
                             type="checkbox"
                             [checked]="ninjasSelectionnes.has(ninja.id)"
                             (change)="toggleNinjaSelection(ninja.id, $any($event.target).checked)">
-                          {{ ninja.prenom }} {{ ninja.nom }} — {{ ninja.rang }} / {{ ninja.specialite }}
+                          <span class="ninja-checklist-nom">{{ ninja.prenom }} {{ ninja.nom }}</span>
+                          <span class="tag">{{ ninja.rang }} · {{ ninja.specialite }}</span>
                         </label>
                       }
                     </div>
@@ -92,16 +93,25 @@
       @if (authService.role === 'LEADER' || authService.role === 'USER') {
         @if (maEquipe$ | async; as equipe) {
           <h3>{{ equipe.nom }}</h3>
-          <p>Leader : {{ equipe.leaderNom }}</p>
-          @if (missions$ | async; as missions) {
-            <p>Mission assignée : {{ missionAssignee(equipe.nom, missions) ?? 'Aucune' }}</p>
-          }
+          <div class="info-rows equipe-info-card">
+            <div class="info-row">
+              <dt>Leader</dt>
+              <dd>{{ equipe.leaderNom }}</dd>
+            </div>
 
-          <div class="data-table table-ninjas" [class.table-ninjas--user]="authService.role === 'USER'">
+            @if (missions$ | async; as missions) {
+              @let mission = missionAssignee(equipe.nom, missions);
+              <hr class="section-divider">
+              <div class="info-row">
+                <dt>Mission assignée</dt>
+                <dd class="mission-valeur" [class.mission-valeur--vide]="!mission">{{ mission ?? 'Aucune' }}</dd>
+              </div>
+            }
+          </div>
+
+          <h4 class="section-title">Liste des ninjas participants</h4>
+          <div class="data-table table-ninjas">
             <div class="data-table-header">
-              @if (authService.role !== 'USER') {
-                <div class="data-table-header-item">Id</div>
-              }
               <div class="data-table-header-item">Nom</div>
               <div class="data-table-header-item">Rang</div>
               <div class="data-table-header-item">Spécialité</div>
@@ -109,9 +119,6 @@
             <div class="data-table-body">
               @for (ninja of coequipiers(equipe); track ninja.id) {
                 <div class="data-table-body-item">
-                  @if (authService.role !== 'USER') {
-                    <div>{{ ninja.id }}</div>
-                  }
                   <div>{{ ninja.nom }}</div>
                   <div>{{ ninja.rang }}</div>
                   <div>{{ ninja.specialite }}</div>
@@ -132,13 +139,14 @@
 
                     @if (ninjaOptions$ | async; as ninjas) {
                       <div class="ninja-checklist">
-                        @for (ninja of ninjas; track ninja.id) {
+                        @for (ninja of ninjasDisponibles(ninjas, equipe); track ninja.id) {
                           <label class="ninja-checklist-item">
                             <input
                               type="checkbox"
                               [checked]="ninjasSelectionnes.has(ninja.id)"
                               (change)="toggleNinjaSelection(ninja.id, $any($event.target).checked)">
-                            {{ ninja.prenom }} {{ ninja.nom }}
+                            <span class="ninja-checklist-nom">{{ ninja.prenom }} {{ ninja.nom }}</span>
+                            <span class="tag">{{ ninja.rang }} · {{ ninja.specialite }}</span>
                           </label>
                         }
                       </div>
